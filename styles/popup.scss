@@ -1,0 +1,16 @@
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+// Custom theme colors
+$primary: #FFA500; // Orange
+$secondary: #000000; // Black
+$light: #FFFFFF; // White
+
+// Apply the custom theme colors
+$theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "light": $light
+);
+
+// Re-compile Bootstrap with the custom theme colors
+@import '../node_modules/bootstrap/scss/bootstrap';

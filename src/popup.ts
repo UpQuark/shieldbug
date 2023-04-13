@@ -8,6 +8,7 @@ function updateBlockedUrlsList(blockedUrls: string[]): void {
   for (const url of blockedUrls) {
     const listItem = document.createElement("li");
     listItem.textContent = url;
+    listItem.classList.add("list-group-item");
     blockedUrlsList.appendChild(listItem);
   }
 }

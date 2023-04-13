@@ -4,13 +4,19 @@
   "description": "",
   "main": "src/background.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc; node-sass styles/popup.scss -o dist",
+    "build:css": "node-sass styles/popup.scss -o dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/chrome": "^0.0.231",
+    "node-sass": "^8.0.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3"
   }
 }

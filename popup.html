@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shieldbug</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            width: 300px;
-        }
-    </style>
+    <link rel="stylesheet" href="dist/popup.css">
 </head>
-<body>
-<h1>Shieldbug Extension</h1>
-<p>Add URLs to block:</p>
-<form id="urlForm">
-    <input type="url" id="urlInput" required>
-    <button type="submit">Add URL</button>
-</form>
-<h2>Blocked URLs:</h2>
-<ul id="blockedUrlsList"></ul>
-<script src="src/popup.ts"></script>
+<body class="bg-light">
+<div class="container p-3" style="min-width: 400px">
+    <h1 class="text-primary mb-3">Block sites with Shieldbug</h1>
+    <p>Add URLs to block:</p>
+    <form id="urlForm" class="mb-4">
+        <div class="input-group">
+            <input type="url" id="urlInput" class="form-control" placeholder="Enter URL" required>
+            <button type="submit" class="btn btn-primary">Add URL</button>
+        </div>
+    </form>
+    <h2 class="text-secondary mb-3">Blocked URLs:</h2>
+    <ul id="blockedUrlsList" class="list-group">
+        <!-- Blocked URLs will be appended here -->
+    </ul>
+</div>
+<script src="dist/popup.js"></script>
 </body>
 </html>

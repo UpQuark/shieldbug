@@ -1,12 +1,10 @@
-self.addEventListener('install', (event: ExtendableEvent) => {
-  event.waitUntil(
-    (async () => {
-      await chrome.storage.local.set({
-        blockedUrls: [
-          "https://example.com",
-          "https://example.org"
-        ]
-      });
-    })()
-  );
+/// <reference types="chrome"/>
+
+self.addEventListener('install', () => {
+  chrome.storage.local.set({
+    blockedUrls: [
+      "https://youtube.com",
+      "https://www.youtube.com",
+    ]
+  });
 });
