@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Shieldbug",
+  "version": "1.0",
+  "description": "Replaces the content of specified URLs with a picture of a cat.",
+  "icons": {
+    "48": "icon.png"
+  },
+  "permissions": [
+    "webNavigation",
+    "storage",
+    "scripting",
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content.js"]
+    }
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

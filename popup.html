@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shieldbug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<h1>Shieldbug Extension</h1>
+<p>Add URLs to block:</p>
+<form id="urlForm">
+    <input type="url" id="urlInput" required>
+    <button type="submit">Add URL</button>
+</form>
+<h2>Blocked URLs:</h2>
+<ul id="blockedUrlsList"></ul>
+<script src="src/popup.ts"></script>
+</body>
+</html>
