@@ -7,12 +7,18 @@ function replaceWithCat(): void {
   `;
 }
 
+function isUrlBlocked(url: string, blockedUrls: string[]): boolean {
+  const hostname = new URL(url).hostname;
+  const mainDomain = hostname.split('.').slice(-2).join('.');
+  return blockedUrls.includes(mainDomain);
+}
+
 chrome.storage.local.get("blockedUrls", (data: { blockedUrls?: string[] }) => {
   const currentUrl: string = window.location.href;
   const blockedUrls: string[] = data.blockedUrls || [];
 
   for (const url of blockedUrls) {
-    if (currentUrl.startsWith(url)) {
+    if (isUrlBlocked(url, blockedUrls)) {
       replaceWithCat();
       break;
     }

@@ -7,25 +7,48 @@ function updateBlockedUrlsList(blockedUrls: string[]): void {
 
   for (const url of blockedUrls) {
     const listItem = document.createElement("li");
+    listItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
     listItem.textContent = url;
-    listItem.classList.add("list-group-item");
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("btn", "btn-outline-danger", "btn-sm");
+    deleteButton.innerHTML = '<i class="bi bi-x"></i>';
+    deleteButton.addEventListener("click", () => {
+      deleteUrl(url);
+    });
+
+    listItem.appendChild(deleteButton);
     blockedUrlsList.appendChild(listItem);
   }
 }
 
-urlForm.addEventListener("submit", (event: Event) => {
+function deleteUrl(urlToDelete: string): void {
+  chrome.storage.local.get("blockedUrls", (data) => {
+    const blockedUrls: string[] = data.blockedUrls;
+    const updatedBlockedUrls = blockedUrls.filter((url) => url !== urlToDelete);
+
+    chrome.storage.local.set({blockedUrls: updatedBlockedUrls}, () => {
+      updateBlockedUrlsList(updatedBlockedUrls);
+    });
+  });
+}
+
+urlForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const url = urlInput.value.trim();
-  if (!url) return;
-
-  chrome.storage.local.get("blockedUrls", (data: { blockedUrls?: string[] }) => {
+  let url = urlInput.value;
+  // https prefix when missing, so it can be parsed as a url
+  if (!url.startsWith("http://") && !url.startsWith("https://"))  url = "https://" + url;
+  const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
+  chrome.storage.local.get("blockedUrls", (data) => {
     const blockedUrls: string[] = data.blockedUrls || [];
-    blockedUrls.push(url);
-    chrome.storage.local.set({ blockedUrls }, () => {
-      updateBlockedUrlsList(blockedUrls);
-      urlInput.value = "";
-    });
+    if (!blockedUrls.includes(mainDomain)) {
+      blockedUrls.push(mainDomain);
+      chrome.storage.local.set({ blockedUrls }, () => {
+        updateBlockedUrlsList(blockedUrls);
+      });
+    }
+    urlInput.value = "";
   });
 });
 
