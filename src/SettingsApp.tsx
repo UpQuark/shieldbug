@@ -1,9 +1,10 @@
 import * as React from 'react';
+import TopNavigator from "./TopNavigator";
 
 const SettingsApp: React.FC = () => {
 	return (
 		<div>
-			<h1>Hello, Shieldbug Settings!</h1>
+			<TopNavigator />
 		</div>
 	);
 };
