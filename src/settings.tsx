@@ -1,5 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import SettingsApp from './SettingsApp';
+import {createRoot} from "react-dom/client";
+import * as React from "react";
+import SettingsApp from "./SettingsApp";
 
-ReactDOM.render(<SettingsApp />, document.getElementById('settings-root'));
+const container = document.getElementById('settings-root')
+// @ts-ignore
+const root = createRoot(container);
+root.render(<SettingsApp />);

@@ -1,5 +1,8 @@
-import ReactDOM from 'react-dom';
-import PopupApp from "./PopupApp";
-import React from "react";
+import * as React from 'react';
+import PopupApp from './PopupApp';
+import {createRoot} from "react-dom/client";
 
-ReactDOM.render(<PopupApp />, document.getElementById('popup-root'));
+const container = document.getElementById('popup-root')
+// @ts-ignore
+const root = createRoot(container);
+root.render(<PopupApp />);
