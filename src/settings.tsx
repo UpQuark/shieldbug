@@ -1,5 +1,5 @@
+import * as React from 'react';
 import {createRoot} from "react-dom/client";
-import * as React from "react";
 import SettingsApp from "./SettingsApp";
 
 const container = document.getElementById('settings-root')

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {useEffect, useState} from 'react';
 
 const UrlBlocker: React.FC = () => {
 	const [blockedUrls, setBlockedUrls] = useState<string[]>([]);
@@ -16,7 +18,7 @@ const UrlBlocker: React.FC = () => {
 
 	const deleteUrl = (urlToDelete: string) => {
 		const updatedBlockedUrls = blockedUrls.filter((url) => url !== urlToDelete);
-		chrome.storage.local.set({ blockedUrls: updatedBlockedUrls }, () => {
+		chrome.storage.local.set({blockedUrls: updatedBlockedUrls}, () => {
 			updateBlockedUrlsList(updatedBlockedUrls);
 		});
 	};
@@ -30,7 +32,7 @@ const UrlBlocker: React.FC = () => {
 		const newBlockedUrls = [...blockedUrls, mainDomain];
 
 		if (!blockedUrls.includes(mainDomain)) {
-			chrome.storage.local.set({ blockedUrls: newBlockedUrls }, () => {
+			chrome.storage.local.set({blockedUrls: newBlockedUrls}, () => {
 				updateBlockedUrlsList(newBlockedUrls);
 			});
 		}
@@ -42,26 +44,35 @@ const UrlBlocker: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit} id="urlForm">
-				<input
-					type="text"
-					id="urlInput"
-					value={urlInput}
-					onChange={(e) => setUrlInput(e.target.value)}
-					placeholder="Enter URL to block"
-				/>
-				<button type="submit">Add URL</button>
+		<div className="container-fluid">
+			<form onSubmit={handleSubmit} id="urlForm" className="mb-3">
+				<div className="input-group">
+					<input
+						type="text"
+						id="urlInput"
+						value={urlInput}
+						onChange={(e) => setUrlInput(e.target.value)}
+						placeholder="Enter URL to block"
+						className="form-control"
+					/>
+					<button type="submit" className="btn btn-primary">
+						Add URL
+					</button>
+				</div>
 			</form>
-			<ul id="blockedUrlsList">
+			<ul id="blockedUrlsList" className="list-group">
 				{blockedUrls.map((url) => (
-					<li key={url}>
+					<li key={url} className="list-group-item d-flex justify-content-between align-items-center">
 						{url}
-						<button onClick={() => deleteUrl(url)}>Delete</button>
+						<button onClick={() => deleteUrl(url)} className="btn btn-outline-danger btn-sm">
+							Delete
+						</button>
 					</li>
 				))}
 			</ul>
-			<button onClick={openSettingsPage}>Open Settings</button>
+			<button onClick={openSettingsPage} className="btn btn-secondary mt-3">
+				Open Settings
+			</button>
 		</div>
 	);
 };
