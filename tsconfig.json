@@ -4,7 +4,9 @@
     "module": "CommonJS",
     "strict": true,
     "outDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
   },
   "include": ["src/**/*"]
 }
