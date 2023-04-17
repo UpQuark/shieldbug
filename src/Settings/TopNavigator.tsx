@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import BlockedSites from '../BlockedSites';
 // import Settings from './Settings';
 import WeirdStuff from './WeirdStuff';
+import BlockedSites from "./BlockedSites";
 // import Account from './Account';
 
 const TopNavigator: React.FC = () => {
@@ -32,7 +33,7 @@ const TopNavigator: React.FC = () => {
 					{/*<Route path="/blocked-sites" element={<BlockedSites />} />*/}
 					{/*<Route path="/settings" element={<Settings />} />*/}
 					<Route path="/weird-stuff" element={<WeirdStuff />} />
-					<Route path="/weird-stuff" element={<WeirdStuff />} />
+					<Route path="/blocked-sites" element={<BlockedSites />} />
 					{/*<Route path="/account" element={<Account />} />*/}
 				</Routes>
 			</Container>
