@@ -6,10 +6,12 @@ module.exports = {
   mode: "development",
   devtool: 'source-map',
   entry: {
-    popup: "./src/popup.tsx",
-    settings: "./src/settings.tsx",
     background: "./src/background.ts",
-    content: "./src/content.ts"
+    content: "./src/content.ts",
+    popup: "./src/Popup/popup.tsx",
+    settings: "./src/Settings/settings.tsx",
+    block: './src/BlockPage/block.tsx'
+
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -41,15 +43,21 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/popup.html",
+      template: "./src/Popup/popup.html",
       filename: "popup.html",
       chunks: ["popup"],
     }),
     new HtmlWebpackPlugin({
-      template: "./src/settings.html",
+      template: "./src/Settings/settings.html",
       filename: "settings.html",
       chunks: ["settings"],
     }),
+    new HtmlWebpackPlugin({
+      template: "./src/BlockPage/block.html",
+      filename: "block.html",
+      chunks: ["block"],
+    }),
+
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/manifest.json', to: '.' },

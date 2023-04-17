@@ -1,5 +1,5 @@
 import * as React from 'react';
-import UrlBlocker from './UrlBlocker';
+import UrlBlocker from '../Settings/UrlBlocker';
 
 const PopupApp: React.FC = () => {
 	return (
