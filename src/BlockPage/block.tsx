@@ -1,5 +1,8 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
-import BlockPage from './BlockPage';
+import {createRoot} from "react-dom/client";
+import BlockPage from "./BlockPage";
 
-ReactDOM.render(<BlockPage />, document.getElementById('block-root'));
+const container = document.getElementById('block-root')
+// @ts-ignore
+const root = createRoot(container);
+root.render(<BlockPage />);
