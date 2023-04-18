@@ -12,7 +12,7 @@ const PopupApp: React.FC = () => {
 
 	return (
 		<Container style={{ width: 400, padding: 12 }}>
-			<Row>
+			<Row style={{marginBottom: 12}}>
 				<Col xs="auto">
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
@@ -22,7 +22,7 @@ const PopupApp: React.FC = () => {
 					/>
 				</Col>
 				<Col>
-					<h3 className={"text-primary"}>ShieldBug</h3>
+					<h3 className={"text-primary"} style={{textAlign: "left"}}>ShieldBug</h3>
 				</Col>
 				<Col className="d-flex justify-content-end">
 					<Button

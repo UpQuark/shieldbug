@@ -1,10 +1,13 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from 'react';
+import {Button, Container, Form, InputGroup, ListGroup} from 'react-bootstrap';
 
 const UrlBlocker: React.FC = () => {
 	const [blockedUrls, setBlockedUrls] = useState<string[]>([]);
 	const [urlInput, setUrlInput] = useState<string>('');
+	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
+	const [currentSite, setCurrentSite] = useState<string>('');
 
 	useEffect(() => {
 		chrome.storage.local.get('blockedUrls', (data: { blockedUrls?: string[] }) => {
@@ -39,34 +42,65 @@ const UrlBlocker: React.FC = () => {
 		setUrlInput('');
 	};
 
+	const handleBlockCurrentPage = (event: React.FormEvent) => {
+		const url = currentSite;
+		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
+		const newBlockedUrls = [...blockedUrls, mainDomain];
+
+		if (!blockedUrls.includes(mainDomain)) {
+			chrome.storage.local.set({blockedUrls: newBlockedUrls}, () => {
+				updateBlockedUrlsList(newBlockedUrls);
+			});
+		}
+	}
+
+	useEffect(() => {
+		chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+			const currentTab = tabs[0];
+			const pageUrl = currentTab.url;
+			if (pageUrl?.startsWith('http')) {
+				setCanBlockCurrentSite(true)
+				setCurrentSite(pageUrl)
+			}
+			console.log('Current page URL:', pageUrl);
+		});
+	}, []);
+
+
 	return (
-		<div className="container-fluid p-0">
-			<form onSubmit={handleSubmit} id="urlForm" className="mb-3">
-				<div className="input-group">
-					<input
+		<Container fluid>
+			{canBlockCurrentSite &&
+        <Button
+          className={"text-white w-100 my-2"}
+          onClick={handleBlockCurrentPage}
+        >
+          Block current site</Button>
+			}
+
+			<Form onSubmit={handleSubmit} className="mb-3">
+				<InputGroup>
+					<Form.Control
 						type="text"
-						id="urlInput"
 						value={urlInput}
 						onChange={(e) => setUrlInput(e.target.value)}
 						placeholder="Enter URL to block"
-						className="form-control"
 					/>
-					<button type="submit" className="btn btn-primary">
+					<Button type="submit" variant="primary" className={"text-white"}>
 						Add URL
-					</button>
-				</div>
-			</form>
-			<ul id="blockedUrlsList" className="list-group">
+					</Button>
+				</InputGroup>
+			</Form>
+			<ListGroup>
 				{blockedUrls.map((url) => (
-					<li key={url} className="list-group-item d-flex justify-content-between align-items-center">
+					<ListGroup.Item key={url} className="d-flex justify-content-between align-items-center">
 						{url}
-						<button onClick={() => deleteUrl(url)} className="btn btn-outline-danger btn-sm">
+						<Button onClick={() => deleteUrl(url)} variant="outline-danger" size="sm">
 							Delete
-						</button>
-					</li>
+						</Button>
+					</ListGroup.Item>
 				))}
-			</ul>
-		</div>
+			</ListGroup>
+		</Container>
 	);
 };
 
