@@ -3,17 +3,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from 'react';
 import {Button, Container, Form, InputGroup, ListGroup} from 'react-bootstrap';
 
+/**
+ * A component that allows the user to block URLs as a list, persisted in chrome storage
+ * @constructor
+ */
 const UrlBlocker: React.FC = () => {
 	const [blockedUrls, setBlockedUrls] = useState<string[]>([]);
 	const [urlInput, setUrlInput] = useState<string>('');
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
 
+	/**
+	 * Get the blocked URLs out of chrome storage and load 'em up into state
+	 */
 	useEffect(() => {
 		chrome.storage.local.get('blockedUrls', (data: { blockedUrls?: string[] }) => {
 			setBlockedUrls(data.blockedUrls || []);
 		});
 	}, []);
+
+	const getFaviconUrl = (url: string) => {
+		try {
+			const { protocol, hostname } = new URL(`https://${url}`);
+			return `${protocol}//${hostname}/favicon.ico`;
+		} catch (error) {
+			console.error('Error getting favicon URL:', error);
+			return '';
+		}
+	};
 
 	const updateBlockedUrlsList = (updatedBlockedUrls: string[]) => {
 		setBlockedUrls(updatedBlockedUrls);
@@ -94,6 +111,13 @@ const UrlBlocker: React.FC = () => {
 			<ListGroup>
 				{blockedUrls.map((url) => (
 					<ListGroup.Item key={url} className="d-flex justify-content-between align-items-center">
+						<img
+							src={getFaviconUrl(url)}
+							alt={`Favicon for ${url}`}
+							width="16"
+							height="16"
+							className="me-2"
+						/>
 						{url}
 						<Button onClick={() => deleteUrl(url)} variant="outline-danger" size="sm">
 							Delete
