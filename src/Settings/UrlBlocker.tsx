@@ -50,6 +50,7 @@ const UrlBlocker: React.FC = () => {
 		if (!blockedUrls.includes(mainDomain)) {
 			chrome.storage.local.set({blockedUrls: newBlockedUrls}, () => {
 				updateBlockedUrlsList(newBlockedUrls);
+				void chrome.runtime.sendMessage({ action: "openBlockPage" });
 			});
 		}
 	}
