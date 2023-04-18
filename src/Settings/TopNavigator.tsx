@@ -25,7 +25,9 @@ const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-si
 		<Router>
 			<Navbar bg="light" expand="lg">
 				<Container>
-					<Navbar.Brand as={Link} to="/" style={{height: 60}}><img style={{height: 60}} src="../assets/icon-128.png"/></Navbar.Brand>
+					<Navbar.Brand as={Link} to="/" style={{height: 40}}>
+						<img style={{height: 40}} src="../assets/icon-128.png"/>
+					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
