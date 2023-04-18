@@ -1,13 +1,26 @@
 // TopNavigator.tsx
 import * as React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import WeirdStuff from './WeirdStuff';
 import BlockedSites from "./BlockedSites";
 
-const TopNavigator: React.FC = () => {
+interface TopNavigatorProps {
+	initialRoute?: string;
+}
+
+const RootRedirect: React.FC<{ to: string }> = ({ to }) => {
+	const navigate = useNavigate();
+	React.useEffect(() => {
+		navigate(to);
+	}, [navigate, to]);
+
+	return null;
+};
+
+const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-sites' }) => {
 	return (
 		<Router>
 			<Navbar bg="light" expand="lg">
@@ -16,7 +29,7 @@ const TopNavigator: React.FC = () => {
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
-							<Nav.Link as={Link} to="/blocked-sites">Blocked Sites</Nav.Link>
+							<Nav.Link as={Link} to="/">Blocked Sites</Nav.Link>
 							<Nav.Link as={Link} to="/weird-stuff">Weird Stuff</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
@@ -25,11 +38,8 @@ const TopNavigator: React.FC = () => {
 
 			<Container>
 				<Routes>
-					{/*<Route path="/blocked-sites" element={<BlockedSites />} />*/}
-					{/*<Route path="/settings" element={<Settings />} />*/}
+					<Route path="*" element={<BlockedSites />} />
 					<Route path="/weird-stuff" element={<WeirdStuff />} />
-					<Route path="/blocked-sites" element={<BlockedSites />} />
-					{/*<Route path="/account" element={<Account />} />*/}
 				</Routes>
 			</Container>
 		</Router>

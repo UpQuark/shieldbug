@@ -22,7 +22,7 @@ const PopupApp: React.FC = () => {
 					/>
 				</Col>
 				<Col>
-					<h3 className={"text-primary"} style={{textAlign: "left"}}>ShieldBug</h3>
+					<h3 className={"text-primary"} style={{marginLeft: -18, marginTop: 4}}>ShieldBug</h3>
 				</Col>
 				<Col className="d-flex justify-content-end">
 					<Button
