@@ -3,6 +3,7 @@ import UrlBlocker from '../Settings/UrlBlocker';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../../styles/custom-theme.scss'
 
 const PopupApp: React.FC = () => {
 	const openSettingsPage = () => {
@@ -17,7 +18,11 @@ const PopupApp: React.FC = () => {
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
 						style={{ height: 35 }}
+						className={"flex"}
 					/>
+				</Col>
+				<Col>
+					<h3 className={"text-primary"}>ShieldBug</h3>
 				</Col>
 				<Col className="d-flex justify-content-end">
 					<Button
