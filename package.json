@@ -5,9 +5,9 @@
   "main": "src/background.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack; node-sass styles/popup.scss -o dist",
+    "build": "webpack; node-sass styles/* -o dist",
     "start": "webpack serve",
-    "build:css": "node-sass styles/popup.scss -o dist"
+    "build:css": "node-sass styles/* -o dist"
   },
   "keywords": [],
   "author": "",

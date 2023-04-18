@@ -39,12 +39,8 @@ const UrlBlocker: React.FC = () => {
 		setUrlInput('');
 	};
 
-	const openSettingsPage = () => {
-		chrome.runtime.openOptionsPage();
-	};
-
 	return (
-		<div className="container-fluid">
+		<div className="container-fluid p-0">
 			<form onSubmit={handleSubmit} id="urlForm" className="mb-3">
 				<div className="input-group">
 					<input
@@ -70,9 +66,6 @@ const UrlBlocker: React.FC = () => {
 					</li>
 				))}
 			</ul>
-			<button onClick={openSettingsPage} className="btn btn-secondary mt-3">
-				Open Settings
-			</button>
 		</div>
 	);
 };
