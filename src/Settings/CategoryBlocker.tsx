@@ -11,8 +11,14 @@ const categories = [
 const CategoryBlocker: React.FC = () => {
 	const [blockedCategories, setBlockedCategories] = React.useState<string[]>([]);
 
+	React.useEffect(() => {
+		chrome.storage.local.get('blockedCategories', (data: { blockedCategories?: string[] }) => {
+			setBlockedCategories(data.blockedCategories || []);
+		});
+	}, []);
+
 	const handleCategoryToggle = (category: string, checked: boolean) => {
-		let updatedBlockedCategories;
+		let updatedBlockedCategories: any;
 
 		if (checked) {
 			updatedBlockedCategories = [...blockedCategories, category];
@@ -20,7 +26,9 @@ const CategoryBlocker: React.FC = () => {
 			updatedBlockedCategories = blockedCategories.filter((c) => c !== category);
 		}
 
-		setBlockedCategories(updatedBlockedCategories);
+		chrome.storage.local.set({ blockedCategories: updatedBlockedCategories }, () => {
+			setBlockedCategories(updatedBlockedCategories);
+		});
 	};
 
 	return (
@@ -31,6 +39,7 @@ const CategoryBlocker: React.FC = () => {
 					type="switch"
 					id={`category-${category.value}`}
 					label={category.label}
+					checked={blockedCategories.includes(category.value)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						handleCategoryToggle(category.value, e.target.checked)
 					}
