@@ -1,4 +1,3 @@
-// TopNavigator.tsx
 import * as React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
@@ -10,6 +9,8 @@ import BlockedKeywords from "./BlockedKeywords";
 import BlockedCategories from "./BlockedCategories";
 
 import { Lock, Book, MessageSquare, Zap } from 'react-feather';
+
+import './TopNavigator.scss';
 
 interface TopNavigatorProps {
 	initialRoute?: string;
@@ -27,7 +28,7 @@ const RootRedirect: React.FC<{ to: string }> = ({ to }) => {
 const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-sites' }) => {
 	return (
 		<Router>
-			<Navbar bg="light" expand="lg">
+			<Navbar bg="light" expand="md">
 				<Container>
 					<Navbar.Brand as={Link} to="/" style={{height: 40}}>
 						<img style={{height: 40}} src="../assets/icon-128.png"/>
@@ -35,10 +36,10 @@ const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-si
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
-							<Nav.Link as={Link} to="/"><Lock/>Block sites</Nav.Link>
-							<Nav.Link as={Link} to="/blocked-keywords"><MessageSquare/>Block keywords</Nav.Link>
-							<Nav.Link as={Link} to="/blocked-categories"><Book/>Block categories</Nav.Link>
-							<Nav.Link as={Link} to="/weird-stuff"><Zap/>Weird stuff</Nav.Link>
+							<Nav.Link as={Link} to="/">Block sites</Nav.Link>
+							<Nav.Link as={Link} to="/blocked-keywords">Block keywords</Nav.Link>
+							<Nav.Link as={Link} to="/blocked-categories">Block categories</Nav.Link>
+							<Nav.Link as={Link} to="/weird-stuff">Weird stuff</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
