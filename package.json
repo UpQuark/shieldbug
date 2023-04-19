@@ -5,9 +5,8 @@
   "main": "src/background.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack; node-sass styles/* -o dist",
-    "start": "webpack serve",
-    "build:css": "node-sass styles/* -o dist"
+    "build": "webpack",
+    "start": "webpack serve"
   },
   "keywords": [],
   "author": "",

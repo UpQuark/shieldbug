@@ -3,9 +3,7 @@ import TopNavigator from "./TopNavigator";
 
 const SettingsApp: React.FC = () => {
 	return (
-		<div>
-			<TopNavigator />
-		</div>
+		<TopNavigator/>
 	);
 };
 

@@ -1,26 +1,4 @@
-// Define custom colors
-$primary: #ff9800;
-
-// Define optional additional custom colors if needed
-$secondary: #6c757d;
-$success: #28a745;
-$info: #17a2b8;
-$warning: #ffc107;
-$danger: #dc3545;
-$light: #f8f9fa;
-$dark: #343a40;
-
-// Update Bootstrap's built-in variables with custom colors
-$theme-colors: (
-        "primary": $primary,
-        "secondary": $secondary,
-        "success": $success,
-        "info": $info,
-        "warning": $warning,
-        "danger": $danger,
-        "light": $light,
-        "dark": $dark,
-);
+@import 'ThemeColors';
 
 // Import Bootstrap and its default variables
 @import '../node_modules/bootstrap/scss/bootstrap';
@@ -32,4 +10,4 @@ $theme-colors: (
   font-style: normal;
 }
 
-@import 'HeaderText';
+@import 'HeaderTheme';
