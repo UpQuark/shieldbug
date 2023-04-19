@@ -1,7 +1,7 @@
 const FeatureFlags = {
 	BlockSites: true,
 	BlockKeywords: true,
-	BlockCategories: false,
+	BlockCategories: true,
 	WeirdStuff: true
 }
 

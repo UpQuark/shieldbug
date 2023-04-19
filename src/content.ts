@@ -1,15 +1,22 @@
 import {isUrlBlocked} from "./UrlBlocker";
 
 function openBlockPage() {
-  chrome.runtime.sendMessage({ action: "openBlockPage" });
+  void chrome.runtime.sendMessage({ action: "openBlockPage" });
 }
 
-chrome.storage.local.get(["blockedUrls", "blockedKeywords"], (data: { blockedUrls?: string[], blockedKeywords?: string[] }) => {
+chrome.storage.local.get(
+  ["blockedUrls", "blockedKeywords", "blockedCategories"],
+  async (data: {
+    blockedUrls?: string[],
+    blockedKeywords?: string[],
+    blockedCategories?: string[]
+  }) => {
   const currentUrl: string = window.location.href;
   const blockedUrls: string[] = data.blockedUrls || [];
   const blockedKeywords: string[] = data.blockedKeywords || [];
+  const blockedCategories: string[] = data.blockedCategories || [];
 
-  if (isUrlBlocked(currentUrl, blockedUrls, blockedKeywords)) {
+  if (await isUrlBlocked(currentUrl, blockedUrls, blockedKeywords, blockedCategories)) {
     openBlockPage();
   }
 });

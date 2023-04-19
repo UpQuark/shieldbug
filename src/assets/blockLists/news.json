@@ -1,0 +1,27 @@
+{
+  "name": "news",
+  "urls": [
+    "cnn.com",
+    "bbc.com",
+    "nytimes.com",
+    "theguardian.com",
+    "washingtonpost.com",
+    "foxnews.com",
+    "reuters.com",
+    "aljazeera.com",
+    "usatoday.com",
+    "msnbc.com"
+  ],
+  "keywords": [
+    "breaking-news",
+    "headline-news",
+    "world-news",
+    "local-news",
+    "national-news",
+    "politics-news",
+    "business-news",
+    "sports-news",
+    "entertainment-news",
+    "technology-news"
+  ]
+}
