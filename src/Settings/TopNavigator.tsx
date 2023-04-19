@@ -6,6 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import WeirdStuff from './WeirdStuff';
 import BlockedSites from "./BlockedSites";
+import BlockedKeywords from "./BlockedKeywords";
+import BlockedCategories from "./BlockedCategories";
+
+import { Lock, Book, MessageSquare, Zap } from 'react-feather';
 
 interface TopNavigatorProps {
 	initialRoute?: string;
@@ -31,8 +35,10 @@ const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-si
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
-							<Nav.Link as={Link} to="/">Blocked Sites</Nav.Link>
-							<Nav.Link as={Link} to="/weird-stuff">Weird Stuff</Nav.Link>
+							<Nav.Link as={Link} to="/"><Lock/>Block sites</Nav.Link>
+							<Nav.Link as={Link} to="/blocked-keywords"><MessageSquare/>Block keywords</Nav.Link>
+							<Nav.Link as={Link} to="/blocked-categories"><Book/>Block categories</Nav.Link>
+							<Nav.Link as={Link} to="/weird-stuff"><Zap/>Weird stuff</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
@@ -41,6 +47,8 @@ const TopNavigator: React.FC<TopNavigatorProps> = ({ initialRoute = '/blocked-si
 			<Container>
 				<Routes>
 					<Route path="*" element={<BlockedSites />} />
+					<Route path="/blocked-keywords" element={<BlockedKeywords/>} />
+					<Route path="/blocked-categories" element={<BlockedCategories />} />
 					<Route path="/weird-stuff" element={<WeirdStuff />} />
 				</Routes>
 			</Container>
