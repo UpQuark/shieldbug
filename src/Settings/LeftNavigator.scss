@@ -26,3 +26,31 @@
     }
   }
 }
+
+// LeftNavigator.scss
+.left-sidebar {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding-top: 20px;
+}
+
+.left-sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.left-sidebar a:hover {
+  text-decoration: none;
+  background-color: #e9ecef;
+}
+
+.brand-name {
+  margin-left: 10px;
+  font-size: 1.2rem;
+}
+
+.navbar-brand {
+  padding: 0;
+}
