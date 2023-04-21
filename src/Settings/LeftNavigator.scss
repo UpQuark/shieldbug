@@ -33,6 +33,8 @@
   background-color: #f8f9fa;
   border-right: 1px solid #dee2e6;
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .left-sidebar a {
@@ -54,3 +56,12 @@
 .navbar-brand {
   padding: 0;
 }
+
+.nav-links {
+  flex-grow: 1;
+}
+
+.about-link {
+  margin-bottom: 10px;
+}
+
