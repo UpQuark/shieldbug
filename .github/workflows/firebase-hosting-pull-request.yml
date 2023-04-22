@@ -22,3 +22,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHIELDBUG_MARKETING }}'
           projectId: shieldbug-marketing
+          channelId: 'pr-${{ github.event.number }}'
+
