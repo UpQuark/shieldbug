@@ -16,6 +16,11 @@
           behavior: 'smooth'
         });
       }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.carousel');
+        var instances = M.Carousel.init(elems);
+      });
     </script>
 </head>
 <body>
@@ -82,6 +87,11 @@
                 you to make your own custom block list, block keywords, or use a pre-made category list to block categories of
                 sites that distract and demoralize you.
             </p>
+        </div>
+        <div class="carousel">
+            <a class="carousel-item" href="#one!"><img src="./screenshot1.png" alt="Screenshot 1"></a>
+            <a class="carousel-item" href="#two!"><img src="./screenshot2.png" alt="Screenshot 2"></a>
+            <a class="carousel-item" href="#three!"><img src="./screenshot3.png" alt="Screenshot 3"></a>
         </div>
         <div class="about-text">
             <h5>Author</h5>
