@@ -35,7 +35,9 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 							</Nav>
 						</div>
 						<div className="about-link">
-							<Nav.Link as={Link} to="/about">About</Nav.Link>
+							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
+								About
+							</a>
 						</div>
 					</Col>
 					<Col xs={9} md={10} style={{ boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)" }}>
@@ -45,7 +47,6 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 								<Route path="/blocked-keywords" element={<BlockedKeywords />} />
 								<Route path="/blocked-categories" element={<BlockedCategories />} />
 								<Route path="/weird-stuff" element={<WeirdStuff />} />
-								<Route path="/about" element={<WeirdStuff />} /> {/* Make sure to create an About component */}
 							</Routes>
 						</Container>
 					</Col>
