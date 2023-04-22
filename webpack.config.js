@@ -32,6 +32,10 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.json$/,
+        use: 'json-loader',
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {

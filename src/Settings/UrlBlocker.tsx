@@ -86,7 +86,7 @@ const UrlBlocker: React.FC = () => {
 
 
 	return (
-		<Container fluid>
+		<Container style={{paddingLeft: 0}}>
 			{canBlockCurrentSite &&
         <Button
           className={"text-white w-100 my-2"}

@@ -3,7 +3,8 @@ import UrlBlocker from '../Settings/UrlBlocker';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../../styles/custom-theme.scss'
+import '../../styles/CustomTheme.scss'
+import CategoryBlocker from "../Settings/CategoryBlocker";
 
 const PopupApp: React.FC = () => {
 	const openSettingsPage = () => {
@@ -39,6 +40,8 @@ const PopupApp: React.FC = () => {
 				</Col>
 			</Row>
 			<UrlBlocker />
+			<div style={{marginBottom: 20}}></div>
+			<CategoryBlocker />
 		</Container>
 	);
 };

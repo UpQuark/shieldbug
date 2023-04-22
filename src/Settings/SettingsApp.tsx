@@ -1,11 +1,9 @@
 import * as React from 'react';
-import TopNavigator from "./TopNavigator";
+import LeftNavigator from "./LeftNavigator";
 
 const SettingsApp: React.FC = () => {
 	return (
-		<div>
-			<TopNavigator />
-		</div>
+		<LeftNavigator/>
 	);
 };
 

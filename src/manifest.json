@@ -1,16 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Shieldbug",
-  "version": "1.0.3",
-  "description": "Block stressors, doomscrolling and distractions.",
+  "name": "ShieldBug",
+  "version": "1.0.4",
+  "description": "Block distractions, doomscrolling and stress online",
   "icons": {
-    "48": "assets/icon.png"
+    "48": "assets/icon.png",
+    "128": "assets/icon-128.png"
   },
   "permissions": [
     "webNavigation",
     "storage",
     "scripting",
     "tabs"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["/assets/blockLists/*.json"],
+      "matches": ["<all_urls>"]
+    }
   ],
   "action": {
     "default_popup": "popup.html",

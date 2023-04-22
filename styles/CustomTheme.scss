@@ -1,0 +1,13 @@
+@import 'ThemeColors';
+
+// Import Bootstrap and its default variables
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/src/assets/fonts/Quicksand/Quicksand-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import 'HeaderTheme';

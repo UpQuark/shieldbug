@@ -1,0 +1,37 @@
+{
+  "name": "social_media",
+  "urls": [
+    "facebook.com",
+    "twitter.com",
+    "instagram.com",
+    "linkedin.com",
+    "pinterest.com",
+    "snapchat.com",
+    "tiktok.com",
+    "youtube.com",
+    "reddit.com",
+    "tumblr.com",
+    "flickr.com",
+    "medium.com",
+    "quora.com",
+    "vimeo.com",
+    "dailymotion.com",
+    "vk.com",
+    "weibo.com",
+    "qq.com",
+    "telegram.org",
+    "discord.com"
+  ],
+  "keywords": [
+    "social",
+    "media",
+    "network",
+    "community",
+    "forum",
+    "chat",
+    "share",
+    "post",
+    "message",
+    "connect"
+  ]
+}

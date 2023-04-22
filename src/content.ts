@@ -1,24 +1,22 @@
+import {isUrlBlocked} from "./UrlBlocker";
+
 function openBlockPage() {
-  chrome.runtime.sendMessage({ action: "openBlockPage" });
+  void chrome.runtime.sendMessage({ action: "openBlockPage" });
 }
 
-function isUrlBlocked(url: string, blockedUrls: string[]): boolean {
-  if (!url.startsWith("http://") && !url.startsWith("https://"))  url = "https://" + url;
-  const hostname = new URL(url).hostname;
-  const mainDomain = hostname.split('.').slice(-2).join('.');
-  return blockedUrls.includes(mainDomain);
-}
-
-chrome.storage.local.get("blockedUrls", (data: { blockedUrls?: string[] }) => {
+chrome.storage.local.get(
+  ["blockedUrls", "blockedKeywords", "blockedCategories"],
+  async (data: {
+    blockedUrls?: string[],
+    blockedKeywords?: string[],
+    blockedCategories?: string[]
+  }) => {
   const currentUrl: string = window.location.href;
   const blockedUrls: string[] = data.blockedUrls || [];
+  const blockedKeywords: string[] = data.blockedKeywords || [];
+  const blockedCategories: string[] = data.blockedCategories || [];
 
-
-  if (isUrlBlocked(currentUrl, blockedUrls)) {
+  if (await isUrlBlocked(currentUrl, blockedUrls, blockedKeywords, blockedCategories)) {
     openBlockPage();
   }
-});
-
-chrome.storage.local.get("blockedCategories", (data: { blockedCategories?: string[] }) => {
-
 });

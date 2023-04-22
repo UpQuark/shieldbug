@@ -5,9 +5,8 @@
   "main": "src/background.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack; node-sass styles/* -o dist",
-    "start": "webpack serve",
-    "build:css": "node-sass styles/* -o dist"
+    "build": "webpack",
+    "start": "webpack serve"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +18,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.1",
+    "json-loader": "^0.5.7",
     "node-sass": "^8.0.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
@@ -35,6 +35,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
     "react-router-dom": "^6.10.0"
   }
 }
