@@ -129,13 +129,12 @@ hr {
 }
 
 .carousel {
-    /*height: 400px;*/
+    height: 400px;
     margin-top: 0;
     margin-bottom: 0;
 }
 
 .carousel .carousel-item {
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -144,4 +143,21 @@ hr {
 .carousel .carousel-item img {
     max-height: 100%;
     max-width: 100%;
+}
+
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    flex-direction: row;
+}
+
+.image {
+    flex: 1;
+    justify-self: flex-start;
+    max-height: 150px;
+    object-fit: scale-down;
+    margin-right: 12px;
+    margin-bottom: 24px;
 }
