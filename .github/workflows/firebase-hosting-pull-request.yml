@@ -2,7 +2,14 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on PR
-'on': pull_request
+'on':
+  push:
+    branches:
+      - feature/marketing-site
+  pull_request:
+    types: [ opened, synchronize, reopened, closed ]
+    branches:
+      - feature/marketing-site
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
