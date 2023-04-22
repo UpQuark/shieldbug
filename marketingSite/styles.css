@@ -1,0 +1,129 @@
+body {
+    background-color: #ff9800;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    line-height: 26px;
+}
+
+h1 {
+    color: #fff3e0;
+    font-size: 24px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+a {
+    color: #000000;
+}
+
+hr {
+    border-top: 1px solid #fff;
+    border-left: 0;
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 30px;
+    filter: url(#drop-shadow);
+}
+
+.btn {
+    font-size: 22px;
+    background-color: #fff3e0;
+    color: #ff9800;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    padding: 12px 24px;
+    text-transform: none;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 200px;
+}
+
+.btn:hover {
+    background-color: #ffcfb4;
+    border: 2px solid #ffbe9a;
+    color: #fff;
+}
+
+.learn-more-btn {
+    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: none;
+    background-color: transparent;
+    color: #fff3e0;
+    border: 2px solid #fff3e0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: color 0.3s;
+    height: 50px;
+    width: 200px;
+}
+
+.learn-more-btn:hover {
+    color: #fff;
+    background-color: #ffcfb4;
+    border: 2px solid #ffbe9a;
+
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 2s 1s forwards;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+}
+
+@keyframes fadeIn {
+    100% {
+        opacity: 1;
+    }
+}
+
+.column {
+    flex: 1;
+    padding: 0 20px;
+    max-width: 50%;
+}
+
+.about-text {
+    font-size: 16px;
+    margin-top: 32px;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.faq-question {
+    font-weight: 900;
+    font-size: 23px;
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 10px;
+    margin-top: 32px;
+}
+
+.faq-answer {
+    margin-left: 15px;
+}

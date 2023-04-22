@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldBug Chrome Extension</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./styles.css">
+    <script>
+      function scrollToContent() {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Shield yourself from distractions online</h1>
+    <img src="./icon-template.png" alt="ShieldBug Logo" class="logo">
+    <a href="https://chrome.google.com/webstore/detail/shieldbug/aeiafdcfiklkbmdfcaobjapljoielcfn" class="btn">
+        Try ShieldBug
+    </a>
+    <button class="learn-more-btn" onclick="scrollToContent()">Learn more</button>
+</div>
+<div class="content" id="content">
+    <div class="column">
+        <h3>Frequently Asked</h3>
+        <div class="faq-item">
+            <div class="faq-question">Q: What does ShieldBug do?</div>
+            <div class="faq-answer">
+                A: ShieldBug lets you block websites that leave you distracted, stressed or doomscrolling. It lets you
+                be present, lower stress, and focus on what you actually want to focus on.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Q: How do I install ShieldBug?</div>
+            <div class="faq-answer">A: Click the "Try ShieldBug" button above and install the extension from the Chrome
+                Web Store. You need to be using the Google Chrome browser to use ShieldBug.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Q: Is ShieldBug free?</div>
+            <div class="faq-answer">A: Yes, ShieldBug is a free-to-use Chrome extension, and contains no advertising
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Q: Is there a mobile app?</div>
+            <div class="faq-answer">A: Right now there is no mobile app. It is at the top of the roadmap and coming
+                soon.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Q: Why does ShieldBug need "Read and change your data on all websites"
+                permissions?
+            </div>
+            <div class="faq-answer">
+                A: Since ShieldBug needs to be able to block <em>any</em> website, it cannot restrict its access to a
+                pre-determined list of websites. Other than blocking sites, ShieldBug does not read or manipulate your
+                data in any way.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Q: Does ShieldBug use my data or track my activity?</div>
+            <div class="faq-answer">
+                A: ShieldBug does not monitor your data or track your browsing behavior in any way. Your distraction
+                blocking settings are stored only on your own device and are not shared with the authors of this
+                extension
+                or any third parties.
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="about-text">
+            <h3>About</h3>
+            <p>
+                ShieldBug is a free extension for Google Chrome that can help you block distracting websites. It allows
+                you to make your own custom block list, block keywords, or use a pre-made category list to block categories of
+                sites that distract and demoralize you.
+            </p>
+        </div>
+        <div class="about-text">
+            <h5>Author</h5>
+            <p>
+                ShieldBug is authored by me,
+                <a target="_blank" href="https://www.linkedin.com/in/sam-ennis-a054aa32"/>Sam Ennis</a>,
+                a software engineer from Cambridge (the U.S. one). It helps me nix compulsive news checking,
+                doomscrolling,
+                clickbait, and other distractions that leave your average internet user lost and demoralized. I hope it
+                helps you.
+            </p>
+            <p>
+                ShieldBug is a hobby project and will continue to receive updates over time.
+            </p>
+        </div>
+
+    </div>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position:absolute">
+    <filter id="drop-shadow">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+</svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
