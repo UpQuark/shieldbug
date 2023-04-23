@@ -24,7 +24,7 @@ const UrlBlocker: React.FC = () => {
 
 	const getFaviconUrl = (url: string) => {
 		try {
-			const { protocol, hostname } = new URL(`https://${url}`);
+			const {protocol, hostname} = new URL(`https://${url}`);
 			return `${protocol}//${hostname}/favicon.ico`;
 		} catch (error) {
 			console.error('Error getting favicon URL:', error);
@@ -33,14 +33,14 @@ const UrlBlocker: React.FC = () => {
 	};
 
 	const updateBlockedUrlsList = (updatedBlockedUrls: string[]) => {
-		setBlockedUrls(updatedBlockedUrls);
+		chrome.storage.local.set({blockedUrls: updatedBlockedUrls}, () => {
+			setBlockedUrls(updatedBlockedUrls);
+		});
 	};
 
 	const deleteUrl = (urlToDelete: string) => {
 		const updatedBlockedUrls = blockedUrls.filter((url) => url !== urlToDelete);
-		chrome.storage.local.set({blockedUrls: updatedBlockedUrls}, () => {
-			updateBlockedUrlsList(updatedBlockedUrls);
-		});
+		updateBlockedUrlsList(updatedBlockedUrls);
 	};
 
 	const handleSubmit = (event: React.FormEvent) => {
@@ -52,9 +52,7 @@ const UrlBlocker: React.FC = () => {
 		const newBlockedUrls = [...blockedUrls, mainDomain];
 
 		if (!blockedUrls.includes(mainDomain)) {
-			chrome.storage.local.set({blockedUrls: newBlockedUrls}, () => {
-				updateBlockedUrlsList(newBlockedUrls);
-			});
+			updateBlockedUrlsList(newBlockedUrls);
 		}
 		setUrlInput('');
 	};
@@ -65,10 +63,8 @@ const UrlBlocker: React.FC = () => {
 		const newBlockedUrls = [...blockedUrls, mainDomain];
 
 		if (!blockedUrls.includes(mainDomain)) {
-			chrome.storage.local.set({blockedUrls: newBlockedUrls}, () => {
-				updateBlockedUrlsList(newBlockedUrls);
-				void chrome.runtime.sendMessage({ action: "openBlockPage" });
-			});
+			updateBlockedUrlsList(newBlockedUrls);
+			void chrome.runtime.sendMessage({action: "openBlockPage"});
 		}
 	}
 
@@ -130,3 +126,4 @@ const UrlBlocker: React.FC = () => {
 };
 
 export default UrlBlocker;
+

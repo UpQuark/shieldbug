@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Form } from 'react-bootstrap';
-import {BiNews, BiNetworkChart, BiShoppingBag} from "react-icons/all";
+import {BiNews, BiNetworkChart, BiShoppingBag, BiVideo} from "react-icons/all";
 
 const categories = [
 	{ label: 'News', value: 'news', icon: <BiNews/>},
 	{ label: 'Social Media', value: 'social_media', icon: <BiNetworkChart/>},
 	{ label: 'Shopping', value: 'shopping', icon: <BiShoppingBag/>},
+	{ label: 'Video Streaming', value: 'streaming', icon: <BiVideo/>},
 	// Add more categories here
 ];
 
@@ -39,7 +40,10 @@ const CategoryBlocker: React.FC = () => {
 					key={category.value}
 					type="switch"
 					id={`category-${category.value}`}
-					label={<span style={{fontWeight: "600"}} className={"text-secondary"}>{category.icon} {category.label}</span>}
+					label={<>
+						<span style={{fontWeight: "500"}} className={"text-primary"}>{category.icon} </span>
+						<span style={{fontWeight: "500"}} className={"text-secondary"}>{category.label}</span>
+					</>}
 					checked={blockedCategories.includes(category.value)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						handleCategoryToggle(category.value, e.target.checked)
