@@ -1,14 +1,6 @@
 import * as React from "react";
 import { Form } from 'react-bootstrap';
-import {BiNews, BiNetworkChart, BiShoppingBag, BiVideo} from "react-icons/all";
-
-const categories = [
-	{ label: 'News', value: 'news', icon: <BiNews/>},
-	{ label: 'Social Media', value: 'social_media', icon: <BiNetworkChart/>},
-	{ label: 'Shopping', value: 'shopping', icon: <BiShoppingBag/>},
-	{ label: 'Video Streaming', value: 'streaming', icon: <BiVideo/>},
-	// Add more categories here
-];
+import {CategoryTypes} from "./CategoryTypes";
 
 const CategoryBlocker: React.FC = () => {
 	const [blockedCategories, setBlockedCategories] = React.useState<string[]>([]);
@@ -35,7 +27,7 @@ const CategoryBlocker: React.FC = () => {
 
 	return (
 		<Form>
-			{categories.map((category) => (
+			{CategoryTypes.map((category) => (
 				<Form.Check
 					key={category.value}
 					type="switch"

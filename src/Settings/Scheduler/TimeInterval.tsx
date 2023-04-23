@@ -1,12 +1,37 @@
 import * as React from "react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import Select from "react-select";
 
 const TimeInterval = () => {
+	const [blockOptions, setBlockOptions] = useState([]);
 	const [timeIntervals, setTimeIntervals] = useState([
 		{ start: "", end: "", selectedDays: Array(7).fill(false) },
 	]);
+
+	useEffect(() => {
+		fetchBlockOptions();
+	}, []);
+
+
+	const fetchBlockOptions = () => {
+		chrome.storage.local.get(["blockedCategories", "blockLists"], (data) => {
+			const options = [];
+
+			CategoryTypes.forEach((category) => {
+				options.push({name: category.name, value: category.name});
+			});
+
+			if (data.blockLists) {
+				data.blockLists.forEach((list) => {
+					options.push({name: list.name, value: list.name});
+				});
+			}
+
+			setBlockOptions(options);
+		});
+	};
+
 
 	const addTimeInterval = () => {
 		setTimeIntervals([
