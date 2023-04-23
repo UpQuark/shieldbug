@@ -1,10 +1,10 @@
 import * as React from 'react';
-import UrlBlocker from '../Settings/UrlBlocker/UrlBlocker';
+import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../../styles/CustomTheme.scss'
-import CategoryBlocker from "../Settings/CategoryBlocker";
+import CategoryBlocker from "../Settings/BlockedCategories/CategoryBlocker";
 
 const PopupApp: React.FC = () => {
 	const openSettingsPage = () => {

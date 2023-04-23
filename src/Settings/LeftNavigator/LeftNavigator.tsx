@@ -4,14 +4,14 @@ import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import WeirdStuff from './WeirdStuff';
-import BlockedSites from "./BlockedSites";
-import BlockedKeywords from "./BlockedKeywords";
-import BlockedCategories from "./BlockedCategories";
+import WeirdStuff from '../WeirdStuff';
+import BlockedSites from "../BlockedSites/BlockedSites";
+import BlockedKeywords from "../BlockedKeywords";
+import BlockedCategories from "../BlockedCategories/BlockedCategories";
 
 import './LeftNavigator.scss';
-import FeatureFlags from "../FeatureFlags";
-import Scheduler from "./Scheduler";
+import FeatureFlags from "../../FeatureFlags";
+import Scheduler from "../Scheduler/Scheduler";
 
 interface LeftNavigatorProps {
 	initialRoute?: string;
@@ -24,7 +24,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 				<Row>
 					<Col xs={3} md={2} className="left-sidebar">
 						<Link to="/" className="navbar-brand">
-							<img style={{ height: 40 }} src="../assets/icon-128.png" />
+							<img style={{ height: 40 }} src="../../assets/icon-128.png" />
 							<span className="brand-name text-primary">ShieldBug</span>
 						</Link>
 						<div className="nav-links">
