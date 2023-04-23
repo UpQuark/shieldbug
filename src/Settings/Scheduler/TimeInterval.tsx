@@ -1,17 +1,42 @@
 import * as React from "react";
-import { useState } from "react";
-import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
+import {useEffect, useState} from "react";
+import {Button, ButtonGroup, Col, Container, Row} from "react-bootstrap";
 import Select from "react-select";
+import {CategoryTypes} from "../BlockedCategories/CategoryTypes";
 
 const TimeInterval = () => {
+	const [blockOptions, setBlockOptions] = useState([]);
 	const [timeIntervals, setTimeIntervals] = useState([
-		{ start: "", end: "", selectedDays: Array(7).fill(false) },
+		{start: "", end: "", selectedDays: Array(7).fill(false)},
 	]);
+
+	useEffect(() => {
+		fetchBlockOptions();
+	}, []);
+
+
+	const fetchBlockOptions = () => {
+		chrome.storage.local.get(["blockedCategories", "blockLists"], (data) => {
+			const options = [];
+
+				CategoryTypes.forEach((category) => {
+					options.push({name: category.name, value: category.name});
+				});
+
+			if (data.blockLists) {
+				data.blockLists.forEach((list) => {
+					options.push({name: list.name, value: list.name});
+				});
+			}
+
+			setBlockOptions(options);
+		});
+	};
 
 	const addTimeInterval = () => {
 		setTimeIntervals([
 			...timeIntervals,
-			{ start: "", end: "", selectedDays: Array(7).fill(false) },
+			{start: "", end: "", selectedDays: Array(7).fill(false)},
 		]);
 	};
 
@@ -49,7 +74,7 @@ const TimeInterval = () => {
 				const hour12 = i % 12 === 0 ? 12 : i % 12;
 				const hour12Padded = hour12 < 10 ? `0${hour12}` : hour12;
 				const formattedTime = `${hour12Padded}:${minute} ${ampm}`;
-				options.push({ value: `${hour24}:${minute}`, label: formattedTime });
+				options.push({value: `${hour24}:${minute}`, name: formattedTime});
 			}
 		}
 		return options;
@@ -60,9 +85,11 @@ const TimeInterval = () => {
 	return (
 		<>
 			{timeIntervals.map((interval, index) => (
-				<Container key={index} className="mb-4">
+				<div key={index}>
 					<Row className="mb-2">
-						<h5>From</h5>
+						<Col xs="auto">
+							<span style={{lineHeight: 2.4}}>From</span>
+						</Col>
 						<Col>
 							<Select
 								options={timeOptions}
@@ -73,12 +100,12 @@ const TimeInterval = () => {
 								menuPlacement="auto"
 								menuPortalTarget={document.body}
 								styles={{
-									menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+									menuPortal: (base) => ({...base, zIndex: 9999}),
 								}}
 							/>
 						</Col>
 						<Col xs="auto">
-							<h5>to</h5>
+							<span style={{lineHeight: 2.4}}> to </span>
 						</Col>
 						<Col>
 							<Select
@@ -90,11 +117,13 @@ const TimeInterval = () => {
 								menuPlacement="auto"
 								menuPortalTarget={document.body}
 								styles={{
-									menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+									menuPortal: (base) => ({...base, zIndex: 9999}),
 								}}
 							/>
 						</Col>
-
+						<Col xs="auto">
+							<span style={{lineHeight: 2.4}}> every </span>
+						</Col>
 						<Col>
 							<ButtonGroup>
 								{days.map((day, dayIndex) => (
@@ -114,15 +143,29 @@ const TimeInterval = () => {
 					</Row>
 					<Row>
 						<Col>
+							<span style={{lineHeight: 2.4}}> block the following list </span>
+						</Col>
+						<Col>
+							<Select
+								options={blockOptions}
+								// Add your custom onChange handler if needed
+								menuPlacement="auto"
+								menuPortalTarget={document.body}
+								styles={{
+									menuPortal: (base) => ({...base, zIndex: 9999}),
+								}}
+							/>
+						</Col>
+						<Col>
 							<Button
-								className="text-white"
+								className="text-white px-4"
 								onClick={() => saveInterval(index)}
 							>
-								Save Interval
+								Save
 							</Button>
 						</Col>
 					</Row>
-				</Container>
+				</div>
 			))}
 			<Row className="mb-3">
 				<Col>

@@ -16,14 +16,6 @@ import {BiPencil, BiTrash} from 'react-icons/all';
 import Favicon from "./Favicon";
 import FeatureFlags from "../../FeatureFlags";
 
-
-interface BlockList {
-	id: string;
-	name: string;
-	urls: string[];
-	active: boolean;
-}
-
 const UrlBlocker: React.FC = () => {
 	const [blockLists, setBlockLists] = useState<BlockList[]>([
 		{ id: 'main', name: 'Main', urls: [], active: true },
