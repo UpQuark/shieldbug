@@ -1,4 +1,4 @@
-import {isUrlBlocked} from "./UrlBlocker";
+import {isUrlBlocked} from "./Helpers/UrlBlockChecker";
 
 function openBlockPage() {
   void chrome.runtime.sendMessage({ action: "openBlockPage" });

@@ -12,7 +12,7 @@ import {
 	FormCheck, OverlayTrigger, Tooltip,
 } from 'react-bootstrap';
 import {useEffect, useState} from "react";
-import { BiPencil } from 'react-icons/all';
+import {BiPencil, BiTrash} from 'react-icons/all';
 
 
 interface BlockList {
@@ -30,6 +30,7 @@ const UrlBlocker: React.FC = () => {
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
 	const [editingListName, setEditingListName] = useState<number | null>(null);
+	const [listToDelete, setListToDelete] = useState<string | null>(null);
 
 	useEffect(() => {
 		chrome.storage.local.get('blockLists', (data: { blockLists?: any[] }) => {
@@ -51,6 +52,16 @@ const UrlBlocker: React.FC = () => {
 		chrome.storage.local.set({ blockLists: updatedBlockLists }, () => {
 			setBlockLists(updatedBlockLists);
 		});
+	};
+
+	const deleteList = (listId: string, confirm: boolean) => {
+		if (confirm) {
+			const updatedBlockLists = blockLists.filter(list => list.id !== listId);
+			updateBlockLists(updatedBlockLists);
+			setListToDelete(null);
+		} else {
+			setListToDelete(listId);
+		}
 	};
 
 	const deleteUrl = (listId: string, urlToDelete: string) => {
@@ -144,6 +155,7 @@ const UrlBlocker: React.FC = () => {
 								</div>
 							)}
 						</Col>
+
 						<Col xs="auto">
 							<OverlayTrigger
 								key="main-tooltip"
@@ -165,6 +177,7 @@ const UrlBlocker: React.FC = () => {
 							</OverlayTrigger>
 						</Col>
 					</Row>
+
 					<Form onSubmit={(event) => handleSubmit(event, list.id)} className="mb-3">
 						<InputGroup>
 							<Form.Control
@@ -176,6 +189,32 @@ const UrlBlocker: React.FC = () => {
 							<Button type="submit" variant="primary" className={'text-white'}>
 								Block website
 							</Button>
+							{/* Delete button*/}
+							<Col xs="auto">
+								{list.id !== 'main' && (
+									<>
+										{listToDelete === list.id ? (
+											<Button
+												variant="danger"
+												size="sm"
+												className="ms-2"
+												onClick={() => deleteList(list.id, true)}
+											>
+												Confirm
+											</Button>
+										) : (
+											<Button
+												variant="outline-danger"
+												size="sm"
+												className="ms-2"
+												onClick={() => deleteList(list.id, false)}
+											>
+												<BiTrash />
+											</Button>
+										)}
+									</>
+								)}
+							</Col>
 						</InputGroup>
 					</Form>
 					<ListGroup>
