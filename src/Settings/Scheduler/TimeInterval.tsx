@@ -2,6 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import Select from "react-select";
+import {CategoryTypes} from "../BlockedCategories/CategoryTypes";
 
 const TimeInterval = () => {
 	const [blockOptions, setBlockOptions] = useState([]);
@@ -19,12 +20,12 @@ const TimeInterval = () => {
 			const options = [];
 
 			CategoryTypes.forEach((category) => {
-				options.push({name: category.name, value: category.name});
+				options.push({label: category.label, value: category.value});
 			});
 
 			if (data.blockLists) {
 				data.blockLists.forEach((list) => {
-					options.push({name: list.name, value: list.name});
+					options.push({label: list.name, value: list.name});
 				});
 			}
 
@@ -138,6 +139,18 @@ const TimeInterval = () => {
 						</Col>
 					</Row>
 					<Row>
+						<Col>
+							<Select
+								options={blockOptions}
+								// Add your custom onChange handler if needed
+								menuPlacement="auto"
+								menuPortalTarget={document.body}
+								styles={{
+									menuPortal: (base) => ({...base, zIndex: 9999}),
+								}}
+							/>
+						</Col>
+
 						<Col>
 							<Button
 								className="text-white"
