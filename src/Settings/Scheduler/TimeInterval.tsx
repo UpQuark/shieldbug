@@ -4,8 +4,13 @@ import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import Select from "react-select";
 import {CategoryTypes} from "../BlockedCategories/CategoryTypes";
 
+interface SelectOptions {
+	label: string;
+	value: string;
+}
+
 const TimeInterval = () => {
-	const [blockOptions, setBlockOptions] = useState([]);
+	const [blockOptions, setBlockOptions] = useState<SelectOptions>([]);
 	const [timeIntervals, setTimeIntervals] = useState([
 		{ start: "", end: "", selectedDays: Array(7).fill(false) },
 	]);
@@ -14,10 +19,9 @@ const TimeInterval = () => {
 		fetchBlockOptions();
 	}, []);
 
-
 	const fetchBlockOptions = () => {
 		chrome.storage.local.get(["blockedCategories", "blockLists"], (data) => {
-			const options = [];
+			const options: SelectOptions[] = [];
 
 			CategoryTypes.forEach((category) => {
 				options.push({label: category.label, value: category.value});
