@@ -11,6 +11,7 @@ import BlockedCategories from "./BlockedCategories";
 
 import './LeftNavigator.scss';
 import FeatureFlags from "../FeatureFlags";
+import Scheduler from "./Scheduler";
 
 interface LeftNavigatorProps {
 	initialRoute?: string;
@@ -47,7 +48,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 								<Route path="*" element={<BlockedSites />} />
 								<Route path="/blocked-keywords" element={<BlockedKeywords />} />
 								<Route path="/blocked-categories" element={<BlockedCategories />} />
-								<Route path="/schedule" element={<div>Schedule</div>} />
+								<Route path="/schedule" element={<Scheduler/>}/>
 								<Route path="/weird-stuff" element={<WeirdStuff />} />
 							</Routes>
 						</Container>

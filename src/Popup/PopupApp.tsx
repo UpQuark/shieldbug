@@ -1,5 +1,5 @@
 import * as React from 'react';
-import UrlBlocker from '../Settings/UrlBlocker';
+import UrlBlocker from '../Settings/UrlBlocker/UrlBlocker';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';

@@ -13,6 +13,8 @@ import {
 } from 'react-bootstrap';
 import {useEffect, useState} from "react";
 import {BiPencil, BiTrash} from 'react-icons/all';
+import Favicon from "./Favicon";
+import FeatureFlags from "../../FeatureFlags";
 
 
 interface BlockList {
@@ -37,16 +39,6 @@ const UrlBlocker: React.FC = () => {
 			setBlockLists(data.blockLists || [{ id: 'main', name: 'Main', urls: [], active: true }]);
 		});
 	}, []);
-
-	const getFaviconUrl = (url: string) => {
-		try {
-			const { protocol, hostname } = new URL(`https://${url}`);
-			return `${protocol}//${hostname}/favicon.ico`;
-		} catch (error) {
-			console.error('Error getting favicon URL:', error);
-			return '';
-		}
-	};
 
 	const updateBlockLists = (updatedBlockLists: any[]) => {
 		chrome.storage.local.set({ blockLists: updatedBlockLists }, () => {
@@ -130,52 +122,58 @@ const UrlBlocker: React.FC = () => {
 			{blockLists.map((list, index) => (
 				<div key={list.id} className="mb-5">
 					<Row className="mb-2">
-						<Col>
-							{editingListName === index ? (
-								<InputGroup>
-									<FormControl
-										type="text"
-										value={list.name}
-										onChange={(e) => {
-											const updatedBlockLists = [...blockLists];
-											updatedBlockLists[index].name = e.target.value;
-											setBlockLists(updatedBlockLists);
-										}}
-										onBlur={() => setEditingListName(null)}
-										autoFocus
-									/>
-								</InputGroup>
-							) : (
-								<div
-									style={{ cursor: 'pointer' }}
-									onClick={() => setEditingListName(index)}
-								>
-									<BiPencil className="me-2 text-primary" />
-									{list.name}
-								</div>
-							)}
-						</Col>
 
-						<Col xs="auto">
-							<OverlayTrigger
-								key="main-tooltip"
-								placement="top"
-								overlay={
-									<Tooltip id={`tooltip-main`}>
-										Some example text
-									</Tooltip>
-								}
-							>
-								<FormCheck
-									type="radio"
-									name="mainList"
-									checked={list.active}
-									value={list.id}
-									onChange={handleRadioChange}
-									label="Main"
-								/>
-							</OverlayTrigger>
-						</Col>
+						{FeatureFlags.BLockSites_MultipleLists && (
+							<Col>
+								{editingListName === index ? (
+									<InputGroup>
+										<FormControl
+											type="text"
+											value={list.name}
+											onChange={(e) => {
+												const updatedBlockLists = [...blockLists];
+												updatedBlockLists[index].name = e.target.value;
+												setBlockLists(updatedBlockLists);
+											}}
+											onBlur={() => setEditingListName(null)}
+											autoFocus
+										/>
+									</InputGroup>
+								) : (
+									<div
+										style={{ cursor: 'pointer' }}
+										onClick={() => setEditingListName(index)}
+									>
+										<BiPencil className="me-2 text-primary" />
+										{list.name}
+									</div>
+								)}
+							</Col>
+						)}
+
+						{FeatureFlags.BLockSites_MultipleLists && (
+							<Col xs="auto">
+								<OverlayTrigger
+									key="main-tooltip"
+									placement="top"
+									overlay={
+										<Tooltip id={`tooltip-main`}>
+											Some example text
+										</Tooltip>
+									}
+								>
+									<FormCheck
+										type="radio"
+										name="mainList"
+										checked={list.active}
+										value={list.id}
+										onChange={handleRadioChange}
+										label="Main"
+									/>
+								</OverlayTrigger>
+							</Col>
+						)}
+
 					</Row>
 
 					<Form onSubmit={(event) => handleSubmit(event, list.id)} className="mb-3">
@@ -217,16 +215,12 @@ const UrlBlocker: React.FC = () => {
 							</Col>
 						</InputGroup>
 					</Form>
+
+					{/* URL List */}
 					<ListGroup>
 						{list.urls.map((url) => (
 							<ListGroup.Item key={url} className="d-flex justify-content-between align-items-center">
-								<img
-									src={getFaviconUrl(url)}
-									alt={`Favicon for ${url}`}
-									width="16"
-									height="16"
-									className="me-2"
-								/>
+								<Favicon url={url}/>
 								{url}
 								<Button onClick={() => deleteUrl(list.id, url)} variant="outline-danger" size="sm">
 									Delete
@@ -236,9 +230,12 @@ const UrlBlocker: React.FC = () => {
 					</ListGroup>
 				</div>
 			))}
-			<Button className="w-100 my-2 text-white" onClick={addNewBlockList}>
-				Add New Block List
-			</Button>
+			{FeatureFlags.BLockSites_MultipleLists && (
+				<Button className="w-100 my-2 text-white" onClick={addNewBlockList}>
+					Add New Block List
+				</Button>
+			)}
+
 		</Container>
 	);
 };

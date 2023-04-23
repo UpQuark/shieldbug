@@ -48,7 +48,7 @@ const KeywordBlocker: React.FC = () => {
 						placeholder="Enter keyword to block"
 					/>
 					<Button type="submit" variant="primary" className={"text-white"}>
-						Add Keyword
+						Block keyword
 					</Button>
 				</InputGroup>
 			</Form>
