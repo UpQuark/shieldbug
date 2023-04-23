@@ -31,6 +31,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 								<Nav.Link as={Link} to="/">Block sites</Nav.Link>
 								{FeatureFlags.BlockKeywords && <Nav.Link as={Link} to="/blocked-keywords">Block keywords</Nav.Link>}
 								{FeatureFlags.BlockCategories && <Nav.Link as={Link} to="/blocked-categories">Block categories</Nav.Link>}
+								{FeatureFlags.Schedule && <Nav.Link as={Link} to="/schedule">Schedule</Nav.Link>}
 								{FeatureFlags.WeirdStuff && <Nav.Link as={Link} to="/weird-stuff">Weird stuff</Nav.Link>}
 							</Nav>
 						</div>
@@ -46,6 +47,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 								<Route path="*" element={<BlockedSites />} />
 								<Route path="/blocked-keywords" element={<BlockedKeywords />} />
 								<Route path="/blocked-categories" element={<BlockedCategories />} />
+								<Route path="/schedule" element={<div>Schedule</div>} />
 								<Route path="/weird-stuff" element={<WeirdStuff />} />
 							</Routes>
 						</Container>

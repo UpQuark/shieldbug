@@ -12,7 +12,7 @@
     padding-top: 12px;
     color: $secondary;
     font-family: 'Quicksand', sans-serif;
-    font-size: 18px;
+    //font-size: 3rem;
     font-weight: 700;
     margin-left: 10px;
     margin-right: 10px;
@@ -59,6 +59,7 @@
 
 .nav-links {
   flex-grow: 1;
+  font-size: 18px !important;
 }
 
 .about-link {
