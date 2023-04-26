@@ -12,6 +12,7 @@ import BlockedCategories from "../BlockedCategories/BlockedCategories";
 import './LeftNavigator.scss';
 import FeatureFlags from "../../FeatureFlags";
 import Scheduler from "../Scheduler/Scheduler";
+import {IoMdClock, MdBlock, MdCalendarViewWeek, MdLightbulb, MdSearch} from "react-icons/all";
 
 interface LeftNavigatorProps {
 	initialRoute?: string;
@@ -29,11 +30,11 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 						</Link>
 						<div className="nav-links">
 							<Nav className="flex-column">
-								<Nav.Link as={Link} to="/">Block sites</Nav.Link>
-								{FeatureFlags.BlockKeywords && <Nav.Link as={Link} to="/blocked-keywords">Block keywords</Nav.Link>}
-								{FeatureFlags.BlockCategories && <Nav.Link as={Link} to="/blocked-categories">Block categories</Nav.Link>}
-								{FeatureFlags.Schedule && <Nav.Link as={Link} to="/schedule">Schedule</Nav.Link>}
-								{FeatureFlags.WeirdStuff && <Nav.Link as={Link} to="/weird-stuff">Weird stuff</Nav.Link>}
+								<Nav.Link as={Link} to="/"><MdBlock/>  Block sites</Nav.Link>
+								{FeatureFlags.BlockKeywords && <Nav.Link as={Link} to="/blocked-keywords"><MdSearch className={"mr-1"}/>Block keywords</Nav.Link>}
+								{FeatureFlags.BlockCategories && <Nav.Link as={Link} to="/blocked-categories"><MdCalendarViewWeek className={"mr-1"}/> Block categories</Nav.Link>}
+								{FeatureFlags.Schedule && <Nav.Link as={Link} to="/schedule"><IoMdClock className={"mr-1"}/> Schedule</Nav.Link>}
+								{FeatureFlags.WeirdStuff && <Nav.Link as={Link} to="/weird-stuff"><MdLightbulb className={"mr-1"}/> Weird stuff</Nav.Link>}
 							</Nav>
 						</div>
 						<div className="about-link">

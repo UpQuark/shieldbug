@@ -2,6 +2,7 @@ import * as React from 'react';
 import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
 import CategoryBlocker from '../Settings/BlockedCategories/CategoryBlocker';
 import {
+	colors,
 	Container,
 	Grid,
 	IconButton, ThemeProvider,
@@ -36,24 +37,29 @@ const PopupApp = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Container maxWidth={false} sx={{ width: 400}}>
-				<Toolbar className={classes.toolbar}>
+			<Container maxWidth={false} sx={{ width: 400, padding: 0}}>
+				<Toolbar className={classes.toolbar} style={{backgroundColor: "orange"}}>
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
-						className={classes.icon}
+						className={`${classes.icon}`}
+						style={{
+							filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))",
+							marginRight: 8
+					}}
 					/>
-					<Typography variant="h5" className={classes.title}>
+					<Typography variant="h5" className={classes.title} style={{color: "white"}}>
 						ShieldBug
 					</Typography>
 					<IconButton
 						onClick={openSettingsPage}
 						color="inherit"
+						style={{color: "white"}}
 					>
 						<MdSettings/>
 					</IconButton>
 				</Toolbar>
-				<Grid container spacing={1}>
+				<Grid container spacing={1} className={"p-1"}>
 					<Grid item xs={12}>
 						<UrlBlocker />
 					</Grid>
