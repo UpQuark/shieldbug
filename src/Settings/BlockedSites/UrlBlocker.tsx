@@ -10,7 +10,6 @@ import {
 	Col
 } from 'react-bootstrap';
 import {useEffect, useState} from "react";
-import {BiTrash} from 'react-icons/all';
 import Favicon from "./Favicon";
 import FeatureFlags from "../../FeatureFlags";
 import {BlockList} from "./BlockedSitesTypes";
@@ -25,12 +24,6 @@ const UrlBlocker: React.FC = () => {
 	const [urlInput, setUrlInput] = useState<string>('');
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
-
-	useEffect(() => {
-		chrome.storage.local.get('blockLists', (data: { blockLists?: any[] }) => {
-			setBlockLists(data.blockLists || [{ id: 'main', name: 'Main', urls: [], active: true }]);
-		});
-	}, []);
 
 	const updateBlockLists = (updatedBlockLists: any[]) => {
 		chrome.storage.local.set({ blockLists: updatedBlockLists }, () => {
@@ -48,10 +41,16 @@ const UrlBlocker: React.FC = () => {
 		updateBlockLists(updatedBlockLists);
 	};
 
+	/**
+	 * Block the supplied URL (defaults to current page), and add it to a given blocklist
+	 * @param event
+	 * @param listId
+	 * @param inputUrl
+	 */
 	const blockUrl = (event: React.FormEvent, listId: string = 'main', inputUrl?: string) => {
 		event.preventDefault();
 
-		let url = inputUrl ? inputUrl : currentSite;
+		let url: string = inputUrl ? inputUrl : currentSite;
 		if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
 		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
 		const updatedBlockLists = blockLists.map((list) => {
@@ -74,6 +73,10 @@ const UrlBlocker: React.FC = () => {
 		setBlockLists(updatedBlockLists);
 	};
 
+	/**
+	 * Figure out the current URL on page load to determine if the user can block the current site
+	 * invalid URLs include chrome://, file://, etc.
+	 */
 	useEffect(() => {
 		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			const currentTab = tabs[0];
@@ -83,6 +86,15 @@ const UrlBlocker: React.FC = () => {
 				setCurrentSite(pageUrl);
 			}
 			console.log('Current page URL:', pageUrl);
+		});
+	}, []);
+
+	/**
+	 * Load block lists from storage on page load
+	 */
+	useEffect(() => {
+		chrome.storage.local.get('blockLists', (data: { blockLists?: any[] }) => {
+			setBlockLists(data.blockLists || [{ id: 'main', name: 'Main', urls: [], active: true }]);
 		});
 	}, []);
 
@@ -157,4 +169,3 @@ const UrlBlocker: React.FC = () => {
 };
 
 export default UrlBlocker;
-
