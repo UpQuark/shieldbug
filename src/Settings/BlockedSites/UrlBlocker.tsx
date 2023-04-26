@@ -99,7 +99,7 @@ const UrlBlocker: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
+		<>
 			{canBlockCurrentSite && (
 				<Button
 					fullWidth
@@ -155,7 +155,7 @@ const UrlBlocker: React.FC = () => {
 					Add New Block List
 				</Button>
 			)}
-		</Container>
+		</>
 	);
 };
 
