@@ -2,7 +2,6 @@ import * as React from 'react';
 import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
 import CategoryBlocker from '../Settings/BlockedCategories/CategoryBlocker';
 import {
-	colors,
 	Container,
 	Grid,
 	IconButton, ThemeProvider,
@@ -11,7 +10,7 @@ import {
 } from '@mui/material';
 import { MdSettings } from 'react-icons/all';
 import { makeStyles } from '@mui/styles';
-import theme from "../../styles/MuiTheme";
+import theme, {colors} from "../../styles/MuiTheme";
 
 const useStyles = makeStyles((theme) => ({
 	icon: {
@@ -38,7 +37,7 @@ const PopupApp = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Container maxWidth={false} sx={{ width: 400, padding: 0}}>
-				<Toolbar className={classes.toolbar} style={{backgroundColor: "orange"}}>
+				<Toolbar className={classes.toolbar} style={{backgroundColor: colors.primary}}>
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
