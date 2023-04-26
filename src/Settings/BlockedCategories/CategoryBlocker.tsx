@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Form } from 'react-bootstrap';
-import {CategoryTypes} from "./CategoryTypes";
+import * as React from 'react';
+import { FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { CategoryTypes } from './CategoryTypes';
 
 const CategoryBlocker: React.FC = () => {
 	const [blockedCategories, setBlockedCategories] = React.useState<string[]>([]);
@@ -26,24 +26,32 @@ const CategoryBlocker: React.FC = () => {
 	};
 
 	return (
-		<Form>
+		<FormGroup>
 			{CategoryTypes.map((category) => (
-				<Form.Check
+				<FormControlLabel
 					key={category.value}
-					type="switch"
-					id={`category-${category.value}`}
-					label={<>
-						<span style={{fontWeight: "500"}} className={"text-primary"}>{category.icon} </span>
-						<span style={{fontWeight: "500"}} className={"text-secondary"}>{category.label}</span>
-					</>}
-					checked={blockedCategories.includes(category.value)}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						handleCategoryToggle(category.value, e.target.checked)
+					control={
+						<Switch
+							checked={blockedCategories.includes(category.value)}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								handleCategoryToggle(category.value, e.target.checked)
+							}
+						/>
 					}
-					style={{marginBottom: "1rem"}}
+					label={
+						<>
+              <span style={{ fontWeight: '500' }} className={'text-primary'}>
+                {category.icon}{' '}
+              </span>
+							<span style={{ fontWeight: '500' }} className={'text-secondary'}>
+                {category.label}
+              </span>
+						</>
+					}
+					style={{ marginBottom: '1rem' }}
 				/>
 			))}
-		</Form>
+		</FormGroup>
 	);
 };
 

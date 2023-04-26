@@ -36,25 +36,24 @@ const PopupApp = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Container maxWidth={false} sx={{ width: 400, padding: 2 }}>
+			<Container maxWidth={false} sx={{ width: 400}}>
 				<Toolbar className={classes.toolbar}>
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
 						className={classes.icon}
 					/>
-					<Typography variant="h6" className={classes.title}>
+					<Typography variant="h5" className={classes.title}>
 						ShieldBug
 					</Typography>
 					<IconButton
 						onClick={openSettingsPage}
 						color="inherit"
-						sx={{ p: 1 }}
 					>
 						<MdSettings/>
 					</IconButton>
 				</Toolbar>
-				<Grid container spacing={2} sx={{ mt: 2 }}>
+				<Grid container spacing={1}>
 					<Grid item xs={12}>
 						<UrlBlocker />
 					</Grid>

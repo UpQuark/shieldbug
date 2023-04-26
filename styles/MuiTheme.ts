@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import {createTheme} from '@mui/material/styles';
 
 const colors = {
 	primary: '#ff9800',
@@ -28,6 +28,9 @@ const theme = createTheme({
 		},
 		error: {
 			main: colors.danger,
+		},
+		getContrastText: (background: string) => {
+			return '#fff';
 		}
 	},
 	typography: {
@@ -57,6 +60,25 @@ const theme = createTheme({
 			color: colors.primary,
 		},
 	},
+	components: {
+		MuiButton: {
+			styleOverrides: {
+				root: {
+					textTransform: 'none', // Removes uppercase transformation
+					color: 'white',
+					fontWeight: 700,
+					fontSize: 19
+				},
+			},
+		},
+		MuiContainer: {
+			styleOverrides: {
+				root: {
+					padding: '0.5rem'
+				}
+			}
+		}
+	}
 });
 
 export default theme;

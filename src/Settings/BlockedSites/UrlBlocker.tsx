@@ -1,14 +1,4 @@
 import * as React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-	Button,
-	Container,
-	Form,
-	InputGroup,
-	ListGroup,
-	Row,
-	Col
-} from 'react-bootstrap';
 import {useEffect, useState} from "react";
 import Favicon from "./Favicon";
 import FeatureFlags from "../../FeatureFlags";
@@ -16,12 +6,23 @@ import {BlockList} from "./BlockedSitesTypes";
 import BlockListEditableName from "./components/BlockListEditableName";
 import BlockListMainRadio from "./components/BlockListMainRadio";
 import BlockListDeleteButton from "./components/BlockListDeleteButton";
+import {
+	Container,
+	FormGroup,
+	Button,
+	FormControl,
+	TextField,
+	ListItem,
+	ListItemSecondaryAction,
+	IconButton, ListItemText, List, Grid
+} from "@mui/material";
+import {MdDelete} from "react-icons/all";
+import BlockListAdder from "./components/BlockListAdder";
 
 const UrlBlocker: React.FC = () => {
 	const [blockLists, setBlockLists] = useState<BlockList[]>([
 		{ id: 'main', name: 'Main', urls: [], active: true },
 	]);
-	const [urlInput, setUrlInput] = useState<string>('');
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
 
@@ -61,7 +62,6 @@ const UrlBlocker: React.FC = () => {
 		});
 
 		updateBlockLists(updatedBlockLists);
-		if (inputUrl) setUrlInput('');
 	};
 
 	const addNewBlockList = () => {
@@ -99,71 +99,62 @@ const UrlBlocker: React.FC = () => {
 	}, []);
 
 	return (
-		<Container style={{ paddingLeft: 0 }}>
+		<Container>
 			{canBlockCurrentSite && (
-				<Button className={'text-white w-100 my-2'} onClick={(event) => blockUrl(event, 'main')}>
+				<Button
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={'mb-3'}
+					onClick={(event) => blockUrl(event, 'main')}
+				>
 					Block current site
 				</Button>
 			)}
 			{blockLists.map((list, index) => (
-				<div key={list.id} className="mb-5">
-					<Row className="mb-2">
-
+				<div key={list.id} style={{ marginBottom: '1rem' }}>
+					<FormGroup row>
 						{FeatureFlags.BLockSites_MultipleLists && (
-							<Col>
-								<BlockListEditableName blockLists={blockLists} setBlockLists={setBlockLists} list={list} index={index}/>
-							</Col>
+							<BlockListEditableName blockLists={blockLists} setBlockLists={setBlockLists} list={list} index={index} />
 						)}
 
 						{FeatureFlags.BLockSites_MultipleLists && (
-							<Col xs="auto">
-								<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={updateBlockLists}/>
-							</Col>
+							<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={updateBlockLists} />
 						)}
+					</FormGroup>
 
-					</Row>
+					<BlockListAdder list={list} blockUrl={blockUrl}/>
 
-					<Form onSubmit={(event) => blockUrl(event, list.id, urlInput)} className="mb-3">
-						<InputGroup>
-							<Form.Control
-								type="text"
-								value={urlInput}
-								onChange={(e) => setUrlInput(e.target.value)}
-								placeholder="Enter URL to block"
-							/>
-							<Button type="submit" variant="primary" className={'text-white'}>
-								Block website
-							</Button>
-
-							{/* Delete button*/}
-							<Col xs="auto">
-								{list.id !== 'main' && (
-									<BlockListDeleteButton list={list} blockLists={blockLists} updateBlockLists={updateBlockLists}/>
-								)}
-							</Col>
-						</InputGroup>
-					</Form>
+					{/* Delete button */}
+					{list.id !== 'main' && (
+						<BlockListDeleteButton
+							list={list}
+							blockLists={blockLists}
+							updateBlockLists={updateBlockLists}
+						/>
+					)}
 
 					{/* URL List */}
-					<ListGroup>
+					<List>
 						{list.urls.map((url) => (
-							<ListGroup.Item key={url} className="d-flex justify-content-between align-items-center">
-								<Favicon url={url}/>
-								{url}
-								<Button onClick={() => deleteUrl(list.id, url)} variant="outline-danger" size="sm">
-									Delete
-								</Button>
-							</ListGroup.Item>
+							<ListItem key={url} dense button>
+								<Favicon url={url} />
+								<ListItemText primary={url} />
+								<ListItemSecondaryAction>
+									<IconButton edge="end" aria-label="delete" onClick={() => deleteUrl(list.id, url)}>
+										<MdDelete />
+									</IconButton>
+								</ListItemSecondaryAction>
+							</ListItem>
 						))}
-					</ListGroup>
+					</List>
 				</div>
 			))}
 			{FeatureFlags.BLockSites_MultipleLists && (
-				<Button className="w-100 my-2 text-white" onClick={addNewBlockList}>
+				<Button fullWidth variant="contained" color="primary" onClick={addNewBlockList}>
 					Add New Block List
 				</Button>
 			)}
-
 		</Container>
 	);
 };
