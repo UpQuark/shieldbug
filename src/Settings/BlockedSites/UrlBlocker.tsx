@@ -7,15 +7,16 @@ import {
 	InputGroup,
 	ListGroup,
 	Row,
-	Col,
-	FormControl,
-	FormCheck, OverlayTrigger, Tooltip,
+	Col
 } from 'react-bootstrap';
 import {useEffect, useState} from "react";
-import {BiPencil, BiTrash} from 'react-icons/all';
+import {BiTrash} from 'react-icons/all';
 import Favicon from "./Favicon";
 import FeatureFlags from "../../FeatureFlags";
 import {BlockList} from "./BlockedSitesTypes";
+import BlockListEditableName from "./components/BlockListEditableName";
+import BlockListMainRadio from "./components/BlockListMainRadio";
+import BlockListDeleteButton from "./components/BlockListDeleteButton";
 
 const UrlBlocker: React.FC = () => {
 	const [blockLists, setBlockLists] = useState<BlockList[]>([
@@ -24,8 +25,6 @@ const UrlBlocker: React.FC = () => {
 	const [urlInput, setUrlInput] = useState<string>('');
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
-	const [editingListName, setEditingListName] = useState<number | null>(null);
-	const [listToDelete, setListToDelete] = useState<string | null>(null);
 
 	useEffect(() => {
 		chrome.storage.local.get('blockLists', (data: { blockLists?: any[] }) => {
@@ -39,16 +38,6 @@ const UrlBlocker: React.FC = () => {
 		});
 	};
 
-	const deleteList = (listId: string, confirm: boolean) => {
-		if (confirm) {
-			const updatedBlockLists = blockLists.filter(list => list.id !== listId);
-			updateBlockLists(updatedBlockLists);
-			setListToDelete(null);
-		} else {
-			setListToDelete(listId);
-		}
-	};
-
 	const deleteUrl = (listId: string, urlToDelete: string) => {
 		const updatedBlockLists = blockLists.map((list) => {
 			if (list.id === listId) {
@@ -59,25 +48,10 @@ const UrlBlocker: React.FC = () => {
 		updateBlockLists(updatedBlockLists);
 	};
 
-	const blockCurrentUrl = (event: React.FormEvent, listId: string = "main") => {
-		event.preventDefault();
-		let url = currentSite;
-
-		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
-		const updatedBlockLists = blockLists.map((list) => {
-			if (list.id === listId && !list.urls.includes(mainDomain)) {
-				return { ...list, urls: [...list.urls, mainDomain] };
-			}
-			return list;
-		});
-
-		updateBlockLists(updatedBlockLists);
-	}
-
-	const blockTypedUrl = (event: React.FormEvent, listId: string) => {
+	const blockUrl = (event: React.FormEvent, listId: string = 'main', inputUrl?: string) => {
 		event.preventDefault();
 
-		let url = urlInput;
+		let url = inputUrl ? inputUrl : currentSite;
 		if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
 		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
 		const updatedBlockLists = blockLists.map((list) => {
@@ -88,15 +62,7 @@ const UrlBlocker: React.FC = () => {
 		});
 
 		updateBlockLists(updatedBlockLists);
-		setUrlInput('');
-	};
-
-	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const updatedBlockLists = blockLists.map((list) => ({
-			...list,
-			active: list.id === event.target.value,
-		}));
-		updateBlockLists(updatedBlockLists);
+		if (inputUrl) setUrlInput('');
 	};
 
 	const addNewBlockList = () => {
@@ -123,7 +89,7 @@ const UrlBlocker: React.FC = () => {
 	return (
 		<Container style={{ paddingLeft: 0 }}>
 			{canBlockCurrentSite && (
-				<Button className={'text-white w-100 my-2'} onClick={(event) => blockCurrentUrl(event, 'main')}>
+				<Button className={'text-white w-100 my-2'} onClick={(event) => blockUrl(event, 'main')}>
 					Block current site
 				</Button>
 			)}
@@ -133,58 +99,19 @@ const UrlBlocker: React.FC = () => {
 
 						{FeatureFlags.BLockSites_MultipleLists && (
 							<Col>
-								{editingListName === index ? (
-									<InputGroup>
-										<FormControl
-											type="text"
-											value={list.name}
-											onChange={(e) => {
-												const updatedBlockLists = [...blockLists];
-												updatedBlockLists[index].name = e.target.value;
-												setBlockLists(updatedBlockLists);
-											}}
-											onBlur={() => setEditingListName(null)}
-											autoFocus
-										/>
-									</InputGroup>
-								) : (
-									<div
-										style={{ cursor: 'pointer' }}
-										onClick={() => setEditingListName(index)}
-									>
-										<BiPencil className="me-2 text-primary" />
-										{list.name}
-									</div>
-								)}
+								<BlockListEditableName blockLists={blockLists} setBlockLists={setBlockLists} list={list} index={index}/>
 							</Col>
 						)}
 
 						{FeatureFlags.BLockSites_MultipleLists && (
 							<Col xs="auto">
-								<OverlayTrigger
-									key="main-tooltip"
-									placement="top"
-									overlay={
-										<Tooltip id={`tooltip-main`}>
-											Some example text
-										</Tooltip>
-									}
-								>
-									<FormCheck
-										type="radio"
-										name="mainList"
-										checked={list.active}
-										value={list.id}
-										onChange={handleRadioChange}
-										label="Main"
-									/>
-								</OverlayTrigger>
+								<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={updateBlockLists}/>
 							</Col>
 						)}
 
 					</Row>
 
-					<Form onSubmit={(event) => blockTypedUrl(event, list.id)} className="mb-3">
+					<Form onSubmit={(event) => blockUrl(event, list.id, urlInput)} className="mb-3">
 						<InputGroup>
 							<Form.Control
 								type="text"
@@ -195,30 +122,11 @@ const UrlBlocker: React.FC = () => {
 							<Button type="submit" variant="primary" className={'text-white'}>
 								Block website
 							</Button>
+
 							{/* Delete button*/}
 							<Col xs="auto">
 								{list.id !== 'main' && (
-									<>
-										{listToDelete === list.id ? (
-											<Button
-												variant="danger"
-												size="sm"
-												className="ms-2"
-												onClick={() => deleteList(list.id, true)}
-											>
-												Confirm
-											</Button>
-										) : (
-											<Button
-												variant="outline-danger"
-												size="sm"
-												className="ms-2"
-												onClick={() => deleteList(list.id, false)}
-											>
-												<BiTrash />
-											</Button>
-										)}
-									</>
+									<BlockListDeleteButton list={list} blockLists={blockLists} updateBlockLists={updateBlockLists}/>
 								)}
 							</Col>
 						</InputGroup>
