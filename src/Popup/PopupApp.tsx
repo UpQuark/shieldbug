@@ -1,48 +1,69 @@
 import * as React from 'react';
 import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../../styles/CustomTheme.scss'
-import CategoryBlocker from "../Settings/BlockedCategories/CategoryBlocker";
+import CategoryBlocker from '../Settings/BlockedCategories/CategoryBlocker';
+import {
+	Container,
+	Grid,
+	IconButton, ThemeProvider,
+	Toolbar,
+	Typography,
+} from '@mui/material';
+import { MdSettings } from 'react-icons/all';
+import { makeStyles } from '@mui/styles';
+import theme from "../../styles/MuiTheme";
 
-const PopupApp: React.FC = () => {
+const useStyles = makeStyles((theme) => ({
+	icon: {
+		height: 35,
+		marginRight: 0
+	},
+	title: {
+		marginTop: 0,
+		flexGrow: 1,
+		fontWeight: 'bold',
+	},
+	toolbar: {
+		paddingRight: 0,
+	},
+}));
+
+const PopupApp = () => {
+	const classes = useStyles();
+
 	const openSettingsPage = () => {
 		chrome.runtime.openOptionsPage();
 	};
 
 	return (
-		<Container style={{ width: 400, padding: 12 }}>
-			<Row style={{marginBottom: 12}}>
-				<Col xs="auto">
+		<ThemeProvider theme={theme}>
+			<Container maxWidth={false} sx={{ width: 400, padding: 2 }}>
+				<Toolbar className={classes.toolbar}>
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
-						style={{ height: 35 }}
-						className={"flex"}
+						className={classes.icon}
 					/>
-				</Col>
-				<Col>
-					<h3 className={"text-primary"} style={{marginLeft: -18, marginTop: 4}}>ShieldBug</h3>
-				</Col>
-				<Col className="d-flex justify-content-end">
-					<Button
+					<Typography variant="h6" className={classes.title}>
+						ShieldBug
+					</Typography>
+					<IconButton
 						onClick={openSettingsPage}
-						variant="secondary"
-						style={{
-							backgroundColor: 'transparent',
-							border: 'none',
-							padding: 0,
-						}}
+						color="inherit"
+						sx={{ p: 1 }}
 					>
-						<i className="bi bi-gear-fill" style={{ fontSize: '1.5rem', color: "#bbb" }}></i>
-					</Button>
-				</Col>
-			</Row>
-			<UrlBlocker />
-			<div style={{marginBottom: 20}}></div>
-			<CategoryBlocker />
-		</Container>
+						<MdSettings/>
+					</IconButton>
+				</Toolbar>
+				<Grid container spacing={2} sx={{ mt: 2 }}>
+					<Grid item xs={12}>
+						<UrlBlocker />
+					</Grid>
+					<Grid item xs={12}>
+						<CategoryBlocker />
+					</Grid>
+				</Grid>
+			</Container>
+		</ThemeProvider>
 	);
 };
 
