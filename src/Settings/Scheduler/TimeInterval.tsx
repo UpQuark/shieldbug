@@ -20,7 +20,7 @@ const TimeInterval = () => {
 	}, []);
 
 	const fetchBlockOptions = () => {
-		chrome.storage.local.get(["blockedCategories", "blockLists"], (data) => {
+		chrome.storage.local.get(["blockedCategories", "blockL ists"], (data) => {
 			const options: SelectOptions[] = [];
 
 			CategoryTypes.forEach((category) => {

@@ -15,14 +15,7 @@ import {useEffect, useState} from "react";
 import {BiPencil, BiTrash} from 'react-icons/all';
 import Favicon from "./Favicon";
 import FeatureFlags from "../../FeatureFlags";
-
-
-interface BlockList {
-	id: string;
-	name: string;
-	urls: string[];
-	active: boolean;
-}
+import {BlockList} from "./BlockedSitesTypes";
 
 const UrlBlocker: React.FC = () => {
 	const [blockLists, setBlockLists] = useState<BlockList[]>([
@@ -66,7 +59,22 @@ const UrlBlocker: React.FC = () => {
 		updateBlockLists(updatedBlockLists);
 	};
 
-	const handleSubmit = (event: React.FormEvent, listId: string) => {
+	const blockCurrentUrl = (event: React.FormEvent, listId: string = "main") => {
+		event.preventDefault();
+		let url = currentSite;
+
+		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
+		const updatedBlockLists = blockLists.map((list) => {
+			if (list.id === listId && !list.urls.includes(mainDomain)) {
+				return { ...list, urls: [...list.urls, mainDomain] };
+			}
+			return list;
+		});
+
+		updateBlockLists(updatedBlockLists);
+	}
+
+	const blockTypedUrl = (event: React.FormEvent, listId: string) => {
 		event.preventDefault();
 
 		let url = urlInput;
@@ -115,7 +123,7 @@ const UrlBlocker: React.FC = () => {
 	return (
 		<Container style={{ paddingLeft: 0 }}>
 			{canBlockCurrentSite && (
-				<Button className={'text-white w-100 my-2'} onClick={(event) => handleSubmit(event, 'main')}>
+				<Button className={'text-white w-100 my-2'} onClick={(event) => blockCurrentUrl(event, 'main')}>
 					Block current site
 				</Button>
 			)}
@@ -176,7 +184,7 @@ const UrlBlocker: React.FC = () => {
 
 					</Row>
 
-					<Form onSubmit={(event) => handleSubmit(event, list.id)} className="mb-3">
+					<Form onSubmit={(event) => blockTypedUrl(event, list.id)} className="mb-3">
 						<InputGroup>
 							<Form.Control
 								type="text"

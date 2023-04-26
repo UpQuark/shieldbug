@@ -40,6 +40,9 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 								About
 							</a>
+							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
+								Feedback
+							</a>
 						</div>
 					</Col>
 					<Col xs={9} md={10} style={{ boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)" }}>
