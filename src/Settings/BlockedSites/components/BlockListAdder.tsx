@@ -25,7 +25,7 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 			setUrlInput('');
 		}}>
 			<Grid container spacing={0}>
-				<Grid item xs={10}>
+				<Grid item xs={10} md={11}>
 					<FormControl
 						fullWidth
 						className={"no-right-border-rounding"}
@@ -38,7 +38,7 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 						/>
 					</FormControl>
 				</Grid>
-				<Grid item xs={2} alignItems="stretch" style={{ display: "flex" }}>
+				<Grid item xs={2} md={1} style={{ display: "flex" }}>
 					<Button
 						type="submit"
 						variant="contained"
@@ -47,6 +47,7 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 						sx={{
 							borderTopLeftRadius: 0,
 							borderBottomLeftRadius: 0,
+							width: "100%",
 							height: 40,
 							left: -1,
 							boxShadow: "none",

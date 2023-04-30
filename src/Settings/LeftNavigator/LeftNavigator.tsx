@@ -41,7 +41,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({ initialRoute = '/blocked-
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 								About
 							</a>
-							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
+							<a href="mailto:info@shieldbug.com" target="_blank" rel="noopener noreferrer" className="nav-link">
 								Feedback
 							</a>
 						</div>

@@ -7,14 +7,13 @@ import BlockListEditableName from "./components/BlockListEditableName";
 import BlockListMainRadio from "./components/BlockListMainRadio";
 import BlockListDeleteButton from "./components/BlockListDeleteButton";
 import {
-	Container,
 	FormGroup,
 	Button,
-	FormControl,
-	TextField,
 	ListItem,
 	ListItemSecondaryAction,
-	IconButton, ListItemText, List, Grid
+	IconButton,
+	ListItemText,
+	List,
 } from "@mui/material";
 import {MdDelete} from "react-icons/all";
 import BlockListAdder from "./components/BlockListAdder";
@@ -126,18 +125,18 @@ const UrlBlocker: React.FC = () => {
 					<BlockListAdder list={list} blockUrl={blockUrl}/>
 
 					{/* Delete button */}
-					{list.id !== 'main' && (
-						<BlockListDeleteButton
-							list={list}
-							blockLists={blockLists}
-							updateBlockLists={updateBlockLists}
-						/>
-					)}
+					{/*{list.id !== 'main' && (*/}
+					{/*	<BlockListDeleteButton*/}
+					{/*		list={list}*/}
+					{/*		blockLists={blockLists}*/}
+					{/*		updateBlockLists={updateBlockLists}*/}
+					{/*	/>*/}
+					{/*)}*/}
 
 					{/* URL List */}
 					<List>
 						{list.urls.map((url) => (
-							<ListItem key={url} dense button>
+							<ListItem key={url} dense>
 								<Favicon url={url} />
 								<ListItemText primary={url} />
 								<ListItemSecondaryAction>
