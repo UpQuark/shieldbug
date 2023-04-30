@@ -1,22 +1,24 @@
-import {isUrlBlocked} from "./UrlBlocker";
+import {isUrlBlocked} from "./Helpers/UrlBlockChecker";
+import {BlockList} from "./Settings/BlockedSites/BlockedSitesTypes";
 
 function openBlockPage() {
   void chrome.runtime.sendMessage({ action: "openBlockPage" });
 }
 
 chrome.storage.local.get(
-  ["blockedUrls", "blockedKeywords", "blockedCategories"],
+  ["blockLists", "blockedKeywords", "blockedCategories"],
   async (data: {
-    blockedUrls?: string[],
+    blockLists?: BlockList[],
     blockedKeywords?: string[],
     blockedCategories?: string[]
   }) => {
   const currentUrl: string = window.location.href;
-  const blockedUrls: string[] = data.blockedUrls || [];
+  const blockLists: BlockList[] = data.blockLists || [];
   const blockedKeywords: string[] = data.blockedKeywords || [];
   const blockedCategories: string[] = data.blockedCategories || [];
 
-  if (await isUrlBlocked(currentUrl, blockedUrls, blockedKeywords, blockedCategories)) {
+  // TODO: I am only defaulting to first blocklist
+  if (await isUrlBlocked(currentUrl, blockLists[0].urls, blockedKeywords, blockedCategories)) {
     openBlockPage();
   }
 });

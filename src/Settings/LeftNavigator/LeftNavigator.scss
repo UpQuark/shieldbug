@@ -1,4 +1,4 @@
-@import "../../styles/ThemeColors";
+@import "../../../styles/ThemeColors";
 
 .navbar {
   background-color: #eee;
@@ -12,7 +12,6 @@
     padding-top: 12px;
     color: $secondary;
     font-family: 'Quicksand', sans-serif;
-    font-size: 18px;
     font-weight: 700;
     margin-left: 10px;
     margin-right: 10px;
@@ -29,28 +28,31 @@
 
 // LeftNavigator.scss
 .left-sidebar {
+  background-color: $primary;
   min-height: 100vh;
-  background-color: #f8f9fa;
   border-right: 1px solid #dee2e6;
   padding-top: 20px;
   display: flex;
   flex-direction: column;
-}
+  min-width: 261px;
 
-.left-sidebar a {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-}
+  a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: white;
 
-.left-sidebar a:hover {
-  text-decoration: none;
-  background-color: #e9ecef;
+    &:hover {
+      text-decoration: none;
+      background-color: #e9ecef;
+    }
+  }
 }
 
 .brand-name {
   margin-left: 10px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  color: white !important;
 }
 
 .navbar-brand {
@@ -59,6 +61,7 @@
 
 .nav-links {
   flex-grow: 1;
+  font-size: 1.4rem !important;
 }
 
 .about-link {

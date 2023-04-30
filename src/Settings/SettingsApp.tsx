@@ -1,9 +1,13 @@
 import * as React from 'react';
-import LeftNavigator from "./LeftNavigator";
+import LeftNavigator from "./LeftNavigator/LeftNavigator";
+import theme from "../../styles/MuiTheme";
+import {ThemeProvider} from "@mui/material";
 
 const SettingsApp: React.FC = () => {
 	return (
-		<LeftNavigator/>
+		<ThemeProvider theme={theme}>
+			<LeftNavigator/>
+		</ThemeProvider>
 	);
 };
 

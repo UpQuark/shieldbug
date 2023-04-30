@@ -1,48 +1,73 @@
 import * as React from 'react';
-import UrlBlocker from '../Settings/UrlBlocker';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../../styles/CustomTheme.scss'
-import CategoryBlocker from "../Settings/CategoryBlocker";
+import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
+import CategoryBlocker from '../Settings/BlockedCategories/CategoryBlocker';
+import {
+	Container,
+	Grid,
+	IconButton, ThemeProvider,
+	Toolbar,
+	Typography,
+} from '@mui/material';
+import { MdSettings } from 'react-icons/all';
+import { makeStyles } from '@mui/styles';
+import theme, {colors} from "../../styles/MuiTheme";
 
-const PopupApp: React.FC = () => {
+const useStyles = makeStyles((theme) => ({
+	icon: {
+		height: 35,
+		marginRight: 0
+	},
+	title: {
+		marginTop: 0,
+		flexGrow: 1,
+		fontWeight: 'bold',
+	},
+	toolbar: {
+		paddingRight: 0,
+	},
+}));
+
+const PopupApp = () => {
+	const classes = useStyles();
+
 	const openSettingsPage = () => {
 		chrome.runtime.openOptionsPage();
 	};
 
 	return (
-		<Container style={{ width: 400, padding: 12 }}>
-			<Row style={{marginBottom: 12}}>
-				<Col xs="auto">
+		<ThemeProvider theme={theme}>
+			<Container maxWidth={false} sx={{ width: 400, padding: 0}}>
+				<Toolbar className={classes.toolbar} style={{backgroundColor: colors.primary}}>
 					<img
 						src={chrome.runtime.getURL('assets/icon-128.png')}
 						alt="Shieldbug"
-						style={{ height: 35 }}
-						className={"flex"}
-					/>
-				</Col>
-				<Col>
-					<h3 className={"text-primary"} style={{marginLeft: -18, marginTop: 4}}>ShieldBug</h3>
-				</Col>
-				<Col className="d-flex justify-content-end">
-					<Button
-						onClick={openSettingsPage}
-						variant="secondary"
+						className={`${classes.icon}`}
 						style={{
-							backgroundColor: 'transparent',
-							border: 'none',
-							padding: 0,
-						}}
+							filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))",
+							marginRight: 8
+					}}
+					/>
+					<Typography variant="h5" className={classes.title} style={{color: "white"}}>
+						ShieldBug
+					</Typography>
+					<IconButton
+						onClick={openSettingsPage}
+						color="inherit"
+						style={{color: "white"}}
 					>
-						<i className="bi bi-gear-fill" style={{ fontSize: '1.5rem', color: "#bbb" }}></i>
-					</Button>
-				</Col>
-			</Row>
-			<UrlBlocker />
-			<div style={{marginBottom: 20}}></div>
-			<CategoryBlocker />
-		</Container>
+						<MdSettings/>
+					</IconButton>
+				</Toolbar>
+				<Grid container spacing={1} className={"p-3"}>
+					<Grid item xs={12}>
+						<UrlBlocker />
+					</Grid>
+					<Grid item xs={12}>
+						<CategoryBlocker />
+					</Grid>
+				</Grid>
+			</Container>
+		</ThemeProvider>
 	);
 };
 
