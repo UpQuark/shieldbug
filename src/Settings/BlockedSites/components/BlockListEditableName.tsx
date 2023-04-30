@@ -34,8 +34,8 @@ const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({
 			{editingListName === index ? (
 				<TextField
 					type="text"
+
 					variant={"filled"}
-					sx={{boxShadow: 1}}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						const updatedBlockLists = [...blockLists];
 						updatedBlockLists[index].name = e.target?.value;

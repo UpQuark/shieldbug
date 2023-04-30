@@ -2,7 +2,7 @@ import {createTheme} from '@mui/material/styles';
 
 export const colors = {
 	primary: '#ff9800',
-	secondary: '#6c757d',
+	secondary: '#ffffff',
 	success: '#28a745',
 	info: '#17a2b8',
 	warning: '#ffc107',
