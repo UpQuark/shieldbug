@@ -44,11 +44,13 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
                   <Nav.Link as={Link} to="/blocked-categories"><MdCalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
 								{FeatureFlags.Schedule &&
                   <Nav.Link as={Link} to="/schedule"><IoMdClock style={{marginRight: 12}}/>Schedule</Nav.Link>}
-								{FeatureFlags.WeirdStuff &&
-                  <Nav.Link as={Link} to="/weird-stuff"><MdLightbulb style={{marginRight: 12}}/>Weird stuff</Nav.Link>}
+
 							</Nav>
 						</div>
 						<div className="about-link">
+							{FeatureFlags.WeirdStuff &&
+                <Link to="/weird-stuff" className="nav-link"><MdLightbulb style={{marginRight: 12}}/>Ideas</Link>
+							}
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 								About
 							</a>
@@ -57,7 +59,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 							</a>
 						</div>
 					</Col>
-					<Col xs={9} md={10} style={{boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)"}}>
+					<Col style={{boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)"}}>
 						<Container style={{padding: 24}}>
 							<Routes>
 								<Route path="*" element={<BlockedSites/>}/>
