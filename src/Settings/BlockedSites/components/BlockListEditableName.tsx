@@ -1,13 +1,14 @@
 import * as React from "react";
-import {FormControl, InputGroup} from "react-bootstrap";
-import {BiPencil} from "react-icons/all";
-import {BlockList} from "../BlockedSitesTypes";
+
+import { BiPencil } from "react-icons/bi";
+import { BlockList } from "../BlockedSitesTypes";
+import {IconButton, TextField} from "@mui/material";
 
 interface IEditableBlockListNameProps {
-	blockLists: BlockList[],
-	setBlockLists: React.Dispatch<React.SetStateAction<BlockList[]>>,
-	list: BlockList,
-	index: number
+	blockLists: BlockList[];
+	setBlockLists: React.Dispatch<React.SetStateAction<BlockList[]>>;
+	list: BlockList;
+	index: number;
 }
 
 /**
@@ -18,36 +19,48 @@ interface IEditableBlockListNameProps {
  * @param index
  * @constructor
  */
-const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({blockLists, setBlockLists, list, index}) => {
-	const [editingListName, setEditingListName] = React.useState<number | null>(null);
+const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({
+	                                                                      blockLists,
+	                                                                      setBlockLists,
+	                                                                      list,
+	                                                                      index,
+                                                                      }) => {
+	const [editingListName, setEditingListName] = React.useState<number | null>(
+		null
+	);
 
 	return (
-				<>
-					{editingListName === index ? (
-						<InputGroup>
-							<FormControl
-								type="text"
-								value={list.name}
-								onChange={(e) => {
-									const updatedBlockLists = [...blockLists];
-									updatedBlockLists[index].name = e.target.value;
-									setBlockLists(updatedBlockLists);
-								}}
-								onBlur={() => setEditingListName(null)}
-								autoFocus
-							/>
-						</InputGroup>
-					) : (
-						<div
-							style={{ cursor: 'pointer' }}
-							onClick={() => setEditingListName(index)}
-						>
-							<BiPencil className="me-2 text-primary" />
-							{list.name}
-						</div>
-					)}
-				</>
-		)
-}
+		<>
+			{editingListName === index ? (
+				<TextField
+					type="text"
+					variant={"filled"}
+					sx={{boxShadow: 1}}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						const updatedBlockLists = [...blockLists];
+						updatedBlockLists[index].name = e.target?.value;
+						setBlockLists(updatedBlockLists);
+					}}
+					onBlur={() => setEditingListName(null)}
+					autoFocus
+					fullWidth
+				/>
+			) : (
+				<div
+					style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+					onClick={(e: React.MouseEvent<HTMLDivElement>) => setEditingListName(index)}
+				>
+					<IconButton
+						className="me-2 text-primary"
+						size="small"
+					>
+						<BiPencil />
+					</IconButton>
+					{list.name}
+				</div>
+			)}
+		</>
+	);
+};
 
 export default BlockListEditableName;

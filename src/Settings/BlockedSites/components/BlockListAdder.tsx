@@ -44,7 +44,13 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 						variant="contained"
 						color="primary"
 						aria-label={"Block URL"}
-						sx={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, height: 40, left: -1}}
+						sx={{
+							borderTopLeftRadius: 0,
+							borderBottomLeftRadius: 0,
+							height: 40,
+							left: -1,
+							boxShadow: "none",
+					}}
 					>
 						<MdBlock/>
 					</Button>
