@@ -58,7 +58,7 @@ const PopupApp = () => {
 						<MdSettings/>
 					</IconButton>
 				</Toolbar>
-				<Grid container spacing={1} className={"p-3"}>
+				<Grid container spacing={1} sx={{padding: 1.5}}>
 					<Grid item xs={12}>
 						<UrlBlocker />
 					</Grid>

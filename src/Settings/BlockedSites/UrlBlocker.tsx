@@ -104,7 +104,7 @@ const UrlBlocker: React.FC = () => {
 					fullWidth
 					variant="contained"
 					color="primary"
-					className={'mb-3'}
+					sx={{marginBottom: 2}}
 					onClick={(event) => blockUrl(event, 'main')}
 				>
 					Block current site
