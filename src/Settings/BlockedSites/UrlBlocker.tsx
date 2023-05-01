@@ -15,7 +15,7 @@ import {
 	ListItemText,
 	List,
 } from "@mui/material";
-import {MdDelete} from "react-icons/all";
+import {Delete} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
 const UrlBlocker: React.FC = () => {
@@ -141,7 +141,7 @@ const UrlBlocker: React.FC = () => {
 								<ListItemText primary={url} />
 								<ListItemSecondaryAction>
 									<IconButton edge="end" aria-label="delete" onClick={() => deleteUrl(list.id, url)}>
-										<MdDelete />
+										<Delete />
 									</IconButton>
 								</ListItemSecondaryAction>
 							</ListItem>

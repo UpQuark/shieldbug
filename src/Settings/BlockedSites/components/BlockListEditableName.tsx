@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BiPencil } from "react-icons/bi";
+import { Edit } from "@mui/icons-material";
 import { BlockList } from "../BlockedSitesTypes";
 import {IconButton, TextField} from "@mui/material";
 
@@ -54,7 +54,7 @@ const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({
 						className="me-2 text-primary"
 						size="small"
 					>
-						<BiPencil />
+						<Edit />
 					</IconButton>
 					{list.name}
 				</div>

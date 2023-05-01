@@ -8,7 +8,7 @@ import {
 	Toolbar,
 	Typography,
 } from '@mui/material';
-import { MdSettings } from 'react-icons/all';
+import { Settings } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import theme, {colors} from "../../styles/MuiTheme";
 
@@ -55,7 +55,7 @@ const PopupApp = () => {
 						color="inherit"
 						style={{color: "white"}}
 					>
-						<MdSettings/>
+						<Settings/>
 					</IconButton>
 				</Toolbar>
 				<Grid container spacing={1} sx={{padding: 1.5}}>
