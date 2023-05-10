@@ -69,6 +69,9 @@ const theme = createTheme({
 					fontWeight: 700,
 					fontSize: 19
 				},
+				outlined: {
+					color: colors.primary, // Use the primary text color for outlined buttons
+				},
 			},
 		},
 		MuiContainer: {

@@ -1,22 +1,21 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
+import * as React from 'react';
+import {Button, ButtonGroup, Grid, Container, Typography} from "@mui/material";
 import Select from "react-select";
-import { generateTimeOptions } from "./TimeHelper";
+import {generateTimeOptions} from "./TimeHelper";
+import {useEffect, useState} from "react";
+import DaySelector from "./DaySelector";
+import {TimeInterval} from "./SchedulerTypes";
+import {Delete, Edit} from "@mui/icons-material";
 
 interface SelectOptions {
 	label: string;
 	value: string;
 }
 
-/**
- * Time interval selector for scheduling blocked sites
- * @constructor
- */
 const BlockScheduler = () => {
 	const [blockOptions, setBlockOptions] = useState<SelectOptions[]>([]);
-	const [timeIntervals, setTimeIntervals] = useState([
-		{ start: "", end: "", selectedDays: Array(7).fill(false) },
+	const [timeIntervals, setTimeIntervals] = useState<TimeInterval[]>([
+		{start: "", end: "", selectedDays: Array(7).fill(false)},
 	]);
 	const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
@@ -36,7 +35,7 @@ const BlockScheduler = () => {
 	const addTimeInterval = () => {
 		setTimeIntervals([
 			...timeIntervals,
-			{ start: "", end: "", selectedDays: Array(7).fill(false) },
+			{start: "", end: "", selectedDays: Array(7).fill(false)},
 		]);
 	};
 
@@ -48,142 +47,76 @@ const BlockScheduler = () => {
 		const newIntervals = [...timeIntervals];
 		newIntervals[index][type] = value;
 		setTimeIntervals(newIntervals);
-	};
-
-	const toggleDay = (intervalIndex: number, dayIndex: number): void => {
-		const newIntervals = [...timeIntervals];
-		newIntervals[intervalIndex].selectedDays[dayIndex] = !newIntervals[
-			intervalIndex
-			].selectedDays[dayIndex];
-		setTimeIntervals(newIntervals);
+		saveInterval(index);
 	};
 
 	const saveInterval = (index: number) => {
 		// Save interval to chrome storage
-		chrome.storage.sync.set({ [`interval${index}`]: timeIntervals[index] }, function () {
+		chrome.storage.sync.set({[`interval${index}`]: timeIntervals[index]}, function () {
 			console.log(`Interval ${index} is saved.`);
 		});
 		setEditingIndex(null);
 	};
 
 	const deleteInterval = (index: number) => {
-		console.log("Deleting interval: ", timeIntervals[index]);
+		// Delete interval from chrome storage
+		chrome.storage.sync.remove(`interval${index}`, function() {
+			console.log(`Interval ${index} is deleted.`);
+		});
+
+		// Update state
+		setTimeIntervals(timeIntervals.filter((_, i) => i !== index));
 	};
 
-	const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	const timeOptions = generateTimeOptions();
 
 	return (
 		<>
 			{timeIntervals.map((interval, index) => (
-				<Container key={index} className="mb-4 p-0">
-					<Row className="mb-2">
-						<Col>
-							<h5>From:</h5>
-							{editingIndex === index ? (
-								<Select
-									options={timeOptions}
-									value={timeOptions.find(
-										(option) => option.value === interval.start
-									)}
-									onChange={(e) =>
-										handleTimeChange(index, "start", e.value)
-									}
-									menuPlacement="auto"
-									menuPortalTarget={document.body}
-									styles={{
-										menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-									}}
-								/>
-							) : (
-								<p>{interval.start}</p>
-							)}
-						</Col>
-						<Col>
-							<h5>To:</h5>
-							{editingIndex === index ? (
-								<Select
-									options={timeOptions}
-									value={timeOptions.find(
-										(option) => option.value === interval.end
-									)}
-									onChange={(e) =>
-										handleTimeChange(index, "end", e.value)
-									}
-									menuPlacement="auto"
-									menuPortalTarget={document.body}
-									styles={{
-										menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-									}}
-								/>
-							) : (
-								<p>{interval.end}</p>
-							)}
-						</Col>
-						<Col>
-							<h5>On days:</h5>
-							{editingIndex === index ? (
-								<ButtonGroup>
-									{days.map((day, dayIndex) => (
-										<Button
-											key={dayIndex}
-											className={"text-white"}
-											variant={
-												interval.selectedDays[dayIndex]
-													? "primary"
-													: "secondary"
-											}
-											onClick={() => toggleDay(index, dayIndex)}
-										>
-											{day}
-										</Button>
-									))}
-								</ButtonGroup>
-							) : (
-								<p>{days.filter((day, i) => interval.selectedDays[i]).join(", ")}</p>
-							)}
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							{editingIndex === index ? (
-								<>
-									<Button
-										className="text-white me-3"
-										onClick={() => saveInterval(index)}
-									>
-										Save schedule
-									</Button>
-									<Button
-										className="text-white"
-										variant="secondary"
-										onClick={() => setEditingIndex(null)}
-									>
-										Cancel
-									</Button>
-								</>
-							) : (
-								<Button
-									className="text-white"
-									onClick={() => setEditingIndex(index)}
-								>
-									Edit
-								</Button>
-							)}
-						</Col>
-					</Row>
-				</Container>
+				<Grid container spacing={3} key={index} style={{marginBottom: 24}}>
+					<Grid item xs={12} sm={2}>
+						<Typography variant="h6">From:</Typography>
+						<Select
+							options={timeOptions}
+							value={timeOptions.find((option) => option.value === interval.start)}
+							onChange={(e) => handleTimeChange(index, "start", e?.value || "")}
+						/>
+					</Grid>
+					<Grid item xs={12} sm={2}>
+						<Typography variant="h6">To:</Typography>
+						<Select
+							options={timeOptions}
+							value={timeOptions.find((option) => option.value === interval.end)}
+							onChange={(e) => handleTimeChange(index, "end", e?.value || "")}
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Typography variant="h6">On days:</Typography>
+						<DaySelector
+							timeIntervals={timeIntervals}
+							timeIntervalIndex={index}
+							setTimeIntervals={setTimeIntervals}
+							saveInterval={saveInterval}
+						/>
+					</Grid>
+					<Grid item xs ={2} sm={1}>
+						<Typography variant="h6">&nbsp;</Typography>
+						<Button variant={"outlined"} onClick={() => deleteInterval(index)}>
+							<Delete/>
+						</Button>
+					</Grid>
+				</Grid>
 			))}
-			<hr/>
-			<Row className="mb-3">
-				<Col>
-					<Button className="text-white" onClick={addTimeInterval}>
+			<Grid container justifyContent="center">
+				<Grid item xs={12}>
+					<Button variant="contained" color="primary" onClick={addTimeInterval}>
 						Add schedule
 					</Button>
-				</Col>
-			</Row>
+				</Grid>
+			</Grid>
 		</>
 	);
 };
 
 export default BlockScheduler;
+
