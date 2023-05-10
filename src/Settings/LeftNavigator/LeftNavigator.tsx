@@ -42,7 +42,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								{FeatureFlags.BlockCategories &&
                   <Nav.Link as={Link} to="/blocked-categories"><CalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
 								{FeatureFlags.Schedule &&
-                  <Nav.Link as={Link} to="/schedule"><Schedule style={{marginRight: 12}}/>Schedule</Nav.Link>}
+                  <Nav.Link as={Link} to="/schedule"><Schedule style={{marginRight: 12}}/>Schedule (beta)</Nav.Link>}
 
 							</Nav>
 						</div>

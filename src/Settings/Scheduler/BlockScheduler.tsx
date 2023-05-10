@@ -84,7 +84,7 @@ const BlockScheduler = () => {
 		<>
 			{timeIntervals.map((interval, index) => (
 				<>
-					{index > 1 && <hr/>}
+					{index > 0 && <hr/>}
 					<Grid container spacing={2} key={index} style={{marginBottom: 24}}>
 
 						<Grid item xs={12} sm={6} md={1.5}>

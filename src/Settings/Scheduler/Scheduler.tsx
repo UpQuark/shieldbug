@@ -6,7 +6,10 @@ const Scheduler: React.FC = () => {
 		<div>
 			<h1>Scheduler</h1>
 			<p>
-				Schedule intervals where ShieldBug is active.
+				Schedule intervals where your ShieldBug block list is active.
+			</p>
+			<p>
+				This is useful for blocking distracting sites during dedicated hours, like during work or study.
 			</p>
 			<BlockScheduler/>
 		</div>

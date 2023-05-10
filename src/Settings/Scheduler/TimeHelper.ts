@@ -1,3 +1,5 @@
+import {TimeInterval} from "./SchedulerTypes";
+
 /**
  * Generates an array of time options in 15 minute increments
  */
@@ -16,3 +18,22 @@ export const generateTimeOptions = () => {
 	}
 	return options;
 };
+
+export const isBlockScheduleActive = (interval: TimeInterval) => {
+	const now = new Date();
+	const currentDay = now.getDay();
+	const currentTime = now.getHours() * 60 + now.getMinutes();
+
+	if (!interval.enabled || !interval.selectedDays[currentDay]) {
+		return false;
+	}
+
+	const [startHour, startMinute] = interval.start.split(':').map(Number);
+	const [endHour, endMinute] = interval.end.split(':').map(Number);
+
+	const startTime = startHour * 60 + startMinute;
+	const endTime = endHour * 60 + endMinute;
+
+	return currentTime >= startTime && currentTime <= endTime;
+};
+
