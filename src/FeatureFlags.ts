@@ -4,7 +4,7 @@ const FeatureFlags = {
 
 	BlockKeywords: true,
 	BlockCategories: true,
-	Schedule: false,
+	Schedule: true,
 	WeirdStuff: true
 }
 
