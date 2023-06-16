@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ShieldBug",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Block distractions, doomscrolling and stress online",
   "icons": {
     "48": "assets/icon.png",
@@ -41,5 +41,8 @@
       ],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "_version": "",
+  "sap.app": {},
+  "sap.ui": {}
 }
