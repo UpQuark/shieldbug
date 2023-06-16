@@ -5,6 +5,7 @@ const FeatureFlags = {
 	BlockKeywords: true,
 	BlockCategories: true,
 	Schedule: true,
+	Commitment: true,
 	WeirdStuff: true
 }
 

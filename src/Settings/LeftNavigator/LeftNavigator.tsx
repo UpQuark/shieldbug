@@ -12,7 +12,8 @@ import BlockedCategories from "../BlockedCategories/BlockedCategories";
 import './LeftNavigator.scss';
 import FeatureFlags from "../../FeatureFlags";
 import Scheduler from "../Scheduler/Scheduler";
-import {Schedule, Block, CalendarViewWeek, Lightbulb, Search} from "@mui/icons-material";
+import {Schedule, Block, CalendarViewWeek, Lightbulb, Search, Lock, LockClock} from "@mui/icons-material";
+import Commitment from "../Commitment/Commitment";
 
 interface LeftNavigatorProps {
 	initialRoute?: string;
@@ -42,7 +43,9 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								{FeatureFlags.BlockCategories &&
                   <Nav.Link as={Link} to="/blocked-categories"><CalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
 								{FeatureFlags.Schedule &&
-                  <Nav.Link as={Link} to="/schedule"><Schedule style={{marginRight: 12}}/>Schedule (beta)</Nav.Link>}
+                  <Nav.Link as={Link} to="/schedule"><LockClock style={{marginRight: 12}}/>Schedule (beta)</Nav.Link>}
+								{FeatureFlags.Commitment &&
+                  <Nav.Link as={Link} to="/commitment"><Lock style={{marginRight: 12}}/>Commitment (beta)</Nav.Link>}
 
 							</Nav>
 						</div>
@@ -53,9 +56,9 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 								About
 							</a>
-							{/*<a href="mailto:info@shieldbug.com?subject=Shieldbug feedback" className="nav-link">*/}
-							{/*	Feedback*/}
-							{/*</a>*/}
+							<a href="mailto:info@shieldbug.com?subject=Shieldbug feedback" className="nav-link">
+								Feedback
+							</a>
 						</div>
 					</Col>
 					<Col style={{boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)"}}>
@@ -65,6 +68,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
 								<Route path="/blocked-categories" element={<BlockedCategories/>}/>
 								<Route path="/schedule" element={<Scheduler/>}/>
+								<Route path="/commitment" element={<Commitment/>}/>
 								<Route path="/weird-stuff" element={<WeirdStuff/>}/>
 							</Routes>
 						</Container>

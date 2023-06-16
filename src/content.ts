@@ -31,13 +31,14 @@ chrome.storage.local.get(
       let inScheduledBlockingWindow = false
       if (loadedIntervals.length === 0) {
         inScheduledBlockingWindow = true;
+      } else {
+        inScheduledBlockingWindow = loadedIntervals.reduce((previousValue, currentInterval) => {
+          if (isBlockScheduleActive(currentInterval)) {
+            return true;
+          }
+          return previousValue;
+        }, false);
       }
-      inScheduledBlockingWindow = loadedIntervals.reduce((previousValue, currentInterval) => {
-        if (isBlockScheduleActive(currentInterval)) {
-          return true;
-        }
-        return previousValue;
-      }, false);
 
       // TODO: I am only defaulting to first blocklist
       if (
