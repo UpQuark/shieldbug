@@ -6,7 +6,7 @@ const CategoryBlocker: React.FC = () => {
 	const [blockedCategories, setBlockedCategories] = React.useState<string[]>([]);
 
 	React.useEffect(() => {
-		chrome.storage.local.get('blockedCategories', (data: { blockedCategories?: string[] }) => {
+		chrome.storage.sync.get('blockedCategories', (data: { blockedCategories?: string[] }) => {
 			setBlockedCategories(data.blockedCategories || []);
 		});
 	}, []);
@@ -20,7 +20,7 @@ const CategoryBlocker: React.FC = () => {
 			updatedBlockedCategories = blockedCategories.filter((c) => c !== category);
 		}
 
-		chrome.storage.local.set({ blockedCategories: updatedBlockedCategories }, () => {
+		chrome.storage.sync.set({ blockedCategories: updatedBlockedCategories }, () => {
 			setBlockedCategories(updatedBlockedCategories);
 		});
 	};

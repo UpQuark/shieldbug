@@ -7,7 +7,7 @@ function openBlockPage() {
   void chrome.runtime.sendMessage({ action: "openBlockPage" });
 }
 
-chrome.storage.local.get(
+chrome.storage.sync.get(
   ["blockLists", "blockedKeywords", "blockedCategories", "intervals"],
   async (data: {
     blockLists?: BlockList[],
@@ -42,7 +42,7 @@ chrome.storage.local.get(
 
       // TODO: I am only defaulting to first blocklist
       if (
-        await isUrlBlocked(currentUrl, blockLists[0].urls, blockedKeywords, blockedCategories)
+        await isUrlBlocked(currentUrl, blockLists[0]?.urls, blockedKeywords, blockedCategories)
         && inScheduledBlockingWindow
       ) {
         openBlockPage();

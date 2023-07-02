@@ -1,7 +1,7 @@
 /// <reference types="chrome"/>
 
 self.addEventListener('install', () => {
-  chrome.storage.local.set({
+  chrome.storage.sync.set({
     blockedUrls: []
   });
 });

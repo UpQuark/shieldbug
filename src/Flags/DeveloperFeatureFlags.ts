@@ -1,4 +1,4 @@
-const FeatureFlags = {
+const DeveloperFeatureFlags = {
 	BlockSites: true,
 	BLockSites_MultipleLists: false,
 
@@ -6,7 +6,7 @@ const FeatureFlags = {
 	BlockCategories: true,
 	Schedule: true,
 	Commitment: true,
-	WeirdStuff: true
+	WeirdStuff: true,
 }
 
-export default FeatureFlags;
+export default DeveloperFeatureFlags;

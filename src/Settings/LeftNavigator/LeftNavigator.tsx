@@ -10,7 +10,7 @@ import BlockedKeywords from "../BlockedKeywords";
 import BlockedCategories from "../BlockedCategories/BlockedCategories";
 
 import './LeftNavigator.scss';
-import FeatureFlags from "../../FeatureFlags";
+import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
 import Scheduler from "../Scheduler/Scheduler";
 import {Schedule, Block, CalendarViewWeek, Lightbulb, Search, Lock, LockClock} from "@mui/icons-material";
 import Commitment from "../Commitment/Commitment";
@@ -38,19 +38,19 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 						<div className="nav-links">
 							<Nav className="flex-column">
 								<Nav.Link as={Link} to="/"><Block style={{marginRight: 12}}/> Block sites</Nav.Link>
-								{FeatureFlags.BlockKeywords &&
+								{DeveloperFeatureFlags.BlockKeywords &&
                   <Nav.Link as={Link} to="/blocked-keywords"><Search style={{marginRight: 12}}/>Block keywords</Nav.Link>}
-								{FeatureFlags.BlockCategories &&
+								{DeveloperFeatureFlags.BlockCategories &&
                   <Nav.Link as={Link} to="/blocked-categories"><CalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
-								{FeatureFlags.Schedule &&
+								{DeveloperFeatureFlags.Schedule &&
                   <Nav.Link as={Link} to="/schedule"><LockClock style={{marginRight: 12}}/>Schedule (beta)</Nav.Link>}
-								{FeatureFlags.Commitment &&
+								{DeveloperFeatureFlags.Commitment &&
                   <Nav.Link as={Link} to="/commitment"><Lock style={{marginRight: 12}}/>Commitment (beta)</Nav.Link>}
 
 							</Nav>
 						</div>
 						<div className="about-link">
-							{FeatureFlags.WeirdStuff &&
+							{DeveloperFeatureFlags.WeirdStuff &&
                 <Link to="/weird-stuff" className="nav-link"><Lightbulb style={{marginRight: 12}}/>Ideas</Link>
 							}
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">

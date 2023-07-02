@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UrlBlocker from "./UrlBlocker";
-import FeatureFlags from "../../FeatureFlags";
+import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
 
 const BlockedSites: React.FC = () => {
 	return (
@@ -10,7 +10,7 @@ const BlockedSites: React.FC = () => {
 				You can block individual sites using ShieldBug. Just enter the URL of the site you want to block below.
 			</p>
 
-			{FeatureFlags.BLockSites_MultipleLists &&
+			{DeveloperFeatureFlags.BLockSites_MultipleLists &&
         <p>
           You can create more than one list of sites to block. One will always be your "main" list which is always
           active.
