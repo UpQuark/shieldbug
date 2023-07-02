@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Switch, FormControlLabel, FormGroup, Box, Typography, TextField} from '@mui/material';
+import {Switch, FormControlLabel, FormGroup, Box, Typography, TextField, Card, CardContent} from '@mui/material';
 import SignPost from "../../UiComponents/SignPost";
 import {useEffect} from "react";
 
@@ -20,7 +20,7 @@ const Commitment: React.FC = () => {
 	 * Load settings from storage
 	 */
 	useEffect(() => {
-		chrome.storage.sync.get(['features/deepBreath/enabled', 'features/passwordProtection/enabled', 'features/dailyLimits/enabled'], (data) => {
+		chrome.storage.sync.get(['features/deepBreath/enabled', 'features/deepBreath/length', 'features/passwordProtection/enabled', 'features/dailyLimits/enabled'], (data) => {
 			setDeepBreath(data["features/deepBreath/enabled"] || false);
 			setDeepBreathLength(data["features/deepBreath/length"] || 0)
 			setPasswordProtection(data["features/passwordProtection/enabled"] || false);
@@ -75,47 +75,61 @@ const Commitment: React.FC = () => {
 
 	return (
 		<div>
-			<h1>Timeout</h1>
-			<SignPost>
-				<h2 style={{color: 'white'}}>Interdict distractions.</h2>
-			</SignPost>
+			<h1>Commitment</h1>
+			{/*<SignPost>*/}
+			{/*	<h2 style={{color: 'white'}}>Interdict distractions.</h2>*/}
+			{/*</SignPost>*/}
 
-			<Box>
-				<h3>Deep Breath</h3>
-				<p>Set a timer that locks you out of settings for a few seconds.</p>
-				<p>Take a deep breath.</p>
-				<p>Decide if you still want to continue</p>
-				<FormControlLabel
-					control={<Switch checked={deepBreath} onChange={handleChangeDeepBreath} style={{fontSize: '3rem'}}/>}
-					label="Enable"
-				/>
-				{deepBreath &&
-          <TextField
-            type="number"
-            label="Seconds"
-            value={deepBreathLength}
-            onChange={handleChangeTime}
-            InputProps={{inputProps: {min: 0}}} // Only allows non-negative values
-          />
-				}
-			</Box>
+			<Card sx={{marginBottom: 2}}>
+				<CardContent>
+					<Box>
+						<h3>Deep Breath</h3>
+						<p>Set a timer that locks you out of settings for a few seconds.</p>
+						<p>Take a deep breath.</p>
+						<p>Decide if you still want to continue</p>
+						<FormControlLabel
+							control={<Switch checked={deepBreath} onChange={handleChangeDeepBreath} style={{fontSize: '3rem'}}/>}
+							label="Enable"
+						/>
+						{deepBreath &&
+              <div>
+                <TextField
+                  type="number"
+                  label="Seconds"
+                  value={deepBreathLength}
+                  onChange={handleChangeTime}
+                  InputProps={{inputProps: {max: 99}}} // Only allows non-negative values
+                />
+              </div>
+						}
+					</Box>
+				</CardContent>
+			</Card>
 
-			<Box>
-				<Typography variant="h6">Password Protection</Typography>
-				<FormControlLabel
-					control={<Switch checked={passwordProtection} onChange={handleChangePasswordProtection}
-					                 style={{fontSize: '3rem'}}/>}
-					label="Enable"
-				/>
-			</Box>
+			<Card sx={{marginBottom: 2}}>
+				<CardContent>
+					<Box>
+						<Typography variant="h6">Password Protection</Typography>
+						<FormControlLabel
+							control={<Switch checked={passwordProtection} onChange={handleChangePasswordProtection}
+							                 style={{fontSize: '3rem'}}/>}
+							label="Enable"
+						/>
+					</Box>
+				</CardContent>
+			</Card>
 
-			<Box>
-				<Typography variant="h6">Daily Limits</Typography>
-				<FormControlLabel
-					control={<Switch checked={dailyLimits} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}
-					label="Enable"
-				/>
-			</Box>
+			<Card sx={{marginBottom: 2}}>
+				<CardContent>
+					<Box>
+						<Typography variant="h6">Daily Limits</Typography>
+						<FormControlLabel
+							control={<Switch checked={dailyLimits} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}
+							label="Enable"
+						/>
+					</Box>
+				</CardContent>
+			</Card>
 		</div>
 	);
 };

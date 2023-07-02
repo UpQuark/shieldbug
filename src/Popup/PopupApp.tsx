@@ -2,7 +2,7 @@ import * as React from 'react';
 import UrlBlocker from '../Settings/BlockedSites/UrlBlocker';
 import CategoryBlocker from '../Settings/BlockedCategories/CategoryBlocker';
 import {
-	Backdrop, CircularProgress,
+	Backdrop, Box, CircularProgress,
 	Container,
 	Grid,
 	IconButton, ThemeProvider,
@@ -45,10 +45,13 @@ const PopupApp = () => {
 		chrome.storage.sync.get(['features/deepBreath/enabled', 'features/deepBreath/length'], (data) => {
 			setDeepBreathsEnabled(data['features/deepBreath/enabled'] || false);
 			setDeepBreathLength(data['features/deepBreath/length'] || 0);
+			setCountdown(data['features/deepBreath/length'])
 		});
 	}, []);
 
-
+	/**
+	 * Set a visible countdown timer locking out settings based on the deep breath timeout
+	 */
 	useEffect(() => {
 		let timer: any;
 		if (deepBreathsEnabled && deepBreathLength > 0) {
@@ -106,16 +109,26 @@ const PopupApp = () => {
 					</Grid>
 
 					<Backdrop
-						sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
 						open={backdropOpen}
 					>
-						<CircularProgress color="inherit"/>
-						<Typography variant="h4">
-							Take a deep breath
-						</Typography>
-						<Typography variant="h4">
-							{countdown} {countdown === 1 ? 'second' : 'seconds'}
-						</Typography>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+								height: '100%',
+							}}
+						>
+							<CircularProgress color="primary" />
+							<Typography variant="h4">
+								Take a deep breath.
+							</Typography>
+							<Typography variant="h6">
+								{countdown} {countdown === 1 ? 'second' : 'seconds'}
+							</Typography>
+						</Box>
 					</Backdrop>
 				</Grid>
 			</Container>

@@ -83,7 +83,7 @@ const BlockScheduler = () => {
 	return (
 		<>
 			{timeIntervals.map((interval, index) => (
-				<>
+				<div key={index}>
 					{index > 0 && <hr/>}
 					<Grid container spacing={2} key={index} style={{marginBottom: 24}}>
 
@@ -128,7 +128,7 @@ const BlockScheduler = () => {
 							</Button>
 						</Grid>
 					</Grid>
-				</>
+				</div>
 			))}
 			<Grid container justifyContent="center">
 				<Grid item xs={12}>
