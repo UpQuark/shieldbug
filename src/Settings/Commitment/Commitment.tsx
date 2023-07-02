@@ -1,5 +1,15 @@
 import * as React from 'react';
-import {Switch, FormControlLabel, FormGroup, Box, Typography, TextField, Card, CardContent} from '@mui/material';
+import {
+	Switch,
+	FormControlLabel,
+	FormGroup,
+	Box,
+	Typography,
+	TextField,
+	Card,
+	CardContent,
+	FormLabel
+} from '@mui/material';
 import SignPost from "../../UiComponents/SignPost";
 import {useEffect} from "react";
 
@@ -10,9 +20,9 @@ import {useEffect} from "react";
  * @constructor
  */
 const Commitment: React.FC = () => {
-	const [deepBreath, setDeepBreath] = React.useState(false);
-	const [passwordProtection, setPasswordProtection] = React.useState(false);
-	const [dailyLimits, setDailyLimits] = React.useState(false);
+	const [deepBreathEnabled, setDeepBreathEnabled] = React.useState(false);
+	const [passwordProtectionEnabled, setPasswordProtection] = React.useState(false);
+	const [dailyLimitsEnabled, setDailyLimitsEnabled] = React.useState(false);
 
 	const [deepBreathLength, setDeepBreathLength] = React.useState<number>();
 
@@ -21,10 +31,10 @@ const Commitment: React.FC = () => {
 	 */
 	useEffect(() => {
 		chrome.storage.sync.get(['features/deepBreath/enabled', 'features/deepBreath/length', 'features/passwordProtection/enabled', 'features/dailyLimits/enabled'], (data) => {
-			setDeepBreath(data["features/deepBreath/enabled"] || false);
+			setDeepBreathEnabled(data["features/deepBreath/enabled"] || false);
 			setDeepBreathLength(data["features/deepBreath/length"] || 0)
 			setPasswordProtection(data["features/passwordProtection/enabled"] || false);
-			setDailyLimits(data["features/dailyLimits/enabled"] || false);
+			setDailyLimitsEnabled(data["features/dailyLimits/enabled"] || false);
 		});
 	}, []);
 
@@ -34,7 +44,7 @@ const Commitment: React.FC = () => {
 	 * @param event
 	 */
 	const handleChangeDeepBreath = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setDeepBreath(event.target.checked);
+		setDeepBreathEnabled(event.target.checked);
 		chrome.storage.sync.set({
 			"features/deepBreath/enabled": event.target.checked
 		});
@@ -56,7 +66,7 @@ const Commitment: React.FC = () => {
 	 * @param event
 	 */
 	const handleChangeDailyLimits = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setDailyLimits(event.target.checked);
+		setDailyLimitsEnabled(event.target.checked);
 		chrome.storage.sync.set({
 			"features/dailyLimits/enabled": event.target.checked
 		})
@@ -80,19 +90,26 @@ const Commitment: React.FC = () => {
 			{/*	<h2 style={{color: 'white'}}>Interdict distractions.</h2>*/}
 			{/*</SignPost>*/}
 
-			<Card sx={{marginBottom: 2}}>
+			<Typography variant="body1" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+				Commit yourself to blocking distractions! These optional features to help you stay focused and avoid circumventing
+				your distraction blocking.
+			</Typography>
+
+			<Card sx={{marginBottom: 3}}>
 				<CardContent>
 					<Box>
 						<h3>Deep Breath</h3>
-						<p>Set a timer that locks you out of settings for a few seconds.</p>
-						<p>Take a deep breath.</p>
-						<p>Decide if you still want to continue</p>
+						<p>
+							Set a countdown timer that locks you out of settings for a duration. Give yourself time to take a deep breath
+							and turn back.
+						</p>
 						<FormControlLabel
-							control={<Switch checked={deepBreath} onChange={handleChangeDeepBreath} style={{fontSize: '3rem'}}/>}
+							control={<Switch checked={deepBreathEnabled} onChange={handleChangeDeepBreath} style={{fontSize: '3rem'}}/>}
 							label="Enable"
 						/>
-						{deepBreath &&
-              <div>
+						{deepBreathEnabled &&
+							<div>
+                <FormLabel component="legend">Countdown length</FormLabel>
                 <TextField
                   type="number"
                   label="Seconds"
@@ -100,13 +117,13 @@ const Commitment: React.FC = () => {
                   onChange={handleChangeTime}
                   InputProps={{inputProps: {max: 99}}} // Only allows non-negative values
                 />
-              </div>
+							</div>
 						}
 					</Box>
 				</CardContent>
 			</Card>
 
-			<Card sx={{marginBottom: 2}}>
+			<Card sx={{marginBottom: 3}}>
 				<CardContent>
 					<Box>
 						<Typography variant="h6">Password Protection</Typography>
@@ -119,12 +136,12 @@ const Commitment: React.FC = () => {
 				</CardContent>
 			</Card>
 
-			<Card sx={{marginBottom: 2}}>
+			<Card sx={{marginBottom: 3}}>
 				<CardContent>
 					<Box>
 						<Typography variant="h6">Daily Limits</Typography>
 						<FormControlLabel
-							control={<Switch checked={dailyLimits} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}
+							control={<Switch checked={dailyLimitsEnabled} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}
 							label="Enable"
 						/>
 					</Box>
