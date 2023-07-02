@@ -37,7 +37,7 @@ const KeywordBlocker: React.FC = () => {
 	};
 
 	return (
-		<Container fluid>
+		<>
 			<Form onSubmit={handleSubmit} className="mb-3">
 				<InputGroup>
 					<Form.Control
@@ -61,7 +61,7 @@ const KeywordBlocker: React.FC = () => {
 					</ListGroup.Item>
 				))}
 			</ListGroup>
-		</Container>
+		</>
 	);
 };
 

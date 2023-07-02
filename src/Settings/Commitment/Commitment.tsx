@@ -90,7 +90,7 @@ const Commitment: React.FC = () => {
 			{/*	<h2 style={{color: 'white'}}>Interdict distractions.</h2>*/}
 			{/*</SignPost>*/}
 
-			<Typography variant="body1" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+			<Typography variant="body1" sx={{ fontWeight: '700', marginBottom: 3 }}>
 				Commit yourself to blocking distractions! These optional features to help you stay focused and avoid circumventing
 				your distraction blocking.
 			</Typography>
@@ -128,7 +128,7 @@ const Commitment: React.FC = () => {
 					<Box>
 						<Typography variant="h6">Password Protection</Typography>
 						<FormControlLabel
-							control={<Switch checked={passwordProtection} onChange={handleChangePasswordProtection}
+							control={<Switch checked={passwordProtectionEnabled} onChange={handleChangePasswordProtection}
 							                 style={{fontSize: '3rem'}}/>}
 							label="Enable"
 						/>
