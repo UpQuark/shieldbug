@@ -77,11 +77,14 @@ const Commitment: React.FC = () => {
 	 * @param event
 	 */
 	const handleChangeTime = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setDeepBreathLength(Number(event.target.value));
-		chrome.storage.sync.set({
-			"features/deepBreath/length": Number(event.target.value)
-		});
-	}
+		const newValue = Number(event.target.value);
+		if (newValue >= 0 && newValue <= 99) {
+			setDeepBreathLength(newValue);
+			chrome.storage.sync.set({
+				"features/deepBreath/length": newValue
+			});
+		}
+	};
 
 	return (
 		<div>
@@ -115,7 +118,6 @@ const Commitment: React.FC = () => {
                   label="Seconds"
                   value={deepBreathLength}
                   onChange={handleChangeTime}
-                  InputProps={{inputProps: {max: 99}}} // Only allows non-negative values
                 />
 							</div>
 						}
