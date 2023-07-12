@@ -1,4 +1,4 @@
-import {BiNetworkChart, BiNews, BiShoppingBag, BiVideo} from "react-icons/all";
+import {Groups, Newspaper, ShoppingCart, Videocam} from "@mui/icons-material";
 import * as React from "react";
 
 
@@ -8,9 +8,9 @@ export interface CategoryType {
 	icon: React.ReactNode;
 }
 export const CategoryTypes: CategoryType[] = [
-	{ label: 'News', value: 'news', icon: <BiNews/>},
-	{ label: 'Social Media', value: 'social_media', icon: <BiNetworkChart/>},
-	{ label: 'Shopping', value: 'shopping', icon: <BiShoppingBag/>},
-	{ label: 'Video Streaming', value: 'streaming', icon: <BiVideo/>},
+	{ label: 'News', value: 'news', icon: <Newspaper/>},
+	{ label: 'Social Media', value: 'social_media', icon: <Groups/>},
+	{ label: 'Shopping', value: 'shopping', icon: <ShoppingCart/>},
+	{ label: 'Video Streaming', value: 'streaming', icon: <Videocam/>},
 	// Add more categories here
 ];

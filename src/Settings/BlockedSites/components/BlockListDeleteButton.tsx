@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Button} from "react-bootstrap";
-import {BiTrash} from "react-icons/all";
+import {Delete} from"@mui/icons-material";
 import {useState} from "react";
 import {BlockList} from "../BlockedSitesTypes";
 
@@ -48,7 +48,7 @@ const BlockListDeleteButton: React.FC<IBlockListDeleteButtonProps> = ({list, blo
 					className="ms-2"
 					onClick={() => deleteList(list.id, false)}
 				>
-					<BiTrash />
+					<Delete />
 				</Button>
 			)}
 		</>

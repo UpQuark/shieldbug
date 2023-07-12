@@ -3,7 +3,7 @@ import {Button, FormControl, Grid, TextField} from "@mui/material";
 import {useState} from "react";
 import {BlockList} from "../BlockedSitesTypes";
 import './BlockListAdder.scss'
-import {MdBlock} from "react-icons/all";
+import {Block} from "@mui/icons-material";
 
 interface IBlockListAdderProps {
 	list: BlockList,
@@ -53,7 +53,7 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 							boxShadow: "none",
 					}}
 					>
-						<MdBlock/>
+						<Block/>
 					</Button>
 				</Grid>
 			</Grid>

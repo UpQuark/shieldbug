@@ -1,5 +1,4 @@
 import * as React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
 import { Button, Container, Form, InputGroup, ListGroup } from 'react-bootstrap';
 
@@ -8,7 +7,7 @@ const KeywordBlocker: React.FC = () => {
 	const [keywordInput, setKeywordInput] = useState<string>('');
 
 	useEffect(() => {
-		chrome.storage.local.get('blockedKeywords', (data: { blockedKeywords?: string[] }) => {
+		chrome.storage.sync.get('blockedKeywords', (data: { blockedKeywords?: string[] }) => {
 			setBlockedKeywords(data.blockedKeywords || []);
 		});
 	}, []);
@@ -19,7 +18,7 @@ const KeywordBlocker: React.FC = () => {
 
 	const deleteKeyword = (keywordToDelete: string) => {
 		const updatedBlockedKeywords = blockedKeywords.filter((keyword) => keyword !== keywordToDelete);
-		chrome.storage.local.set({ blockedKeywords: updatedBlockedKeywords }, () => {
+		chrome.storage.sync.set({ blockedKeywords: updatedBlockedKeywords }, () => {
 			updateBlockedKeywordsList(updatedBlockedKeywords);
 		});
 	};
@@ -30,7 +29,7 @@ const KeywordBlocker: React.FC = () => {
 		const newBlockedKeywords = [...blockedKeywords, keywordInput];
 
 		if (!blockedKeywords.includes(keywordInput)) {
-			chrome.storage.local.set({ blockedKeywords: newBlockedKeywords }, () => {
+			chrome.storage.sync.set({ blockedKeywords: newBlockedKeywords }, () => {
 				updateBlockedKeywordsList(newBlockedKeywords);
 			});
 		}
@@ -38,7 +37,7 @@ const KeywordBlocker: React.FC = () => {
 	};
 
 	return (
-		<Container fluid>
+		<>
 			<Form onSubmit={handleSubmit} className="mb-3">
 				<InputGroup>
 					<Form.Control
@@ -62,7 +61,7 @@ const KeywordBlocker: React.FC = () => {
 					</ListGroup.Item>
 				))}
 			</ListGroup>
-		</Container>
+		</>
 	);
 };
 

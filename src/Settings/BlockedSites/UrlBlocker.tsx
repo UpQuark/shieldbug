@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect, useState} from "react";
 import Favicon from "./Favicon";
-import FeatureFlags from "../../FeatureFlags";
+import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
 import {BlockList} from "./BlockedSitesTypes";
 import BlockListEditableName from "./components/BlockListEditableName";
 import BlockListMainRadio from "./components/BlockListMainRadio";
@@ -15,7 +15,7 @@ import {
 	ListItemText,
 	List,
 } from "@mui/material";
-import {MdDelete} from "react-icons/all";
+import {Delete} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
 const UrlBlocker: React.FC = () => {
@@ -26,7 +26,7 @@ const UrlBlocker: React.FC = () => {
 	const [currentSite, setCurrentSite] = useState<string>('');
 
 	const updateBlockLists = (updatedBlockLists: any[]) => {
-		chrome.storage.local.set({ blockLists: updatedBlockLists }, () => {
+		chrome.storage.sync.set({ blockLists: updatedBlockLists }, () => {
 			setBlockLists(updatedBlockLists);
 		});
 	};
@@ -92,7 +92,7 @@ const UrlBlocker: React.FC = () => {
 	 * Load block lists from storage on page load
 	 */
 	useEffect(() => {
-		chrome.storage.local.get('blockLists', (data: { blockLists?: any[] }) => {
+		chrome.storage.sync.get('blockLists', (data: { blockLists?: any[] }) => {
 			setBlockLists(data.blockLists || [{ id: 'main', name: 'Main', urls: [], active: true }]);
 		});
 	}, []);
@@ -104,7 +104,7 @@ const UrlBlocker: React.FC = () => {
 					fullWidth
 					variant="contained"
 					color="primary"
-					className={'mb-3'}
+					sx={{marginBottom: 2}}
 					onClick={(event) => blockUrl(event, 'main')}
 				>
 					Block current site
@@ -113,11 +113,11 @@ const UrlBlocker: React.FC = () => {
 			{blockLists.map((list, index) => (
 				<div key={list.id} style={{ marginBottom: '1rem' }}>
 					<FormGroup row>
-						{FeatureFlags.BLockSites_MultipleLists && (
+						{DeveloperFeatureFlags.BLockSites_MultipleLists && (
 							<BlockListEditableName blockLists={blockLists} setBlockLists={setBlockLists} list={list} index={index} />
 						)}
 
-						{FeatureFlags.BLockSites_MultipleLists && (
+						{DeveloperFeatureFlags.BLockSites_MultipleLists && (
 							<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={updateBlockLists} />
 						)}
 					</FormGroup>
@@ -141,7 +141,7 @@ const UrlBlocker: React.FC = () => {
 								<ListItemText primary={url} />
 								<ListItemSecondaryAction>
 									<IconButton edge="end" aria-label="delete" onClick={() => deleteUrl(list.id, url)}>
-										<MdDelete />
+										<Delete />
 									</IconButton>
 								</ListItemSecondaryAction>
 							</ListItem>
@@ -149,7 +149,7 @@ const UrlBlocker: React.FC = () => {
 					</List>
 				</div>
 			))}
-			{FeatureFlags.BLockSites_MultipleLists && (
+			{DeveloperFeatureFlags.BLockSites_MultipleLists && (
 				<Button fullWidth variant="contained" color="primary" onClick={addNewBlockList}>
 					Add New Block List
 				</Button>

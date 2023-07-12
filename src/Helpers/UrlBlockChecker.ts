@@ -16,7 +16,7 @@ export const isUrlBlocked = async (
 	const mainDomain = hostname.split('.').slice(-2).join('.');
 
 	// Check against blocked URLs
-	if (blockedUrls.includes(mainDomain)) {
+	if (blockedUrls?.includes(mainDomain)) {
 		return true;
 	}
 

@@ -10,10 +10,10 @@ import BlockedKeywords from "../BlockedKeywords";
 import BlockedCategories from "../BlockedCategories/BlockedCategories";
 
 import './LeftNavigator.scss';
-import FeatureFlags from "../../FeatureFlags";
+import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
 import Scheduler from "../Scheduler/Scheduler";
-import {IoMdClock, MdBlock, MdCalendarViewWeek, MdLightbulb, MdSearch} from "react-icons/all";
-import {colors} from "../../../styles/MuiTheme";
+import {Schedule, Block, CalendarViewWeek, Lightbulb, Search, Lock, LockClock} from "@mui/icons-material";
+import Commitment from "../Commitment/Commitment";
 
 interface LeftNavigatorProps {
 	initialRoute?: string;
@@ -37,24 +37,26 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 						</Link>
 						<div className="nav-links">
 							<Nav className="flex-column">
-								<Nav.Link as={Link} to="/"><MdBlock style={{marginRight: 12}}/> Block sites</Nav.Link>
-								{FeatureFlags.BlockKeywords &&
-                  <Nav.Link as={Link} to="/blocked-keywords"><MdSearch style={{marginRight: 12}}/>Block keywords</Nav.Link>}
-								{FeatureFlags.BlockCategories &&
-                  <Nav.Link as={Link} to="/blocked-categories"><MdCalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
-								{FeatureFlags.Schedule &&
-                  <Nav.Link as={Link} to="/schedule"><IoMdClock style={{marginRight: 12}}/>Schedule</Nav.Link>}
+								<Nav.Link as={Link} to="/"><Block style={{marginRight: 12}}/> Block sites</Nav.Link>
+								{DeveloperFeatureFlags.BlockKeywords &&
+                  <Nav.Link as={Link} to="/blocked-keywords"><Search style={{marginRight: 12}}/>Block keywords</Nav.Link>}
+								{DeveloperFeatureFlags.BlockCategories &&
+                  <Nav.Link as={Link} to="/blocked-categories"><CalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
+								{DeveloperFeatureFlags.Schedule &&
+                  <Nav.Link as={Link} to="/schedule"><LockClock style={{marginRight: 12}}/>Schedule (beta)</Nav.Link>}
+								{DeveloperFeatureFlags.Commitment &&
+                  <Nav.Link as={Link} to="/commitment"><Lock style={{marginRight: 12}}/>Commitment (beta)</Nav.Link>}
 
 							</Nav>
 						</div>
 						<div className="about-link">
-							{FeatureFlags.WeirdStuff &&
-                <Link to="/weird-stuff" className="nav-link"><MdLightbulb style={{marginRight: 12}}/>Ideas</Link>
+							{DeveloperFeatureFlags.WeirdStuff &&
+                <Link to="/weird-stuff" className="nav-link"><Lightbulb style={{marginRight: 12}}/>Ideas</Link>
 							}
 							<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 								About
 							</a>
-							<a href="mailto:info@shieldbug.com" target="_blank" rel="noopener noreferrer" className="nav-link">
+							<a href="mailto:info@shieldbug.com?subject=Shieldbug feedback" className="nav-link">
 								Feedback
 							</a>
 						</div>
@@ -66,6 +68,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
 								<Route path="/blocked-categories" element={<BlockedCategories/>}/>
 								<Route path="/schedule" element={<Scheduler/>}/>
+								<Route path="/commitment" element={<Commitment/>}/>
 								<Route path="/weird-stuff" element={<WeirdStuff/>}/>
 							</Routes>
 						</Container>
