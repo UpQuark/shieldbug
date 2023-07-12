@@ -125,30 +125,30 @@ const Commitment: React.FC = () => {
 				</CardContent>
 			</Card>
 
-			<Card sx={{marginBottom: 3}}>
-				<CardContent>
-					<Box>
-						<Typography variant="h6">Password Protection</Typography>
-						<FormControlLabel
-							control={<Switch checked={passwordProtectionEnabled} onChange={handleChangePasswordProtection}
-							                 style={{fontSize: '3rem'}}/>}
-							label="Enable"
-						/>
-					</Box>
-				</CardContent>
-			</Card>
+			{/*<Card sx={{marginBottom: 3}}>*/}
+			{/*	<CardContent>*/}
+			{/*		<Box>*/}
+			{/*			<Typography variant="h6">Password Protection</Typography>*/}
+			{/*			<FormControlLabel*/}
+			{/*				control={<Switch checked={passwordProtectionEnabled} onChange={handleChangePasswordProtection}*/}
+			{/*				                 style={{fontSize: '3rem'}}/>}*/}
+			{/*				label="Enable"*/}
+			{/*			/>*/}
+			{/*		</Box>*/}
+			{/*	</CardContent>*/}
+			{/*</Card>*/}
 
-			<Card sx={{marginBottom: 3}}>
-				<CardContent>
-					<Box>
-						<Typography variant="h6">Daily Limits</Typography>
-						<FormControlLabel
-							control={<Switch checked={dailyLimitsEnabled} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}
-							label="Enable"
-						/>
-					</Box>
-				</CardContent>
-			</Card>
+			{/*<Card sx={{marginBottom: 3}}>*/}
+			{/*	<CardContent>*/}
+			{/*		<Box>*/}
+			{/*			<Typography variant="h6">Daily Limits</Typography>*/}
+			{/*			<FormControlLabel*/}
+			{/*				control={<Switch checked={dailyLimitsEnabled} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}*/}
+			{/*				label="Enable"*/}
+			{/*			/>*/}
+			{/*		</Box>*/}
+			{/*	</CardContent>*/}
+			{/*</Card>*/}
 		</div>
 	);
 };

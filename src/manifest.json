@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ShieldBug",
+  "name": "Shieldbug",
   "version": "1.0.9",
-  "description": "Block distractions, doomscrolling and stress online",
+  "description": "Block distractions! Stop doomscrolling!",
   "icons": {
     "48": "assets/icon.png",
     "128": "assets/icon-128.png"
