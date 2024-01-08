@@ -7,8 +7,9 @@ interface FaviconProps {
 const Favicon: React.FC<FaviconProps> = ({ url }) => {
 	const getFaviconUrl = (url: string) => {
 		try {
-			const { protocol, hostname } = new URL(`https://${url}`);
-			return `${protocol}//${hostname}/favicon.ico`;
+			const {protocol, hostname} = new URL(`https://${url}`)
+			const mainDomain = hostname.split('.').slice(-2).join('.');
+			return `${protocol}//${mainDomain}/favicon.ico`;
 		} catch (error) {
 			console.error('Error getting favicon URL:', error);
 			return '';
