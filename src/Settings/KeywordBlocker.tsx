@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Container, Form, InputGroup, ListGroup } from 'react-bootstrap';
+import { Button, FormControl, Grid, TextField, List, ListItem, ListItemSecondaryAction, IconButton, ListItemText } from '@mui/material';
+import { Delete, Block } from '@mui/icons-material';
 
 const KeywordBlocker: React.FC = () => {
 	const [blockedKeywords, setBlockedKeywords] = useState<string[]>([]);
@@ -25,8 +26,7 @@ const KeywordBlocker: React.FC = () => {
 
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
-
-		const newBlockedKeywords = [...blockedKeywords, keywordInput];
+		const newBlockedKeywords = [...blockedKeywords, keywordInput].filter((kw, idx, arr) => arr.indexOf(kw) === idx);
 
 		if (!blockedKeywords.includes(keywordInput)) {
 			chrome.storage.sync.set({ blockedKeywords: newBlockedKeywords }, () => {
@@ -38,29 +38,50 @@ const KeywordBlocker: React.FC = () => {
 
 	return (
 		<>
-			<Form onSubmit={handleSubmit} className="mb-3">
-				<InputGroup>
-					<Form.Control
-						type="text"
-						value={keywordInput}
-						onChange={(e) => setKeywordInput(e.target.value)}
-						placeholder="Enter keyword to block"
-					/>
-					<Button type="submit" variant="primary" className={"text-white"}>
-						Block keyword
-					</Button>
-				</InputGroup>
-			</Form>
-			<ListGroup>
-				{blockedKeywords.map((keyword) => (
-					<ListGroup.Item key={keyword} className="d-flex justify-content-between align-items-center">
-						{keyword}
-						<Button onClick={() => deleteKeyword(keyword)} variant="outline-danger" size="sm">
-							Delete
+			<form onSubmit={handleSubmit}>
+				<Grid container spacing={0}>
+					<Grid item xs={10} md={11}>
+						<FormControl fullWidth className={"no-right-border-rounding"}>
+							<TextField
+								size="small"
+								label="Enter keyword to block"
+								value={keywordInput}
+								onChange={(e) => setKeywordInput(e.target.value)}
+							/>
+						</FormControl>
+					</Grid>
+					<Grid item xs={2} md={1} style={{ display: "flex" }}>
+						<Button
+							type="submit"
+							variant="contained"
+							color="primary"
+							aria-label="Block keyword"
+							sx={{
+								borderTopLeftRadius: 0,
+								borderBottomLeftRadius: 0,
+								width: "100%",
+								height: 40,
+								left: -1,
+								boxShadow: "none",
+							}}
+						>
+							<Block />
 						</Button>
-					</ListGroup.Item>
+					</Grid>
+				</Grid>
+			</form>
+			<List>
+				{blockedKeywords.map((keyword, index) => (
+					<ListItem key={keyword + index} dense>
+						<ListItemText primary={keyword} />
+						<ListItemSecondaryAction>
+							<IconButton edge="end" aria-label="delete" onClick={() => deleteKeyword(keyword)}>
+								<Delete />
+							</IconButton>
+						</ListItemSecondaryAction>
+					</ListItem>
 				))}
-			</ListGroup>
+			</List>
 		</>
 	);
 };
