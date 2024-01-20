@@ -51,11 +51,14 @@ const UrlBlocker: React.FC = () => {
 		event.preventDefault();
 
 		let url: string = inputUrl ? inputUrl : currentSite;
-		if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
-		const mainDomain = new URL(url).hostname.split('.').slice(-2).join('.');
+		if (!url.startsWith('http://') && !url.startsWith('https://')) {
+			url = 'https://' + url;
+		}
+
+		const domain = new URL(url).hostname;
 		const updatedBlockLists = blockLists.map((list) => {
-			if (list.id === listId && !list.urls.includes(mainDomain)) {
-				return { ...list, urls: [...list.urls, mainDomain] };
+			if (list.id === listId && !list.urls.includes(domain)) {
+				return { ...list, urls: [...list.urls, domain] };
 			}
 			return list;
 		});

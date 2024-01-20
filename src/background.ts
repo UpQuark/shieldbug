@@ -23,3 +23,11 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
+
+// Open options page on install
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === "install") {
+    // This code runs when the extension is first installed
+    chrome.runtime.openOptionsPage();
+  }
+});

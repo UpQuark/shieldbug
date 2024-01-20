@@ -1,6 +1,4 @@
-// BlockedSites.tsx
 import * as React from 'react';
-import {Badge} from "react-bootstrap";
 
 const WeirdStuff: React.FC = () => {
 	/**
@@ -11,7 +9,6 @@ const WeirdStuff: React.FC = () => {
 	return (
 		<div>
 			<h1>Weird stuff</h1>
-			<Badge>Imminent</Badge>
 			<p>
 				Do you want to help break your habit of compulsive browsing? Replace your block page with pictures of spiders.
 				This will help you either avoid compulsive habits or overcome your fear of spiders, but possibly not both.

@@ -12,11 +12,10 @@ export const isUrlBlocked = async (
 	blockedCategories: string[]
 ): Promise<boolean> => {
 	if (!url.startsWith("http://") && !url.startsWith("https://")) url = "https://" + url;
-	const hostname = new URL(url).hostname;
-	const mainDomain = hostname.split('.').slice(-2).join('.');
+	const hostname = new URL(url).hostname.replace(/^www\./, '');
 
 	// Check against blocked URLs
-	if (blockedUrls?.includes(mainDomain)) {
+	if (blockedUrls?.includes(hostname)) {
 		return true;
 	}
 
@@ -34,7 +33,7 @@ export const isUrlBlocked = async (
 			const data = await response.json();
 
 			// Check against URLs in the category
-			if (data.urls && data.urls.includes(mainDomain)) {
+			if (data.urls && data.urls.includes(hostname)) {
 				return true;
 			}
 
