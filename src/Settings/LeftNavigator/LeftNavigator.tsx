@@ -61,8 +61,12 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 							</a>
 						</div>
 					</Col>
+
+					{/* TODO: Separate file */}
 					<Col style={{boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)"}}>
 						<Container style={{padding: 24}}>
+
+
 							<Routes>
 								<Route path="*" element={<BlockedSites/>}/>
 								<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
