@@ -7,7 +7,6 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     background: "./src/background.ts",
-    content: "./src/content.ts",
     popup: "./src/Popup/popup.tsx",
     settings: "./src/Settings/settings.tsx",
     block: './src/BlockPage/block.tsx'
@@ -55,7 +54,7 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              implementation: require('node-sass'),
+              implementation: require('dart-sass'),
             },
           },
         ],

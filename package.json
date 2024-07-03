@@ -8,6 +8,9 @@
     "build": "webpack",
     "start": "webpack serve"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,11 +23,11 @@
     "@types/react-dom": "^18.0.11",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
+    "dart-sass": "^1.25.0",
     "html-webpack-plugin": "^5.5.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "json-loader": "^0.5.7",
-    "node-sass": "^8.0.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
     "ts-jest": "^29.1.1",
