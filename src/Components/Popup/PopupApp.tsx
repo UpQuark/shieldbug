@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import {Settings} from '@mui/icons-material';
 import {makeStyles} from '@mui/styles';
-import theme, {colors} from "../../styles/MuiTheme";
+import theme, {colors} from "../../../styles/MuiTheme";
 import {useEffect, useState} from "react";
 
 const useStyles = makeStyles((theme) => ({

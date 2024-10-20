@@ -7,9 +7,9 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     background: "./src/background.ts",
-    popup: "./src/Popup/popup.tsx",
-    settings: "./src/Settings/settings.tsx",
-    block: './src/BlockPage/block.tsx'
+    popup: "./src/Components/Popup/popup.tsx",
+    settings: "./src/Components/Settings/settings.tsx",
+    block: './src/Components/BlockPage/block.tsx'
 
   },
   output: {
@@ -63,17 +63,17 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/Popup/popup.html",
+      template: "./src/Components/Popup/popup.html",
       filename: "popup.html",
       chunks: ["popup"],
     }),
     new HtmlWebpackPlugin({
-      template: "./src/Settings/settings.html",
+      template: "./src/Components/Settings/settings.html",
       filename: "settings.html",
       chunks: ["settings"],
     }),
     new HtmlWebpackPlugin({
-      template: "./src/BlockPage/block.html",
+      template: "./src/Components/BlockPage/block.html",
       filename: "block.html",
       chunks: ["block"],
     }),

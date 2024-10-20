@@ -1,8 +1,8 @@
 /// <reference types="chrome"/>
 
-import {BlockList} from "./Settings/BlockedSites/BlockedSitesTypes";
-import {TimeInterval} from "./Settings/Scheduler/SchedulerTypes";
-import {isBlockScheduleActive} from "./Settings/Scheduler/TimeHelper";
+import {BlockList} from "./Components/Settings/BlockedSites/BlockedSitesTypes";
+import {TimeInterval} from "./Components/Settings/Scheduler/SchedulerTypes";
+import {isBlockScheduleActive} from "./Components/Settings/Scheduler/TimeHelper";
 import {isUrlBlocked} from "./Helpers/UrlBlockChecker";
 
 function openBlockPage() {

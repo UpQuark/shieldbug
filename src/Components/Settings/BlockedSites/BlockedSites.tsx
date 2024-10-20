@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UrlBlocker from "./UrlBlocker";
-import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
+import DeveloperFeatureFlags from "../../../Flags/DeveloperFeatureFlags";
 
 const BlockedSites: React.FC = () => {
 	return (
