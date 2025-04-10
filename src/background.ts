@@ -80,11 +80,11 @@ const newRule: chrome.declarativeNetRequest.Rule = {
   action: {
     type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
     redirect: {
-      url: "https://google.com"
+      url: "https://bing.com"
     }
   },
   condition: {
-    urlFilter: "*://*/*",
+    urlFilter: "*://*.nytimes.com/*",
     resourceTypes: [chrome.declarativeNetRequest.ResourceType.MAIN_FRAME]
   }
 };
