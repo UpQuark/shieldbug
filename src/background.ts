@@ -44,66 +44,61 @@ chrome.runtime.onInstalled.addListener(function(details) {
   }
 });
 
-// Function to add a new redirect rule dynamically
-function addRedirectRule(rule: chrome.declarativeNetRequest.Rule) {
-  chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [rule],
-    removeRuleIds: []
-  }, () => {
-    if (chrome.runtime.lastError) {
-      console.error("Error adding rule:", chrome.runtime.lastError);
-    } else {
-      console.log("Rule added successfully.");
-    }
-  });
-  console.log("Adding redirect rule")
+// Define a constant rule ID to make it easier to manage
+const NY_TIMES_RULE_ID = 1001;
+
+// Clear all existing dynamic rules and set up our rules
+async function setupRedirectRules() {
+  console.log("Setting up redirect rules...");
+  
+  try {
+    // First get existing rules
+    const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
+    console.log("Existing rules:", existingRules);
+    
+    // Get all rule IDs to remove them
+    const ruleIdsToRemove = existingRules.map(rule => rule.id);
+    console.log("Removing rule IDs:", ruleIdsToRemove);
+    
+    // Define our new rule for NYTimes
+    const nyTimesRule = {
+      id: NY_TIMES_RULE_ID,
+      priority: 1,
+      action: {
+        type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
+        redirect: {
+          url: chrome.runtime.getURL("block.html")
+        }
+      },
+      condition: {
+        urlFilter: "*://*.nytimes.com/*",
+        resourceTypes: [chrome.declarativeNetRequest.ResourceType.MAIN_FRAME]
+      }
+    };
+    
+    // Clear existing rules and add our new one
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: ruleIdsToRemove,
+      addRules: [nyTimesRule]
+    });
+    
+    // Verify rules were updated properly
+    const updatedRules = await chrome.declarativeNetRequest.getDynamicRules();
+    console.log("Rules after update:", updatedRules);
+    
+  } catch (error) {
+    console.error("Error setting up redirect rules:", error);
+  }
 }
 
-// Function to remove a rule by its ID
-// function removeRule(ruleId: number) {
-//   chrome.declarativeNetRequest.updateDynamicRules({
-//     addRules: [],
-//     removeRuleIds: [ruleId]
-//   }, () => {
-//     if (chrome.runtime.lastError) {
-//       console.error("Error removing rule:", chrome.runtime.lastError);
-//     } else {
-//       console.log("Rule removed successfully.");
-//     }
-//   });
-// }
-
-// Example usage: Add a new redirect rule
-const newRule: chrome.declarativeNetRequest.Rule = {
-  id: Math.floor(Math.random() * 10000000),
-  priority: 1,
-  action: {
-    type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
-    redirect: {
-      url: "https://bing.com"
-    }
-  },
-  condition: {
-    urlFilter: "*://*.nytimes.com/*",
-    resourceTypes: [chrome.declarativeNetRequest.ResourceType.MAIN_FRAME]
-  }
-};
-
-// Add the rule when the service worker starts
-chrome.runtime.onStartup.addListener(() => {
-  addRedirectRule(newRule);
-});
-
+// Set up rules when extension is installed or updated
 chrome.runtime.onInstalled.addListener(() => {
-  addRedirectRule(newRule);
+  console.log("Extension installed/updated - setting up redirect rules");
+  setupRedirectRules();
 });
 
-// // Listen for messages to dynamically add or remove rules
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   if (message.action === 'addRule') {
-//     addRedirectRule(message.rule);
-//   } else if (message.action === 'removeRule') {
-//     removeRule(message.ruleId);
-//   }
-//   sendResponse({ status: 'done' });
-// });
+// Set up rules when the service worker starts
+chrome.runtime.onStartup.addListener(() => {
+  console.log("Service worker starting up - setting up redirect rules");
+  setupRedirectRules();
+});
