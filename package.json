@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --config jest.config.ts",
     "build": "webpack",
+    "build:deploy": "webpack; sh scripts/deploy/addToChrome.sh",
     "start": "webpack serve"
   },
   "engines": {
