@@ -10,6 +10,7 @@ if [ ! -d "$EXTENSION_PATH" ]; then
 fi
 
 # Path to Chrome
+# TODO: Note this is Mac-only, for other OSes this could be made dynamic for other OSes.
 CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 # Create a unique profile name based on the extension name
@@ -19,10 +20,10 @@ PROFILE_DIR="/tmp/shieldbug_dev_profile"
 echo "Loading extension from $EXTENSION_PATH"
 echo "Using profile directory: $PROFILE_DIR"
 echo "Running command:"
-echo "$CHROME_PATH --user-data-dir=$PROFILE_DIR --load-extension=$EXTENSION_PATH chrome://extensions/ https://google.com"
+echo "$CHROME_PATH --user-data-dir=$PROFILE_DIR --load-extension=$EXTENSION_PATH chrome://extensions/ https://reddit.com"
 
 # Launch Chrome with extension loaded and open extensions page plus a test page
-"$CHROME_PATH" --user-data-dir="$PROFILE_DIR" --load-extension="$EXTENSION_PATH" "chrome://extensions/" "https://google.com"
+"$CHROME_PATH" --user-data-dir="$PROFILE_DIR" --load-extension="$EXTENSION_PATH" "chrome://extensions/" "https://reddit.com"
 
 echo ""
 echo "Chrome launched with the extension loaded."
