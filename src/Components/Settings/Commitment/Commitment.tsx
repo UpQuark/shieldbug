@@ -10,7 +10,7 @@ import {
 	CardContent,
 	FormLabel
 } from '@mui/material';
-import SignPost from "../../UiComponents/SignPost";
+import SignPost from "../../../Components/SignPost";
 import {useEffect} from "react";
 
 // TODO: The feature flag stuff in here is begging for a small management service

@@ -28,16 +28,18 @@ const WelcomePopover: React.FC = () => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Welcome to Our Extension!</DialogTitle>
+      <DialogTitle>Welcome to ShieldBug!</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Here's some information to get you started...
+          ShieldBug is a browser extension that helps you avoid distractions by letting you block distracting websites
+          and categories.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Close
         </Button>
+
       </DialogActions>
     </Dialog>
   );

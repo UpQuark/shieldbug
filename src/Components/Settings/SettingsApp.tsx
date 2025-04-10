@@ -1,6 +1,6 @@
 import * as React from 'react';
 import LeftNavigator from "./LeftNavigator/LeftNavigator";
-import theme from "../../styles/MuiTheme";
+import theme from "../../../styles/MuiTheme";
 import {ThemeProvider} from "@mui/material";
 import {Col, Container, Nav, Row} from "react-bootstrap";
 import {BrowserRouter as Router, Link, Route, Routes} from "react-router-dom";

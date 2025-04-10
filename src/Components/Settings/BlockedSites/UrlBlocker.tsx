@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect, useState} from "react";
 import Favicon from "./Favicon";
-import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
+import DeveloperFeatureFlags from "../../../Flags/DeveloperFeatureFlags";
 import {BlockList} from "./BlockedSitesTypes";
 import BlockListEditableName from "./components/BlockListEditableName";
 import BlockListMainRadio from "./components/BlockListMainRadio";

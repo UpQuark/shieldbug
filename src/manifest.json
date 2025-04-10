@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Shieldbug",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Block distractions! Stop doomscrolling!",
   "icons": {
     "48": "assets/icon.png",
@@ -9,7 +9,12 @@
   },
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "*://*/*"
   ],
   "web_accessible_resources": [
     {
@@ -30,19 +35,5 @@
   "options_page": "settings.html",
   "background": {
     "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "_version": "",
-  "sap.app": {},
-  "sap.ui": {}
+  }
 }

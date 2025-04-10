@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import '../Testing/chromeApiMock';
 import WelcomePopover from './WelcomePopover';
-import mockChromeStorage from "../Testing/chromeApiMock";
+import mockChromeStorage from "../../Testing/chromeApiMock";
 
 beforeAll(() => {
   // Mock chrome.storage.sync.get

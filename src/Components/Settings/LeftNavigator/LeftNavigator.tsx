@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Routes, Link, useNavigate} from 'react-r
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './LeftNavigator.scss';
-import DeveloperFeatureFlags from "../../Flags/DeveloperFeatureFlags";
+import DeveloperFeatureFlags from "../../../Flags/DeveloperFeatureFlags";
 import {Schedule, Block, CalendarViewWeek, Lightbulb, Search, Lock, LockClock} from "@mui/icons-material";
 
 interface LeftNavigatorProps {

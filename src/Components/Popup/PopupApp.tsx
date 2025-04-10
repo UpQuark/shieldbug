@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import {Settings} from '@mui/icons-material';
 import {makeStyles} from '@mui/styles';
-import theme, {colors} from "../../styles/MuiTheme";
+import theme, {colors} from "../../../styles/MuiTheme";
 import {useEffect, useState} from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +71,7 @@ const PopupApp = () => {
       deepBreathLength > 0 &&
       // Show only if there are blocks enabled, so you aren't blocked from turning them ON
       (blockedUrls?.length > 0 ||
-      blockedCategories?.length > 0)
+        blockedCategories?.length > 0)
     ) {
       setBackdropOpen(true);
       timer = setInterval(() => {
@@ -118,37 +118,47 @@ const PopupApp = () => {
             <Settings/>
           </IconButton>
         </Toolbar>
-        <Grid container spacing={1} sx={{padding: 1.5}}>
-          <Grid item xs={12}>
-            <UrlBlocker/>
-          </Grid>
-          <Grid item xs={12}>
-            <CategoryBlocker/>
-          </Grid>
 
-          <Backdrop
-            sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
-            open={backdropOpen}
-          >
-            <Box
+        <Box sx={{position: 'relative'}}>
+          <Grid container spacing={1} sx={{padding: 1.5}}>
+            <Grid item xs={12}>
+              <UrlBlocker/>
+            </Grid>
+            <Grid item xs={12}>
+              <CategoryBlocker/>
+            </Grid>
+
+            <Backdrop
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
+                color: '#fff',
+                position: 'absolute',
+                marginTop: '8px',
                 height: '100%',
-              }}
+                zIndex: (theme) => theme.zIndex.drawer + 1
+              }
+              }
+              open={backdropOpen}
             >
-              <CircularProgress color="primary"/>
-              <Typography variant="h4">
-                Take a deep breath.
-              </Typography>
-              <Typography variant="h6">
-                {countdown} {countdown === 1 ? 'second' : 'seconds'}
-              </Typography>
-            </Box>
-          </Backdrop>
-        </Grid>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <CircularProgress color="primary"/>
+                <Typography variant="h4">
+                  Take a deep breath.
+                </Typography>
+                <Typography variant="h6">
+                  {countdown} {countdown === 1 ? 'second' : 'seconds'}
+                </Typography>
+              </Box>
+            </Backdrop>
+          </Grid>
+        </Box>
       </Container>
     </ThemeProvider>
   );
