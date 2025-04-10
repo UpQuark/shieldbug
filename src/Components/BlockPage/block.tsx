@@ -7,7 +7,5 @@ const container = document.getElementById('block-root')
 // @ts-ignore
 const root = createRoot(container);
 root.render(
-  <div></div>
-
-
+  <BlockPage />
 );
