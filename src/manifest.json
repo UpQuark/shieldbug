@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Shieldbug",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Block distractions! Stop doomscrolling!",
   "icons": {
     "48": "assets/icon.png",

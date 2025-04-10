@@ -6,4 +6,8 @@ import '../../../styles/CustomTheme.scss';
 const container = document.getElementById('block-root')
 // @ts-ignore
 const root = createRoot(container);
-root.render(<BlockPage />);
+root.render(
+  <div></div>
+
+
+);
