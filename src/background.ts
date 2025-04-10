@@ -96,7 +96,7 @@ async function setupRedirectRules() {
       action: {
         type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
         redirect: {
-          url: chrome.runtime.getURL("block.html")
+          url: chrome.runtime.getURL(`block.html?blocked=${encodeURIComponent(url)}`)
         }
       },
       condition: {
