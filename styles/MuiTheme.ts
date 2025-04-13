@@ -2,11 +2,13 @@ import {createTheme} from '@mui/material/styles';
 
 export const colors = {
 	primary: '#ff9800',
-	secondary: '#ffffff',
+	secondary: '#6f7478',
 	success: '#28a745',
 	info: '#17a2b8',
 	warning: '#ffc107',
-	danger: '#dc3545'
+	danger: '#dc3545',
+	light: '#f8f9fa',
+	dark: '#343a40'
 };
 
 const theme = createTheme({
@@ -28,6 +30,14 @@ const theme = createTheme({
 		},
 		error: {
 			main: colors.danger,
+		},
+		text: {
+			primary: colors.dark,
+			secondary: colors.secondary,
+		},
+		background: {
+			default: colors.light,
+			paper: '#ffffff',
 		},
 		getContrastText: (background: string) => {
 			return '#fff';

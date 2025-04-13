@@ -19,7 +19,7 @@ const SettingsApp: React.FC = () => {
 					<Row>
 						<LeftNavigator/>
 						<WelcomePopover/>
-						<Col style={{boxShadow: "inset 8px 0px 16px -8px rgba(0, 0, 0, 0.25)", width: 'calc(100% - 261px)'}}>
+						<Col style={{width: 'calc(100% - 261px)'}}>
 							<Container style={{padding: 24}}>
 								<Routes>
 									<Route path="*" element={<BlockedSites/>}/>

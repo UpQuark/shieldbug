@@ -39,7 +39,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 			</div>
 			<div className="about-link">
 				{DeveloperFeatureFlags.WeirdStuff &&
-					<Link to="/weird-stuff" className="nav-link"><Lightbulb style={{marginRight: 12}}/>Ideas</Link>
+					<Link to="/weird-stuff" className="nav-link"><Lightbulb style={{marginRight: 12}}/>Weird Stuff</Link>
 				}
 				<a href="https://shieldbug.app" target="_blank" rel="noopener noreferrer" className="nav-link">
 					About
