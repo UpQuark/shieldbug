@@ -27,6 +27,7 @@ import {
 	Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import BlockIcon from '@mui/icons-material/Block';
 import Favicon from "./Favicon";
 
 interface PopularSite {
@@ -35,7 +36,7 @@ interface PopularSite {
 	category: string;
 }
 
-const BlockedItems: React.FC = () => {
+const BlockedItemsDialog: React.FC = () => {
 	const [open, setOpen] = React.useState(false);
 	const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 	const [blockLists, setBlockLists] = React.useState<any[]>([]);
@@ -75,6 +76,8 @@ const BlockedItems: React.FC = () => {
 	const updateBlockLists = (updatedBlockLists: any[]) => {
 		chrome.storage.sync.set({ blockLists: updatedBlockLists }, () => {
 			setBlockLists(updatedBlockLists);
+			// Notify the root page to update its blocked sites list
+			chrome.runtime.sendMessage({ type: 'UPDATE_BLOCKED_SITES', blockLists: updatedBlockLists });
 		});
 	};
 
@@ -113,6 +116,12 @@ const BlockedItems: React.FC = () => {
 			showSnackbar(`${url} is already blocked`, 'error');
 		}
 	};
+
+	const getMainBlockList = () => {
+		return blockLists.find(list => list.id === 'main') || { urls: [] };
+	};
+
+	const unblockedSites = popularSites.filter(site => !getMainBlockList().urls.includes(site.url));
 
 	return (
 		<Box sx={{ p: 3 }}>
@@ -158,7 +167,10 @@ const BlockedItems: React.FC = () => {
 						<Typography variant="h5" gutterBottom>
 							Blocked Sites
 						</Typography>
-						<UrlBlocker />
+						<UrlBlocker 
+							blockLists={blockLists}
+							onBlockListsChange={updateBlockLists}
+						/>
 					</Paper>
 				</Grid>
 			</Grid>
@@ -169,24 +181,33 @@ const BlockedItems: React.FC = () => {
 				maxWidth="lg"
 				fullWidth
 			>
-				<DialogTitle>Block a New Site</DialogTitle>
+				<DialogTitle variant={"h1"} sx={{fontSize:"2.125rem"}}>Block a New Distraction</DialogTitle>
 				<DialogContent>
 					<Grid container spacing={3}>
 						<Grid item xs={12}>
 							<Paper elevation={2} sx={{ p: 2 }}>
 								<Typography variant="h6" gutterBottom>
-									Popular Sites
+									Block popular sites
 								</Typography>
 								<Grid container spacing={2}>
-									{popularSites.map((site) => (
+									{unblockedSites.map((site) => (
 										<Grid item xs={12} sm={6} md={4} key={site.url}>
 											<Card>
 												<CardContent>
-													<Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-														<Favicon url={site.url} />
-														<Typography variant="h6" sx={{ ml: 1 }}>
-															{site.name}
-														</Typography>
+													<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+														<Box sx={{ display: 'flex', alignItems: 'center' }}>
+															<Favicon url={site.url} />
+															<Typography variant="h6" sx={{ ml: 1 }}>
+																{site.name}
+															</Typography>
+														</Box>
+														<IconButton 
+															size="small" 
+															onClick={() => handleAddSite(site.url)}
+															color="primary"
+														>
+															<AddIcon />
+														</IconButton>
 													</Box>
 													<Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
 														{site.url}
@@ -198,15 +219,6 @@ const BlockedItems: React.FC = () => {
 														variant="outlined"
 													/>
 												</CardContent>
-												<CardActions>
-													<Button 
-														size="small" 
-														startIcon={<AddIcon />}
-														onClick={() => handleAddSite(site.url)}
-													>
-														Block Site
-													</Button>
-												</CardActions>
 											</Card>
 										</Grid>
 									))}
@@ -214,7 +226,7 @@ const BlockedItems: React.FC = () => {
 							</Paper>
 						</Grid>
 						<Grid item xs={12}>
-							<Divider sx={{ my: 2 }} />
+							<Divider sx={{ my: 1 }} />
 						</Grid>
 						<Grid item xs={12}>
 							<Paper elevation={2} sx={{ p: 2 }}>
@@ -255,4 +267,4 @@ const BlockedItems: React.FC = () => {
 	);
 };
 
-export default BlockedItems; 
+export default BlockedItemsDialog; 

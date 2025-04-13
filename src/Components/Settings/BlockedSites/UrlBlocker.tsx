@@ -18,18 +18,14 @@ import {
 import {Delete} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
-const UrlBlocker: React.FC = () => {
-	const [blockLists, setBlockLists] = useState<BlockList[]>([
-		{ id: 'main', name: 'Main', urls: [], active: true },
-	]);
+interface UrlBlockerProps {
+	blockLists: BlockList[];
+	onBlockListsChange: (updatedBlockLists: BlockList[]) => void;
+}
+
+const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange }) => {
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
-
-	const updateBlockLists = (updatedBlockLists: any[]) => {
-		chrome.storage.sync.set({ blockLists: updatedBlockLists }, () => {
-			setBlockLists(updatedBlockLists);
-		});
-	};
 
 	const deleteUrl = (listId: string, urlToDelete: string) => {
 		const updatedBlockLists = blockLists.map((list) => {
@@ -38,7 +34,7 @@ const UrlBlocker: React.FC = () => {
 			}
 			return list;
 		});
-		updateBlockLists(updatedBlockLists);
+		onBlockListsChange(updatedBlockLists);
 	};
 
 	/**
@@ -63,7 +59,7 @@ const UrlBlocker: React.FC = () => {
 			return list;
 		});
 
-		updateBlockLists(updatedBlockLists);
+		onBlockListsChange(updatedBlockLists);
 	};
 
 	const addNewBlockList = () => {
@@ -72,7 +68,7 @@ const UrlBlocker: React.FC = () => {
 			...blockLists,
 			{ id: newListId, name: `List ${blockLists.length + 1}`, urls: [], active: false },
 		];
-		setBlockLists(updatedBlockLists);
+		onBlockListsChange(updatedBlockLists);
 	};
 
 	/**
@@ -88,15 +84,6 @@ const UrlBlocker: React.FC = () => {
 				setCurrentSite(pageUrl);
 			}
 			console.log('Current page URL:', pageUrl);
-		});
-	}, []);
-
-	/**
-	 * Load block lists from storage on page load
-	 */
-	useEffect(() => {
-		chrome.storage.sync.get('blockLists', (data: { blockLists?: any[] }) => {
-			setBlockLists(data.blockLists || [{ id: 'main', name: 'Main', urls: [], active: true }]);
 		});
 	}, []);
 
@@ -117,11 +104,16 @@ const UrlBlocker: React.FC = () => {
 				<div key={list.id} style={{ marginBottom: '1rem' }}>
 					<FormGroup row>
 						{DeveloperFeatureFlags.BLockSites_MultipleLists && (
-							<BlockListEditableName blockLists={blockLists} setBlockLists={setBlockLists} list={list} index={index} />
+							<BlockListEditableName 
+								blockLists={blockLists} 
+								onBlockListsChange={onBlockListsChange} 
+								list={list} 
+								index={index} 
+							/>
 						)}
 
 						{DeveloperFeatureFlags.BLockSites_MultipleLists && (
-							<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={updateBlockLists} />
+							<BlockListMainRadio list={list} blockLists={blockLists} updateBlockLists={onBlockListsChange} />
 						)}
 					</FormGroup>
 

@@ -6,7 +6,7 @@ import {IconButton, TextField} from "@mui/material";
 
 interface IEditableBlockListNameProps {
 	blockLists: BlockList[];
-	setBlockLists: React.Dispatch<React.SetStateAction<BlockList[]>>;
+	onBlockListsChange: (updatedBlockLists: BlockList[]) => void;
 	list: BlockList;
 	index: number;
 }
@@ -14,14 +14,14 @@ interface IEditableBlockListNameProps {
 /**
  * Editable block list name on click
  * @param blockLists
- * @param setBlockLists
+ * @param onBlockListsChange
  * @param list
  * @param index
  * @constructor
  */
 const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({
 	                                                                      blockLists,
-	                                                                      setBlockLists,
+	                                                                      onBlockListsChange,
 	                                                                      list,
 	                                                                      index,
                                                                       }) => {
@@ -34,12 +34,11 @@ const BlockListEditableName: React.FC<IEditableBlockListNameProps> = ({
 			{editingListName === index ? (
 				<TextField
 					type="text"
-
 					variant={"filled"}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						const updatedBlockLists = [...blockLists];
 						updatedBlockLists[index].name = e.target?.value;
-						setBlockLists(updatedBlockLists);
+						onBlockListsChange(updatedBlockLists);
 					}}
 					onBlur={() => setEditingListName(null)}
 					autoFocus

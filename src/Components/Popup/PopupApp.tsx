@@ -8,11 +8,13 @@ import {
   IconButton, ThemeProvider,
   Toolbar,
   Typography,
+  Paper,
 } from '@mui/material';
 import {Settings} from '@mui/icons-material';
 import {makeStyles} from '@mui/styles';
 import theme, {colors} from "../../../styles/MuiTheme";
 import {useEffect, useState} from "react";
+import {BlockList} from '../Settings/BlockedSites/BlockedSitesTypes';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -39,6 +41,8 @@ const PopupApp = () => {
   const [backdropOpen, setBackdropOpen] = useState(false);
   const [countdown, setCountdown] = useState(deepBreathLength);
 
+  const [blockLists, setBlockLists] = React.useState<BlockList[]>([{ id: 'main', name: 'Main', urls: [], active: true }]);
+
   const classes = useStyles();
 
   /**
@@ -51,12 +55,16 @@ const PopupApp = () => {
       'features/deepBreath/length',
       'blockedCategories',
       'blockedUrls',
+      'blockLists',
     ], (data) => {
       setDeepBreathsEnabled(data['features/deepBreath/enabled'] || false);
       setDeepBreathLength(data['features/deepBreath/length'] || 0);
       setCountdown(data['features/deepBreath/length']);
       setBlockedCategories(data.blockedCategories || []);
       setBlockedUrls(data.blockedUrls || []);
+      if (data.blockLists) {
+        setBlockLists(data.blockLists);
+      }
     });
 
   }, []);
@@ -107,6 +115,12 @@ const PopupApp = () => {
     chrome.runtime.openOptionsPage();
   };
 
+  const updateBlockLists = (updatedBlockLists: BlockList[]) => {
+    chrome.storage.sync.set({ blockLists: updatedBlockLists }, () => {
+      setBlockLists(updatedBlockLists);
+    });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth={false} sx={{width: 400, padding: 0}}>
@@ -135,7 +149,15 @@ const PopupApp = () => {
         <Box sx={{position: 'relative'}}>
           <Grid container spacing={1} sx={{padding: 1.5}}>
             <Grid item xs={12}>
-              <UrlBlocker/>
+              <Paper elevation={3} sx={{ p: 3 }}>
+                <Typography variant="h5" gutterBottom>
+                  Blocked Sites
+                </Typography>
+                <UrlBlocker 
+                  blockLists={blockLists}
+                  onBlockListsChange={updateBlockLists}
+                />
+              </Paper>
             </Grid>
             <Grid item xs={12}>
               <CategoryBlocker 
