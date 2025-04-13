@@ -10,7 +10,6 @@ module.exports = {
     popup: "./src/Components/Popup/popup.tsx",
     settings: "./src/Components/Settings/settings.tsx",
     block: './src/Components/BlockPage/block.tsx'
-
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -39,6 +38,11 @@ module.exports = {
         use: [
           {
             loader: "file-loader",
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/deterrentPictures/',
+              publicPath: 'assets/deterrentPictures/'
+            }
           },
         ],
       },
@@ -77,12 +81,20 @@ module.exports = {
       filename: "block.html",
       chunks: ["block"],
     }),
-
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'src/manifest.json', to: '.' },
-        { from: 'src/assets', to: 'assets' }
+        {
+          from: 'src/assets',
+          to: 'assets',
+          globOptions: {
+            ignore: ['**/*.scss']
+          }
+        },
+        {
+          from: 'src/assets/deterrentImages/spiders',
+          to: 'assets/deterrentImages/spiders'
+        }
       ]
-    })
+    }),
   ],
 };
