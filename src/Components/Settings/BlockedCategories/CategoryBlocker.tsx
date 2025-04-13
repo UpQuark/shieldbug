@@ -2,29 +2,12 @@ import * as React from 'react';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { CategoryTypes } from './CategoryTypes';
 
-const CategoryBlocker: React.FC = () => {
-	const [blockedCategories, setBlockedCategories] = React.useState<string[]>([]);
+interface CategoryBlockerProps {
+	blockedCategories: string[];
+	onCategoryToggle: (category: string, checked: boolean) => void;
+}
 
-	React.useEffect(() => {
-		chrome.storage.sync.get('blockedCategories', (data: { blockedCategories?: string[] }) => {
-			setBlockedCategories(data.blockedCategories || []);
-		});
-	}, []);
-
-	const handleCategoryToggle = (category: string, checked: boolean) => {
-		let updatedBlockedCategories: any;
-
-		if (checked) {
-			updatedBlockedCategories = [...blockedCategories, category];
-		} else {
-			updatedBlockedCategories = blockedCategories.filter((c) => c !== category);
-		}
-
-		chrome.storage.sync.set({ blockedCategories: updatedBlockedCategories }, () => {
-			setBlockedCategories(updatedBlockedCategories);
-		});
-	};
-
+const CategoryBlocker: React.FC<CategoryBlockerProps> = ({ blockedCategories, onCategoryToggle }) => {
 	return (
 		<FormGroup>
 			{CategoryTypes.map((category) => (
@@ -34,7 +17,7 @@ const CategoryBlocker: React.FC = () => {
 						<Switch
 							checked={blockedCategories.includes(category.value)}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-								handleCategoryToggle(category.value, e.target.checked)
+								onCategoryToggle(category.value, e.target.checked)
 							}
 						/>
 					}

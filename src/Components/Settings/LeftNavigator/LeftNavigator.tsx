@@ -30,8 +30,6 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 					<Nav.Link as={Link} to="/"><Block style={{marginRight: 12}}/> Block sites</Nav.Link>
 					{DeveloperFeatureFlags.BlockKeywords &&
 						<Nav.Link as={Link} to="/blocked-keywords"><Search style={{marginRight: 12}}/>Block keywords</Nav.Link>}
-					{DeveloperFeatureFlags.BlockCategories &&
-						<Nav.Link as={Link} to="/blocked-categories"><CalendarViewWeek style={{marginRight: 12}}/>Block categories</Nav.Link>}
 					{DeveloperFeatureFlags.Schedule &&
 						<Nav.Link as={Link} to="/schedule"><LockClock style={{marginRight: 12}}/>Schedule</Nav.Link>}
 					{DeveloperFeatureFlags.Commitment &&
