@@ -25,4 +25,6 @@ This is NOT a showcase of enterprisey code, it's hobby / hackathon-level code wi
 ## Version Notes
 ### 1.0.12
 - Thought to start doing release notes
+- Added "Deterrent mode" which lets you have the block page show pictures of giant spiders, to deter you from checking distracting sites
+- Added a counter that shows how many distractions ShieldBug has blocked for you since you installed it. Increments once per visit to a blocked website.
 - Refactored from blocking sites in a `content.ts` script that loads on page load to blocking sites via a `chrome.runtime.onMessage` listener, so you can't load glimpses of pages before they're blocked, and to fix a bug where opening pages in a new tab showed the block page on the old tab.
