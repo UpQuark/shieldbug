@@ -15,16 +15,11 @@ const SettingsApp: React.FC = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Router>
-				<Container fluid>
+				<Container fluid style={{ paddingLeft: '261px', width: '100%' }}>
 					<Row>
-
 						<LeftNavigator/>
-
 						<WelcomePopover/>
-
-						<Col style={{boxShadow: "inset 8px 0px 16px -14px rgba(0, 0, 0, 0.25)"}}>
-
-
+						<Col style={{boxShadow: "inset 8px 0px 16px -8px rgba(0, 0, 0, 0.25)", width: 'calc(100% - 261px)'}}>
 							<Container style={{padding: 24}}>
 								<Routes>
 									<Route path="*" element={<BlockedSites/>}/>
