@@ -4,7 +4,7 @@ import theme from "../../../styles/MuiTheme";
 import {ThemeProvider} from "@mui/material";
 import {Col, Container, Nav, Row} from "react-bootstrap";
 import {BrowserRouter as Router, Link, Route, Routes} from "react-router-dom";
-import BlockedSites from "./BlockedSites/BlockedSites";
+import BlockedSites from "./BlockedSites/BlockedItems";
 import BlockedKeywords from "./BlockedKeywords";
 import BlockedCategories from "./BlockedCategories/BlockedCategories";
 import Scheduler from "./Scheduler/Scheduler";
@@ -30,7 +30,6 @@ const SettingsApp: React.FC = () => {
 								<Routes>
 									<Route path="*" element={<BlockedSites/>}/>
 									<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
-									<Route path="/blocked-categories" element={<BlockedCategories/>}/>
 									<Route path="/schedule" element={<Scheduler/>}/>
 									<Route path="/commitment" element={<Commitment/>}/>
 									<Route path="/weird-stuff" element={<WeirdStuff/>}/>

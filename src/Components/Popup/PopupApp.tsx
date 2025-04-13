@@ -89,6 +89,19 @@ const PopupApp = () => {
     return () => clearInterval(timer);
   }, [deepBreathsEnabled, deepBreathLength]);
 
+  const handleCategoryToggle = (category: string, checked: boolean) => {
+    let updatedBlockedCategories: string[];
+
+    if (checked) {
+      updatedBlockedCategories = [...blockedCategories, category];
+    } else {
+      updatedBlockedCategories = blockedCategories.filter((c) => c !== category);
+    }
+
+    chrome.storage.sync.set({ blockedCategories: updatedBlockedCategories }, () => {
+      setBlockedCategories(updatedBlockedCategories);
+    });
+  };
 
   const openSettingsPage = () => {
     chrome.runtime.openOptionsPage();
@@ -125,7 +138,10 @@ const PopupApp = () => {
               <UrlBlocker/>
             </Grid>
             <Grid item xs={12}>
-              <CategoryBlocker/>
+              <CategoryBlocker 
+                blockedCategories={blockedCategories}
+                onCategoryToggle={handleCategoryToggle}
+              />
             </Grid>
 
             <Backdrop

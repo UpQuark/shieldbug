@@ -1,0 +1,79 @@
+{
+  "popularSites": [
+    {
+      "name": "Facebook",
+      "url": "facebook.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "Twitter",
+      "url": "twitter.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "Instagram",
+      "url": "instagram.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "Reddit",
+      "url": "reddit.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "YouTube",
+      "url": "youtube.com",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Netflix",
+      "url": "netflix.com",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Amazon",
+      "url": "amazon.com",
+      "category": "Shopping"
+    },
+    {
+      "name": "eBay",
+      "url": "ebay.com",
+      "category": "Shopping"
+    },
+    {
+      "name": "TikTok",
+      "url": "tiktok.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "Pinterest",
+      "url": "pinterest.com",
+      "category": "Social Media"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "linkedin.com",
+      "category": "Professional"
+    },
+    {
+      "name": "Hulu",
+      "url": "hulu.com",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Disney+",
+      "url": "disneyplus.com",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Etsy",
+      "url": "etsy.com",
+      "category": "Shopping"
+    },
+    {
+      "name": "Walmart",
+      "url": "walmart.com",
+      "category": "Shopping"
+    }
+  ]
+} 
