@@ -8,22 +8,18 @@ import {
 	TextField,
 	Card,
 	CardContent,
-	FormLabel
+	FormLabel,
+	Paper
 } from '@mui/material';
-import SignPost from "../../../Components/SignPost";
-import {useEffect} from "react";
-
-// TODO: The feature flag stuff in here is begging for a small management service
+import { useEffect } from "react";
 
 /**
  * Settings for "commitment" features like 'deep breaths' (timed lockout), password protection, and daily view limits
- * @constructor
  */
 const Commitment: React.FC = () => {
 	const [deepBreathEnabled, setDeepBreathEnabled] = React.useState(false);
 	const [passwordProtectionEnabled, setPasswordProtection] = React.useState(false);
 	const [dailyLimitsEnabled, setDailyLimitsEnabled] = React.useState(false);
-
 	const [deepBreathLength, setDeepBreathLength] = React.useState<number>();
 
 	/**
@@ -38,11 +34,6 @@ const Commitment: React.FC = () => {
 		});
 	}, []);
 
-
-	/**
-	 * Save setting to storage
-	 * @param event
-	 */
 	const handleChangeDeepBreath = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setDeepBreathEnabled(event.target.checked);
 		chrome.storage.sync.set({
@@ -50,10 +41,6 @@ const Commitment: React.FC = () => {
 		});
 	};
 
-	/**
-	 * Save setting to storage
-	 * @param event
-	 */
 	const handleChangePasswordProtection = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPasswordProtection(event.target.checked);
 		chrome.storage.sync.set({
@@ -61,10 +48,6 @@ const Commitment: React.FC = () => {
 		})
 	};
 
-	/**
-	 * Save setting to storage
-	 * @param event
-	 */
 	const handleChangeDailyLimits = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setDailyLimitsEnabled(event.target.checked);
 		chrome.storage.sync.set({
@@ -72,10 +55,6 @@ const Commitment: React.FC = () => {
 		})
 	};
 
-	/**
-	 * Save setting to storage
-	 * @param event
-	 */
 	const handleChangeTime = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = Number(event.target.value);
 		if (newValue >= 0 && newValue <= 99) {
@@ -87,69 +66,78 @@ const Commitment: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<h1>Commitment</h1>
-			{/*<SignPost>*/}
-			{/*	<h2 style={{color: 'white'}}>Interdict distractions.</h2>*/}
-			{/*</SignPost>*/}
-
-			<Typography variant="body1" sx={{ fontWeight: '700', marginBottom: 3 }}>
-				Commit yourself to blocking distractions! These optional features to help you stay focused and avoid circumventing
-				your distraction blocking.
+		<Box sx={{ p: 3 }}>
+			<Typography variant="h4" component="h1" gutterBottom>
+				Commitment
+			</Typography>
+			<Typography variant="body1" paragraph>
+				Commit yourself to blocking distractions! These optional features help you stay focused 
+				and avoid circumventing your distraction blocking.
 			</Typography>
 
-			<Card sx={{marginBottom: 3}}>
-				<CardContent>
-					<Box>
-						<h3>Deep Breath</h3>
-						<p>
-							Set a countdown timer that locks you out of settings for a duration. Give yourself time to take a deep breath
-							and turn back.
-						</p>
+			<Paper elevation={3} sx={{ p: 3 }}>
+				<Typography variant="h5" gutterBottom>
+					Commitment Settings
+				</Typography>
+				
+				<Card sx={{ mb: 3 }}>
+					<CardContent>
+						<Typography variant="h6" gutterBottom>Deep Breath</Typography>
+						<Typography variant="body2" color="text.secondary" paragraph>
+							Set a countdown timer that locks you out of settings for a duration. 
+							Give yourself time to take a deep breath and turn back.
+						</Typography>
 						<FormControlLabel
-							control={<Switch checked={deepBreathEnabled} onChange={handleChangeDeepBreath} style={{fontSize: '3rem'}}/>}
+							control={<Switch checked={deepBreathEnabled} onChange={handleChangeDeepBreath} />}
 							label="Enable"
 						/>
-						{deepBreathEnabled &&
-							<div>
-                <FormLabel component="legend">Countdown length</FormLabel>
-                <TextField
-                  type="number"
-                  label="Seconds"
-                  value={deepBreathLength}
-                  onChange={handleChangeTime}
-                />
-							</div>
-						}
-					</Box>
-				</CardContent>
-			</Card>
+						{deepBreathEnabled && (
+							<Box sx={{ mt: 2 }}>
+								<FormLabel component="legend">Countdown length</FormLabel>
+								<TextField
+									type="number"
+									label="Seconds"
+									value={deepBreathLength}
+									onChange={handleChangeTime}
+									variant="outlined"
+									size="small"
+									sx={{ mt: 1 }}
+								/>
+							</Box>
+						)}
+					</CardContent>
+				</Card>
+				
+				{/* Commented out features that might be added later */}
+				{/*
+				<Card sx={{marginBottom: 3}}>
+					<CardContent>
+						<Typography variant="h6" gutterBottom>Password Protection</Typography>
+						<Typography variant="body2" color="text.secondary" paragraph>
+							Protect your settings with a password to prevent impulsive changes.
+						</Typography>
+						<FormControlLabel
+							control={<Switch checked={passwordProtectionEnabled} onChange={handleChangePasswordProtection} />}
+							label="Enable"
+						/>
+					</CardContent>
+				</Card>
 
-			{/*<Card sx={{marginBottom: 3}}>*/}
-			{/*	<CardContent>*/}
-			{/*		<Box>*/}
-			{/*			<Typography variant="h6">Password Protection</Typography>*/}
-			{/*			<FormControlLabel*/}
-			{/*				control={<Switch checked={passwordProtectionEnabled} onChange={handleChangePasswordProtection}*/}
-			{/*				                 style={{fontSize: '3rem'}}/>}*/}
-			{/*				label="Enable"*/}
-			{/*			/>*/}
-			{/*		</Box>*/}
-			{/*	</CardContent>*/}
-			{/*</Card>*/}
-
-			{/*<Card sx={{marginBottom: 3}}>*/}
-			{/*	<CardContent>*/}
-			{/*		<Box>*/}
-			{/*			<Typography variant="h6">Daily Limits</Typography>*/}
-			{/*			<FormControlLabel*/}
-			{/*				control={<Switch checked={dailyLimitsEnabled} onChange={handleChangeDailyLimits} style={{fontSize: '3rem'}}/>}*/}
-			{/*				label="Enable"*/}
-			{/*			/>*/}
-			{/*		</Box>*/}
-			{/*	</CardContent>*/}
-			{/*</Card>*/}
-		</div>
+				<Card sx={{marginBottom: 3}}>
+					<CardContent>
+						<Typography variant="h6" gutterBottom>Daily Limits</Typography>
+						<Typography variant="body2" color="text.secondary" paragraph>
+							Set daily time limits for accessing blocked sites.
+						</Typography>
+						<FormControlLabel
+							control={<Switch checked={dailyLimitsEnabled} onChange={handleChangeDailyLimits} />}
+							label="Enable"
+						/>
+					</CardContent>
+				</Card>
+				*/}
+			</Paper>
+		</Box>
 	);
 };
 
