@@ -5,14 +5,14 @@ import {
   Backdrop, Box, CircularProgress,
   Container,
   Grid,
-  IconButton, ThemeProvider,
+  IconButton, ThemeProvider, useTheme,
   Toolbar,
   Typography,
   Paper,
 } from '@mui/material';
 import {Settings} from '@mui/icons-material';
 import {makeStyles} from '@mui/styles';
-import theme, {colors} from "../../../styles/MuiTheme";
+import theme from "../../../styles/MuiTheme";
 import {useEffect, useState} from "react";
 import {BlockList} from '../Settings/BlockedSites/BlockedSitesTypes';
 
@@ -124,7 +124,7 @@ const PopupApp = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth={false} sx={{width: 400, padding: 0}}>
-        <Toolbar className={classes.toolbar} style={{backgroundColor: colors.primary}}>
+        <Toolbar className={classes.toolbar} sx={{ backgroundColor: 'primary.main' }}>
           <img
             src={chrome.runtime.getURL('assets/icon-128.png')}
             alt="Shieldbug"

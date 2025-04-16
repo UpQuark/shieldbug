@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Switch, FormControlLabel, Card, CardContent, Typography, Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { ThemeContext } from './SettingsApp';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 
-const WeirdStuff: React.FC = () => {
+const ExtraSettings: React.FC = () => {
 	const [isDeterrentEnabled, setIsDeterrentEnabled] = useState(false);
-	const [themeMode, setThemeMode] = useState<ThemeMode>('system');
+	const { currentTheme, setThemeMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		// Load settings from storage
-		chrome.storage.sync.get(['isDeterrentEnabled', 'themeMode'], (data) => {
+		chrome.storage.sync.get(['isDeterrentEnabled'], (data) => {
 			setIsDeterrentEnabled(data.isDeterrentEnabled || false);
-			setThemeMode((data.themeMode as ThemeMode) || 'system');
 		});
 	}, []);
 
@@ -24,21 +24,9 @@ const WeirdStuff: React.FC = () => {
 
 	const handleThemeChange = (event: SelectChangeEvent) => {
 		const newThemeMode = event.target.value as ThemeMode;
+		
+		// Use the context function to update the theme
 		setThemeMode(newThemeMode);
-		
-		// Save to storage
-		chrome.storage.sync.set({ themeMode: newThemeMode });
-		
-		// Apply theme immediately
-		localStorage.setItem('themeMode', newThemeMode);
-		
-		// If system, check the system preference
-		if (newThemeMode === 'system') {
-			localStorage.removeItem('themeMode');
-		}
-		
-		// Force a refresh to apply the theme
-		window.location.reload();
 	};
 
 	return (
@@ -55,7 +43,7 @@ const WeirdStuff: React.FC = () => {
 						<Select
 							labelId="theme-mode-label"
 							id="theme-mode-select"
-							value={themeMode}
+							value={currentTheme}
 							label="Theme Mode"
 							onChange={handleThemeChange}
 						>
@@ -92,4 +80,4 @@ const WeirdStuff: React.FC = () => {
 	);
 };
 
-export default WeirdStuff;
+export default ExtraSettings;

@@ -6,7 +6,7 @@ const DeveloperFeatureFlags = {
 	BlockCategories: true,
 	Schedule: true,
 	Commitment: true,
-	WeirdStuff: true,
+	ExtraSettings: true,
 }
 
 export default DeveloperFeatureFlags;

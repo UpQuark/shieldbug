@@ -34,7 +34,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 	return (
 		<Box 
 			sx={{
-				backgroundColor: theme.palette.mode === 'light' ? 'primary.main' : 'background.paper',
+				backgroundColor: theme.palette.custom.sidebar,
 				height: '100vh',
 				borderRight: 1,
 				borderColor: 'divider',
@@ -152,11 +152,11 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 			</Box>
 			
 			<Box sx={{ mb: 2.5, display: 'flex', flexDirection: 'column' }}>
-				{DeveloperFeatureFlags.WeirdStuff && (
+				{DeveloperFeatureFlags.ExtraSettings && (
 					<ListItem disablePadding>
 						<ListItemButton 
 							component={Link} 
-							to="/weird-stuff"
+							to="/extra-settings"
 							sx={listItemButtonStyles}
 						>
 							<ListItemIcon sx={listItemIconStyles}>
