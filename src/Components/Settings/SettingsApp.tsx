@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, createContext, useMemo } from 'react';
 import LeftNavigator from "./LeftNavigator/LeftNavigator";
-import { createTheme, ThemeProvider, Box } from "@mui/material";
+import { createTheme, ThemeProvider, Box, CssBaseline } from "@mui/material";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import BlockedSites from "./BlockedSites/BlockedItemsDialog";
 import BlockedKeywords from "./BlockedKeywords";
@@ -85,31 +85,38 @@ const SettingsApp: React.FC = () => {
 	return (
 		<ThemeContext.Provider value={themeContextValue}>
 			<ThemeProvider theme={theme}>
-				<Router>
-					<Box sx={{ 
-						display: 'flex', 
-						width: '100%',
-						boxSizing: 'border-box',
-						position: 'relative'
-					}}>
-						<LeftNavigator/>
-						<WelcomePopover/>
+				<CssBaseline />
+				<Box sx={{ 
+					bgcolor: 'background.default',
+					minHeight: '100vh',
+					color: 'text.primary'
+				}}>
+					<Router>
 						<Box sx={{ 
-							width: 'calc(100% - 261px)', 
-							marginLeft: '261px', 
-							padding: 3,
-							boxSizing: 'border-box'
+							display: 'flex', 
+							width: '100%',
+							boxSizing: 'border-box',
+							position: 'relative'
 						}}>
-							<Routes>
-								<Route path="*" element={<BlockedSites/>}/>
-								<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
-								<Route path="/schedule" element={<Scheduler/>}/>
-								<Route path="/commitment" element={<Commitment/>}/>
-								<Route path="/extra-settings" element={<ExtraSettings/>}/>
-							</Routes>
+							<LeftNavigator/>
+							<WelcomePopover/>
+							<Box sx={{ 
+								width: 'calc(100% - 261px)', 
+								marginLeft: '261px', 
+								padding: 3,
+								boxSizing: 'border-box'
+							}}>
+								<Routes>
+									<Route path="*" element={<BlockedSites/>}/>
+									<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
+									<Route path="/schedule" element={<Scheduler/>}/>
+									<Route path="/commitment" element={<Commitment/>}/>
+									<Route path="/extra-settings" element={<ExtraSettings/>}/>
+								</Routes>
+							</Box>
 						</Box>
-					</Box>
-				</Router>
+					</Router>
+				</Box>
 			</ThemeProvider>
 		</ThemeContext.Provider>
 	);
