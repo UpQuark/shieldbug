@@ -1,6 +1,6 @@
-import {FormCheck, OverlayTrigger, Tooltip} from "react-bootstrap";
 import * as React from "react";
-import {BlockList} from "../BlockedSitesTypes";
+import { Radio, FormControlLabel, Tooltip } from "@mui/material";
+import { BlockList } from "../BlockedSitesTypes";
 
 interface IBlockListMainRadioProps {
 	list: BlockList
@@ -26,24 +26,20 @@ const BlockListMainRadio: React.FC<IBlockListMainRadioProps> = ({list, blockList
 	};
 
 	return (
-		<OverlayTrigger
-			key="main-tooltip"
-			placement="top"
-			overlay={
-				<Tooltip id={`tooltip-main`}>
-					Some example text
-				</Tooltip>
-			}
-		>
-			<FormCheck
-				type="radio"
-				name="mainList"
-				checked={list.active}
-				value={list.id}
-				onChange={handleRadioChange}
+		<Tooltip title="Some example text" placement="top">
+			<FormControlLabel
+				control={
+					<Radio
+						checked={list.active}
+						value={list.id}
+						onChange={handleRadioChange}
+						name="mainList"
+						size="small"
+					/>
+				}
 				label="Main"
 			/>
-		</OverlayTrigger>
+		</Tooltip>
 	)
 }
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {createRoot} from "react-dom/client";
 import BlockPage from "./BlockPage";
-import '../../../styles/CustomTheme.scss';
 import { incrementBlockCount, initBlockedCounters } from '../../Helpers/BlockedCounter';
 
 // Check if we should count this block

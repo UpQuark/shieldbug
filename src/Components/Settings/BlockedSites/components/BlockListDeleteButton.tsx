@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Button} from "react-bootstrap";
-import {Delete} from"@mui/icons-material";
-import {useState} from "react";
-import {BlockList} from "../BlockedSitesTypes";
+import { Button } from "@mui/material";
+import { Delete } from"@mui/icons-material";
+import { useState } from "react";
+import { BlockList } from "../BlockedSitesTypes";
 
 interface IBlockListDeleteButtonProps {
 	list: BlockList
@@ -34,22 +34,23 @@ const BlockListDeleteButton: React.FC<IBlockListDeleteButtonProps> = ({list, blo
 		<>
 			{listToDelete === list.id ? (
 				<Button
-					variant="danger"
-					size="sm"
-					className="ms-2"
+					variant="contained"
+					color="error"
+					size="small"
+					sx={{ ml: 1 }}
 					onClick={() => deleteList(list.id, true)}
 				>
 					Confirm
 				</Button>
 			) : (
 				<Button
-					variant="outline-danger"
-					size="sm"
-					className="ms-2"
+					variant="outlined"
+					color="error"
+					size="small"
+					sx={{ ml: 1 }}
 					onClick={() => deleteList(list.id, false)}
-				>
-					<Delete />
-				</Button>
+					startIcon={<Delete />}
+				/>
 			)}
 		</>
 	)
