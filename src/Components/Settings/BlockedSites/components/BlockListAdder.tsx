@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Button, FormControl, Grid, TextField} from "@mui/material";
 import {useState} from "react";
 import {BlockList} from "../BlockedSitesTypes";
-import './BlockListAdder.scss'
 import {Block} from "@mui/icons-material";
 
 interface IBlockListAdderProps {

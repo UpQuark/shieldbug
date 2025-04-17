@@ -1,4 +1,6 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
+// Import the fonts CSS file instead of direct TTF import
+import './fonts.css';
 
 // Extend the Palette interface to include custom properties
 declare module '@mui/material/styles' {
@@ -86,39 +88,93 @@ const getDesignTokens = (mode: 'light' | 'dark'): ThemeOptions => {
 		},
 		typography: {
 			fontFamily: 'Quicksand, sans-serif',
+			fontSize: 16,
+			fontWeightLight: 400,
+			fontWeightRegular: 500,
+			fontWeightMedium: 600,
+			fontWeightBold: 700,
 			h1: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '2.5rem',
 			},
 			h2: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '2rem',
 			},
 			h3: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '1.75rem',
 			},
 			h4: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '1.5rem',
 			},
 			h5: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '1.25rem',
 			},
 			h6: {
+				fontFamily: 'Quicksand, sans-serif',
 				fontWeight: 700,
 				color: colors.primary,
+				fontSize: '1rem',
+			},
+			button: {
+				fontFamily: 'Quicksand, sans-serif',
+				fontWeight: 600,
+			},
+			subtitle1: {
+				fontFamily: 'Quicksand, sans-serif',
+				fontSize: '1rem',
+			},
+			subtitle2: {
+				fontFamily: 'Quicksand, sans-serif',
+				fontSize: '0.875rem',
+				fontWeight: 500,
+			},
+			body1: {
+				fontFamily: 'Quicksand, sans-serif',
+				fontSize: '1rem',
+			},
+			body2: {
+				fontFamily: 'Quicksand, sans-serif',
+				fontSize: '0.875rem',
 			},
 		},
 		components: {
+			MuiCssBaseline: {
+				styleOverrides: {
+					'@global': {
+						'*': {
+							fontFamily: 'Quicksand, sans-serif',
+						},
+						html: {
+							fontFamily: 'Quicksand, sans-serif',
+						},
+						body: {
+							fontFamily: 'Quicksand, sans-serif',
+						},
+					},
+				},
+			},
 			MuiButton: {
 				styleOverrides: {
 					root: {
 						textTransform: 'none',
 						color: mode === 'light' ? 'white' : '#ffffff',
 						fontWeight: 700,
-						fontSize: 19
+						fontSize: 19,
+						fontFamily: 'Quicksand, sans-serif',
 					},
 					outlined: {
 						color: colors.primary,
@@ -137,6 +193,23 @@ const getDesignTokens = (mode: 'light' | 'dark'): ThemeOptions => {
 					root: {
 						backgroundColor: colors.paper,
 						color: mode === 'light' ? colors.dark : '#ffffff',
+					}
+				}
+			},
+			MuiTypography: {
+				styleOverrides: {
+					root: {
+						fontFamily: 'Quicksand, sans-serif',
+					}
+				}
+			},
+			MuiListItemText: {
+				styleOverrides: {
+					primary: {
+						fontFamily: 'Quicksand, sans-serif',
+					},
+					secondary: {
+						fontFamily: 'Quicksand, sans-serif',
 					}
 				}
 			}
