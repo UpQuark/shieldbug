@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
-import {colors} from "../../styles/MuiTheme";
+import { makeStyles, useTheme } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	signpost: {
-		backgroundColor: colors.info,
 		borderRadius: '0 16px 16px 0',
 		marginLeft: '-2.3rem',
 		padding: '0.8rem',
@@ -18,9 +17,10 @@ interface SignPostProps {
 
 const SignPost: React.FC<SignPostProps> = ({ children }) => {
 	const classes = useStyles();
+	const theme = useTheme<Theme>();
 
 	return (
-		<div className={classes.signpost}>
+		<div className={classes.signpost} style={{ backgroundColor: theme.palette.info.main }}>
 			{children}
 		</div>
 	);
