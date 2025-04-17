@@ -9,41 +9,74 @@ import {
   Toolbar,
   Typography,
   Paper,
+  CssBaseline,
 } from '@mui/material';
 import {Settings} from '@mui/icons-material';
-import {makeStyles} from '@mui/styles';
-import theme from "../../../styles/MuiTheme";
+import { createTheme, Theme } from '@mui/material/styles';
 import {useEffect, useState} from "react";
 import {BlockList} from '../Settings/BlockedSites/BlockedSitesTypes';
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    height: 35,
-    marginRight: 0
-  },
-  title: {
-    marginTop: 0,
-    flexGrow: 1,
-    fontWeight: 'bold',
-  },
-  toolbar: {
-    paddingRight: 0,
-  },
-}));
+import { getDesignTokens } from "../../../styles/MuiTheme";
 
 const PopupApp = () => {
   const [deepBreathsEnabled, setDeepBreathsEnabled] = useState(false);
-  const [deepBreathLength, setDeepBreathLength] = useState(0); // [seconds
-
+  const [deepBreathLength, setDeepBreathLength] = useState(0); // [seconds]
   const [blockedCategories, setBlockedCategories] = useState<string[]>([]);
   const [blockedUrls, setBlockedUrls] = useState<string[]>([]);
-
   const [backdropOpen, setBackdropOpen] = useState(false);
   const [countdown, setCountdown] = useState(deepBreathLength);
-
   const [blockLists, setBlockLists] = React.useState<BlockList[]>([{ id: 'main', name: 'Main', urls: [], active: true }]);
+  
+  // Track theme mode
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  
+  // Create theme dynamically
+  const theme = React.useMemo(() => {
+    return createTheme(getDesignTokens(mode));
+  }, [mode]);
 
-  const classes = useStyles();
+  // Load theme preference on mount
+  useEffect(() => {
+    chrome.storage.sync.get(['themeMode'], (data) => {
+      if (data.themeMode === 'light' || data.themeMode === 'dark') {
+        setMode(data.themeMode);
+      } else if (data.themeMode === 'system' || !data.themeMode) {
+        // Use system preference
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(prefersDarkMode ? 'dark' : 'light');
+      }
+    });
+    
+    // Listen for system preference changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      chrome.storage.sync.get(['themeMode'], (data) => {
+        if (data.themeMode === 'system' || !data.themeMode) {
+          setMode(e.matches ? 'dark' : 'light');
+        }
+      });
+    };
+    
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+  }, []);
+  
+  // Listen for storage changes (e.g. when theme is changed in settings)
+  useEffect(() => {
+    const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }, areaName: string) => {
+      if (areaName === 'sync' && changes.themeMode) {
+        const newThemeMode = changes.themeMode.newValue;
+        if (newThemeMode === 'system') {
+          const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          setMode(prefersDarkMode ? 'dark' : 'light');
+        } else if (newThemeMode === 'light' || newThemeMode === 'dark') {
+          setMode(newThemeMode);
+        }
+      }
+    };
+    
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+  }, []);
 
   /**
    * Load 'deep breath' settings from storage
@@ -66,7 +99,6 @@ const PopupApp = () => {
         setBlockLists(data.blockLists);
       }
     });
-
   }, []);
 
   /**
@@ -123,30 +155,41 @@ const PopupApp = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Container maxWidth={false} sx={{width: 400, padding: 0}}>
-        <Toolbar className={classes.toolbar} sx={{ backgroundColor: 'primary.main' }}>
+        <Toolbar sx={{ 
+          backgroundColor: 'primary.main',
+          paddingRight: 0 
+        }}>
           <img
             src={chrome.runtime.getURL('assets/icon-128.png')}
             alt="Shieldbug"
-            className={`${classes.icon}`}
             style={{
-              filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))",
-              marginRight: 8
+              height: 35,
+              marginRight: 8,
+              filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))"
             }}
           />
-          <Typography variant="h5" className={classes.title} style={{color: "white"}}>
+          <Typography 
+            variant="h5" 
+            sx={{
+              marginTop: 0,
+              flexGrow: 1,
+              fontWeight: 'bold',
+              color: "white"
+            }}
+          >
             ShieldBug
           </Typography>
           <IconButton
             onClick={openSettingsPage}
             color="inherit"
-            style={{color: "white"}}
           >
             <Settings/>
           </IconButton>
         </Toolbar>
 
-        <Box sx={{position: 'relative'}}>
+        <Box sx={{position: 'relative', bgcolor: 'background.default'}}>
           <Grid container spacing={1} sx={{padding: 1.5}}>
             <Grid item xs={12}>
               <Paper elevation={3} sx={{ p: 3 }}>
@@ -173,8 +216,7 @@ const PopupApp = () => {
                 marginTop: '8px',
                 height: '100%',
                 zIndex: (theme) => theme.zIndex.drawer + 1
-              }
-              }
+              }}
               open={backdropOpen}
             >
               <Box
