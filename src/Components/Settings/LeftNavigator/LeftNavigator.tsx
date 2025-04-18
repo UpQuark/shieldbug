@@ -80,7 +80,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								sx: { 
 									fontSize: '1.5rem',
 									fontWeight: 700,
-									color: 'white'
+									color: theme.palette.mode === 'dark' ? 'primary.main' : 'white'
 								}
 							}} 
 						/>

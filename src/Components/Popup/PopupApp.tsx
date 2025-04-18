@@ -206,6 +206,7 @@ const PopupApp = () => {
               <CategoryBlocker 
                 blockedCategories={blockedCategories}
                 onCategoryToggle={handleCategoryToggle}
+                title="Blocked Categories"
               />
             </Grid>
 

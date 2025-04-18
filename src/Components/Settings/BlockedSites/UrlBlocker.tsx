@@ -131,11 +131,48 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange 
 					{/* URL List */}
 					<List>
 						{list.urls.map((url) => (
-							<ListItem key={url} dense>
-								<Favicon url={url} />
-								<ListItemText primary={url} />
+							<ListItem 
+								key={url} 
+								sx={{
+									py: 1.5, 
+									px: 2,
+									mb: 1,
+									border: '1px solid',
+									borderColor: 'divider',
+									borderRadius: 1,
+									bgcolor: 'background.paper',
+									'&:hover': {
+										bgcolor: 'action.hover',
+										'& .deleteButton': {
+											color: 'error.main',
+											opacity: 1
+										}
+									},
+									transition: 'all 0.2s ease'
+								}}
+							>
+								<Favicon url={url} size={28} />
+								<ListItemText 
+									primary={url}
+									primaryTypographyProps={{
+										sx: { 
+											fontWeight: 500, 
+											fontSize: '1.05rem',
+											color: 'text.primary' 
+										}
+									}}
+								/>
 								<ListItemSecondaryAction>
-									<IconButton edge="end" aria-label="delete" onClick={() => deleteUrl(list.id, url)}>
+									<IconButton 
+										edge="end" 
+										aria-label="delete" 
+										onClick={() => deleteUrl(list.id, url)}
+										className="deleteButton"
+										sx={{ 
+											opacity: 0.7,
+											transition: 'all 0.2s ease'
+										}}
+									>
 										<Delete />
 									</IconButton>
 								</ListItemSecondaryAction>
