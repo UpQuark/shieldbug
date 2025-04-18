@@ -17,18 +17,53 @@ import {
 	Typography,
 	Box,
 	Divider,
+	Collapse,
+	Badge
 } from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import {Delete, ExpandMore, ExpandLess} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
 interface UrlBlockerProps {
 	blockLists: BlockList[];
 	onBlockListsChange: (updatedBlockLists: BlockList[]) => void;
+	collapsible?: boolean;
+	defaultCollapsed?: boolean;
 }
 
-const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange }) => {
+const UrlBlocker: React.FC<UrlBlockerProps> = ({ 
+	blockLists, 
+	onBlockListsChange, 
+	collapsible = false, 
+	defaultCollapsed = true 
+}) => {
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
+	const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+	// Initialize expansion state based on defaultCollapsed prop
+	useEffect(() => {
+		if (collapsible && blockLists.length > 0) {
+			const initialExpanded: Record<string, boolean> = {};
+			blockLists.forEach(list => {
+				initialExpanded[list.id] = !defaultCollapsed;
+			});
+			setExpanded(initialExpanded);
+		}
+	}, [collapsible, defaultCollapsed, blockLists.length]);
+
+	const toggleExpand = (listId: string) => {
+		setExpanded(prev => ({
+			...prev,
+			[listId]: !prev[listId]
+		}));
+	};
+
+	const isExpanded = (listId: string): boolean => {
+		// If not collapsible, always return true (expanded)
+		if (!collapsible) return true;
+		// If collapsible but no explicit state, use the inverse of defaultCollapsed
+		return expanded[listId] !== undefined ? expanded[listId] : !defaultCollapsed;
+	};
 
 	const deleteUrl = (listId: string, urlToDelete: string) => {
 		const updatedBlockLists = blockLists.map((list) => {
@@ -63,6 +98,14 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange 
 		});
 
 		onBlockListsChange(updatedBlockLists);
+		
+		// Auto-expand the list when a new URL is added
+		if (collapsible) {
+			setExpanded(prev => ({
+				...prev,
+				[listId]: true
+			}));
+		}
 	};
 
 	const addNewBlockList = () => {
@@ -137,59 +180,77 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange 
 									}}
 								>
 									Blocked websites
+									{collapsible && (
+										<Badge 
+											badgeContent={list.urls.length} 
+											color="primary" 
+											sx={{ ml: 1 }}
+										/>
+									)}
 								</Typography>
 								<Divider sx={{ flexGrow: 1, ml: 2 }} />
-							</Box>
-							<List sx={{ mt: 1 }}>
-								{list.urls.map((url) => (
-									<ListItem 
-										key={url} 
-										sx={{
-											py: 1.5, 
-											px: 2,
-											mb: 1,
-											border: '1px solid',
-											borderColor: 'divider',
-											borderRadius: 1,
-											bgcolor: 'background.paper',
-											'&:hover': {
-												bgcolor: 'action.hover',
-												'& .deleteButton': {
-													color: 'error.main',
-													opacity: 1
-												}
-											},
-											transition: 'all 0.2s ease'
-										}}
+								{collapsible && (
+									<IconButton 
+										size="small" 
+										onClick={() => toggleExpand(list.id)}
+										sx={{ ml: 1 }}
 									>
-										<Favicon url={url} size={28} />
-										<ListItemText 
-											primary={url}
-											primaryTypographyProps={{
-												sx: { 
-													fontWeight: 500, 
-													fontSize: '1.05rem',
-													color: 'text.primary' 
-												}
+										{isExpanded(list.id) ? <ExpandLess /> : <ExpandMore />}
+									</IconButton>
+								)}
+							</Box>
+							<Collapse in={isExpanded(list.id)}>
+								<List sx={{ mt: 1 }}>
+									{list.urls.map((url) => (
+										<ListItem 
+											key={url} 
+											sx={{
+												py: 1.5, 
+												px: 2,
+												mb: 1,
+												border: '1px solid',
+												borderColor: 'divider',
+												borderRadius: 1,
+												bgcolor: 'background.paper',
+												'&:hover': {
+													bgcolor: 'action.hover',
+													'& .deleteButton': {
+														color: 'error.main',
+														opacity: 1
+													}
+												},
+												transition: 'all 0.2s ease'
 											}}
-										/>
-										<ListItemSecondaryAction>
-											<IconButton 
-												edge="end" 
-												aria-label="delete" 
-												onClick={() => deleteUrl(list.id, url)}
-												className="deleteButton"
-												sx={{ 
-													opacity: 0.7,
-													transition: 'all 0.2s ease'
+										>
+											<Favicon url={url} size={28} />
+											<ListItemText 
+												primary={url}
+												primaryTypographyProps={{
+													sx: { 
+														fontWeight: 500, 
+														fontSize: '1.05rem',
+														color: 'text.primary' 
+													}
 												}}
-											>
-												<Delete />
-											</IconButton>
-										</ListItemSecondaryAction>
-									</ListItem>
-								))}
-							</List>
+											/>
+											<ListItemSecondaryAction>
+												<IconButton 
+													edge="end" 
+													aria-label="delete" 
+													onClick={() => deleteUrl(list.id, url)}
+													className="deleteButton"
+													sx={{ 
+														opacity: 0.7,
+														transition: 'all 0.2s ease'
+													}}
+												>
+													<Delete />
+												</IconButton>
+											</ListItemSecondaryAction>
+										</ListItem>
+									))}
+								</List>
+							</Collapse>
 						</>
 					) : (
 						<Box 
