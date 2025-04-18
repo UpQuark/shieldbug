@@ -158,7 +158,7 @@ const PopupApp = () => {
       <CssBaseline />
       <Container maxWidth={false} sx={{width: 400, padding: 0}}>
         <Toolbar sx={{ 
-          backgroundColor: 'primary.main',
+          backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
           paddingRight: 0 
         }}>
           <img
@@ -176,7 +176,7 @@ const PopupApp = () => {
               marginTop: 0,
               flexGrow: 1,
               fontWeight: 'bold',
-              color: "white"
+              color: mode === 'dark' ? 'primary.main' : 'white'
             }}
           >
             ShieldBug
@@ -184,6 +184,7 @@ const PopupApp = () => {
           <IconButton
             onClick={openSettingsPage}
             color="inherit"
+            sx={{ color: 'white' }}
           >
             <Settings/>
           </IconButton>
@@ -199,6 +200,8 @@ const PopupApp = () => {
                 <UrlBlocker 
                   blockLists={blockLists}
                   onBlockListsChange={updateBlockLists}
+                  collapsible={true}
+                  defaultCollapsed={true}
                 />
               </Paper>
             </Grid>
@@ -206,6 +209,7 @@ const PopupApp = () => {
               <CategoryBlocker 
                 blockedCategories={blockedCategories}
                 onCategoryToggle={handleCategoryToggle}
+                title="Blocked Categories"
               />
             </Grid>
 

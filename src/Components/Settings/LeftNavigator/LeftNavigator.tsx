@@ -80,7 +80,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 								sx: { 
 									fontSize: '1.5rem',
 									fontWeight: 700,
-									color: 'white'
+									color: theme.palette.mode === 'dark' ? 'primary.main' : 'white'
 								}
 							}} 
 						/>
@@ -253,7 +253,7 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 				<ListItem disablePadding>
 					<ListItemButton 
 						component="a" 
-						href="mailto:info@shieldbug.com?subject=Shieldbug feedback"
+						href="mailto:info@shieldbug.app?subject=Shieldbug feedback"
 						sx={{ 
 							'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' }
 						}}

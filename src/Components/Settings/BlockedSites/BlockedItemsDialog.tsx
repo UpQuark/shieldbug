@@ -152,15 +152,11 @@ const BlockedItemsDialog: React.FC = () => {
 
 			<Grid container spacing={3}>
 				<Grid item xs={12}>
-					<Paper elevation={3} sx={{ p: 3 }}>
-						<Typography variant="h5" gutterBottom>
-							Blocked Categories
-						</Typography>
-						<CategoryBlocker 
-							blockedCategories={blockedCategories}
-							onCategoryToggle={handleCategoryToggle}
-						/>
-					</Paper>
+					<CategoryBlocker 
+						blockedCategories={blockedCategories}
+						onCategoryToggle={handleCategoryToggle}
+						title="Blocked Categories"
+					/>
 				</Grid>
 				<Grid item xs={12}>
 					<Paper elevation={3} sx={{ p: 3 }}>
@@ -236,6 +232,8 @@ const BlockedItemsDialog: React.FC = () => {
 								<CategoryBlocker 
 									blockedCategories={blockedCategories}
 									onCategoryToggle={handleCategoryToggle}
+									showPaper={false}
+									showTitle={false}
 								/>
 							</Paper>
 						</Grid>

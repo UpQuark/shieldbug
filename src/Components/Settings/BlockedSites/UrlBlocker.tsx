@@ -14,18 +14,56 @@ import {
 	IconButton,
 	ListItemText,
 	List,
+	Typography,
+	Box,
+	Divider,
+	Collapse,
+	Badge
 } from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import {Delete, ExpandMore, ExpandLess} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
 interface UrlBlockerProps {
 	blockLists: BlockList[];
 	onBlockListsChange: (updatedBlockLists: BlockList[]) => void;
+	collapsible?: boolean;
+	defaultCollapsed?: boolean;
 }
 
-const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange }) => {
+const UrlBlocker: React.FC<UrlBlockerProps> = ({ 
+	blockLists, 
+	onBlockListsChange, 
+	collapsible = false, 
+	defaultCollapsed = true 
+}) => {
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
+	const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+	// Initialize expansion state based on defaultCollapsed prop
+	useEffect(() => {
+		if (collapsible && blockLists.length > 0) {
+			const initialExpanded: Record<string, boolean> = {};
+			blockLists.forEach(list => {
+				initialExpanded[list.id] = !defaultCollapsed;
+			});
+			setExpanded(initialExpanded);
+		}
+	}, [collapsible, defaultCollapsed, blockLists.length]);
+
+	const toggleExpand = (listId: string) => {
+		setExpanded(prev => ({
+			...prev,
+			[listId]: !prev[listId]
+		}));
+	};
+
+	const isExpanded = (listId: string): boolean => {
+		// If not collapsible, always return true (expanded)
+		if (!collapsible) return true;
+		// If collapsible but no explicit state, use the inverse of defaultCollapsed
+		return expanded[listId] !== undefined ? expanded[listId] : !defaultCollapsed;
+	};
 
 	const deleteUrl = (listId: string, urlToDelete: string) => {
 		const updatedBlockLists = blockLists.map((list) => {
@@ -60,6 +98,14 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange 
 		});
 
 		onBlockListsChange(updatedBlockLists);
+		
+		// Auto-expand the list when a new URL is added
+		if (collapsible) {
+			setExpanded(prev => ({
+				...prev,
+				[listId]: true
+			}));
+		}
 	};
 
 	const addNewBlockList = () => {
@@ -119,29 +165,126 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({ blockLists, onBlockListsChange 
 
 					<BlockListAdder list={list} blockUrl={blockUrl}/>
 
-					{/* Delete button */}
-					{/*{list.id !== 'main' && (*/}
-					{/*	<BlockListDeleteButton*/}
-					{/*		list={list}*/}
-					{/*		blockLists={blockLists}*/}
-					{/*		updateBlockLists={updateBlockLists}*/}
-					{/*	/>*/}
-					{/*)}*/}
-
 					{/* URL List */}
-					<List>
-						{list.urls.map((url) => (
-							<ListItem key={url} dense>
-								<Favicon url={url} />
-								<ListItemText primary={url} />
-								<ListItemSecondaryAction>
-									<IconButton edge="end" aria-label="delete" onClick={() => deleteUrl(list.id, url)}>
-										<Delete />
+					{list.urls.length > 0 ? (
+						<>
+							<Box 
+								sx={{ 
+									display: 'flex', 
+									alignItems: 'center', 
+									mb: 1.5,
+									cursor: collapsible ? 'pointer' : 'default',
+									'&:hover': collapsible ? {
+										'& .collapseIcon': {
+											color: 'primary.main'
+										}
+									} : {}
+								}}
+								onClick={collapsible ? () => toggleExpand(list.id) : undefined}
+							>
+								<Typography 
+									variant="h6" 
+									color="secondary.main" 
+									sx={{ 
+										fontSize: '0.95rem', 
+										fontWeight: 600,
+										textTransform: 'uppercase',
+										letterSpacing: '0.5px',
+										display: 'flex',
+										alignItems: 'center'
+									}}
+								>
+									Blocked websites
+									{collapsible && (
+										<Badge 
+											badgeContent={list.urls.length} 
+											color="primary" 
+											sx={{ ml: 2.5, mr: 1 }}
+										/>
+									)}
+								</Typography>
+								<Divider sx={{ flexGrow: 1, ml: 2 }} />
+								{collapsible && (
+									<IconButton 
+										size="small" 
+										className="collapseIcon"
+										sx={{ ml: 1 }}
+									>
+										{isExpanded(list.id) ? <ExpandLess /> : <ExpandMore />}
 									</IconButton>
-								</ListItemSecondaryAction>
-							</ListItem>
-						))}
-					</List>
+								)}
+							</Box>
+							<Collapse in={isExpanded(list.id)}>
+								<List sx={{ mt: 1 }}>
+									{list.urls.map((url) => (
+										<ListItem 
+											key={url} 
+											sx={{
+												py: 1.5, 
+												px: 2,
+												mb: 1,
+												border: '1px solid',
+												borderColor: 'divider',
+												borderRadius: 1,
+												bgcolor: 'background.paper',
+												'&:hover': {
+													bgcolor: 'action.hover',
+													'& .deleteButton': {
+														color: 'error.main',
+														opacity: 1
+													}
+												},
+												transition: 'all 0.2s ease'
+											}}
+										>
+											<Favicon url={url} size={28} />
+											<ListItemText 
+												primary={url}
+												primaryTypographyProps={{
+													sx: { 
+														fontWeight: 500, 
+														fontSize: '1.05rem',
+														color: 'text.primary' 
+													}
+												}}
+											/>
+											<ListItemSecondaryAction>
+												<IconButton 
+													edge="end" 
+													aria-label="delete" 
+													onClick={() => deleteUrl(list.id, url)}
+													className="deleteButton"
+													sx={{ 
+														opacity: 0.7,
+														transition: 'all 0.2s ease'
+													}}
+												>
+													<Delete />
+												</IconButton>
+											</ListItemSecondaryAction>
+										</ListItem>
+									))}
+								</List>
+							</Collapse>
+						</>
+					) : (
+						<Box 
+							sx={{ 
+								py: 4, 
+								textAlign: 'center',
+								color: 'text.secondary',
+								bgcolor: 'background.paper',
+								border: '1px dashed',
+								borderColor: 'divider',
+								borderRadius: 1,
+								mb: 2
+							}}
+						>
+							<Typography variant="body2">
+								No websites blocked yet
+							</Typography>
+						</Box>
+					)}
 				</div>
 			))}
 			{DeveloperFeatureFlags.BLockSites_MultipleLists && (
