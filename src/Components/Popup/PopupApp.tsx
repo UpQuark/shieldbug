@@ -184,6 +184,7 @@ const PopupApp = () => {
           <IconButton
             onClick={openSettingsPage}
             color="inherit"
+            sx={{ color: 'white' }}
           >
             <Settings/>
           </IconButton>

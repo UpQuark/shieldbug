@@ -168,7 +168,20 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 					{/* URL List */}
 					{list.urls.length > 0 ? (
 						<>
-							<Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+							<Box 
+								sx={{ 
+									display: 'flex', 
+									alignItems: 'center', 
+									mb: 1.5,
+									cursor: collapsible ? 'pointer' : 'default',
+									'&:hover': collapsible ? {
+										'& .collapseIcon': {
+											color: 'primary.main'
+										}
+									} : {}
+								}}
+								onClick={collapsible ? () => toggleExpand(list.id) : undefined}
+							>
 								<Typography 
 									variant="h6" 
 									color="secondary.main" 
@@ -176,7 +189,9 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 										fontSize: '0.95rem', 
 										fontWeight: 600,
 										textTransform: 'uppercase',
-										letterSpacing: '0.5px'
+										letterSpacing: '0.5px',
+										display: 'flex',
+										alignItems: 'center'
 									}}
 								>
 									Blocked websites
@@ -184,7 +199,7 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 										<Badge 
 											badgeContent={list.urls.length} 
 											color="primary" 
-											sx={{ ml: 1 }}
+											sx={{ ml: 2.5, mr: 1 }}
 										/>
 									)}
 								</Typography>
@@ -192,7 +207,7 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 								{collapsible && (
 									<IconButton 
 										size="small" 
-										onClick={() => toggleExpand(list.id)}
+										className="collapseIcon"
 										sx={{ ml: 1 }}
 									>
 										{isExpanded(list.id) ? <ExpandLess /> : <ExpandMore />}
