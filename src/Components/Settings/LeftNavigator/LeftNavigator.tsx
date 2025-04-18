@@ -19,7 +19,8 @@ import {
 	Lock, 
 	LockClock,
 	Info,
-	Feedback 
+	Feedback,
+	VpnKey
 } from "@mui/icons-material";
 
 import DeveloperFeatureFlags from "../../../Flags/DeveloperFeatureFlags";
@@ -180,6 +181,32 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 							</ListItemIcon>
 							<ListItemText 
 								primary="Commitment" 
+								primaryTypographyProps={{ 
+									sx: { 
+										fontSize: '1.1rem',
+										fontWeight: 500,
+										color: 'white'
+									}
+								}} 
+							/>
+						</ListItemButton>
+					</ListItem>
+				)}
+				
+				{DeveloperFeatureFlags.PasswordProtection && (
+					<ListItem disablePadding>
+						<ListItemButton 
+							component={Link} 
+							to="/password-protection"
+							sx={{ 
+								'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' }
+							}}
+						>
+							<ListItemIcon sx={{ minWidth: 40, color: 'white' }}>
+								<VpnKey />
+							</ListItemIcon>
+							<ListItemText 
+								primary="Password Protection" 
 								primaryTypographyProps={{ 
 									sx: { 
 										fontSize: '1.1rem',

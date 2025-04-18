@@ -8,6 +8,7 @@ import BlockedKeywords from "./BlockedKeywords";
 import Scheduler from "./Scheduler/Scheduler";
 import Commitment from "./Commitment/Commitment";
 import ExtraSettings from "./ExtraSettings";
+import PasswordProtection from "./PasswordProtection/PasswordProtection";
 import WelcomePopover from "./WelcomePopover";
 import { getDesignTokens } from "../../../styles/MuiTheme";
 
@@ -112,6 +113,7 @@ const SettingsApp: React.FC = () => {
 									<Route path="/schedule" element={<Scheduler/>}/>
 									<Route path="/commitment" element={<Commitment/>}/>
 									<Route path="/extra-settings" element={<ExtraSettings/>}/>
+									<Route path="/password-protection" element={<PasswordProtection/>}/>
 								</Routes>
 							</Box>
 						</Box>
