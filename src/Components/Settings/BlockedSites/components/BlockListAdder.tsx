@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Button, FormControl, Grid, TextField, InputAdornment, Box, Paper} from "@mui/material";
+import {Button, FormControl, Grid, TextField, InputAdornment, Box, Typography, Divider} from "@mui/material";
 import {useState} from "react";
 import {BlockList} from "../BlockedSitesTypes";
-import {Block} from "@mui/icons-material";
+import {Block, Add} from "@mui/icons-material";
 
 interface IBlockListAdderProps {
 	list: BlockList,
@@ -19,16 +19,22 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 	const [urlInput, setUrlInput] = useState<string>('');
 
 	return (
-		<Paper 
-			elevation={0} 
-			sx={{
-				p: 2,
-				mb: 2, 
-				border: '1px solid',
-				borderColor: 'divider',
-				borderRadius: 1,
-			}}
-		>
+		<Box sx={{ mb: 3 }}>
+			<Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+				<Typography 
+					variant="h6" 
+					color="secondary.main" 
+					sx={{ 
+						fontSize: '0.95rem', 
+						fontWeight: 600,
+						textTransform: 'uppercase',
+						letterSpacing: '0.5px'
+					}}
+				>
+					Add a website to block
+				</Typography>
+				<Divider sx={{ flexGrow: 1, ml: 2 }} />
+			</Box>
 			<form onSubmit={(event) => {
 				blockUrl(event, list.id, urlInput);
 				setUrlInput('');
@@ -39,11 +45,10 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 							fullWidth
 						>
 							<TextField
-								size="medium"
-								label="Enter website to block"
+								size="small"
+								placeholder="example.com"
 								value={urlInput}
 								onChange={(e) => setUrlInput(e.target.value)}
-								placeholder="example.com"
 								InputProps={{
 									startAdornment: (
 										<InputAdornment position="start">
@@ -55,6 +60,8 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 									'& .MuiOutlinedInput-root': {
 										borderTopRightRadius: 0,
 										borderBottomRightRadius: 0,
+										backgroundColor: theme => theme.palette.background.paper,
+										boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
 									}
 								}}
 							/>
@@ -65,22 +72,20 @@ const BlockListAdder: React.FC<IBlockListAdderProps> = ({list, blockUrl}) => {
 							type="submit"
 							variant="contained"
 							color="primary"
-							aria-label={"Block URL"}
+							aria-label="Add URL to block list"
 							sx={{
 								borderTopLeftRadius: 0,
 								borderBottomLeftRadius: 0,
 								width: "100%",
-								height: "100%",
-								minHeight: "56px",
-								boxShadow: "none",
+								boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
 							}}
 						>
-							<Block />
+							<Add />
 						</Button>
 					</Grid>
 				</Grid>
 			</form>
-		</Paper>
+		</Box>
 	);
 };
 
