@@ -12,9 +12,10 @@ import {
     Snackbar,
     Divider,
     IconButton,
-    InputAdornment
+    InputAdornment,
+    Chip
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Check, Close } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 const PasswordProtection: React.FC = () => {
@@ -179,20 +180,34 @@ const PasswordProtection: React.FC = () => {
             </Typography>
 
             <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={isEnabled}
-                            onChange={handleToggleEnabled}
-                            color="primary"
-                        />
-                    }
-                    label={
-                        <Typography variant="h6">
-                            {isEnabled ? 'Password Protection Enabled' : 'Password Protection Disabled'}
-                        </Typography>
-                    }
-                />
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isEnabled}
+                                onChange={handleToggleEnabled}
+                                color="primary"
+                            />
+                        }
+                        label={
+                            <Typography variant="h6">
+                                {isEnabled ? 'Password Protection Enabled' : 'Password Protection Disabled'}
+                            </Typography>
+                        }
+                    />
+                    <Chip
+                        icon={passwordHash ? <Check /> : <Close />}
+                        label={passwordHash ? "Password Set" : "No Password Set"}
+                        color={passwordHash ? "success" : "error"}
+                        variant="outlined"
+                    />
+                </Box>
+                
+                {isEnabled && !passwordHash && (
+                    <Alert severity="warning" sx={{ mt: 2 }}>
+                        Password protection is enabled but no password has been set. Please set a password below.
+                    </Alert>
+                )}
             </Paper>
 
             <Paper elevation={3} sx={{ p: 3 }}>
