@@ -9,7 +9,9 @@ import {
 	ListItemText, 
 	Typography, 
 	useTheme,
-	Divider
+	Divider,
+	Switch,
+	FormControlLabel
 } from '@mui/material';
 import { 
 	Schedule, 
@@ -20,7 +22,8 @@ import {
 	LockClock,
 	Info,
 	Feedback,
-	VpnKey
+	VpnKey,
+	PowerSettingsNew
 } from "@mui/icons-material";
 
 import DeveloperFeatureFlags from "../../../Flags/DeveloperFeatureFlags";
@@ -31,6 +34,22 @@ interface LeftNavigatorProps {
 
 const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-sites'}) => {
 	const theme = useTheme();
+	const [blockingEnabled, setBlockingEnabled] = React.useState(true);
+
+	// Load blocking status from storage when component mounts
+	React.useEffect(() => {
+		chrome.storage.sync.get(['blockingEnabled'], (data) => {
+			// Default to true if not set
+			setBlockingEnabled(data.blockingEnabled !== false);
+		});
+	}, []);
+
+	// Handle toggle of blocking enabled/disabled
+	const handleBlockingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const newValue = event.target.checked;
+		setBlockingEnabled(newValue);
+		chrome.storage.sync.set({ blockingEnabled: newValue });
+	};
 
 	return (
 		<Box 
@@ -299,6 +318,46 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 							}} 
 						/>
 					</ListItemButton>
+				</ListItem>
+				<Divider sx={{ my: 1, backgroundColor: 'rgba(255, 255, 255, 0.12)' }} />
+				{/* Blocking Toggle Switch */}
+				<ListItem 
+					disablePadding
+					sx={{ 
+						p: 1,
+						'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' }
+					}}
+				>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={blockingEnabled}
+								onChange={handleBlockingToggle}
+								color="primary"
+							/>
+						}
+						label={
+							<Box sx={{ display: 'flex', alignItems: 'center' }}>
+								<PowerSettingsNew sx={{ mr: 1, color: 'white' }} />
+								<Typography 
+									sx={{ 
+										fontSize: '1.1rem',
+										fontWeight: 500,
+										color: 'white'
+									}}
+								>
+									{blockingEnabled ? 'Blocking On' : 'Blocking Off'}
+								</Typography>
+							</Box>
+						}
+						sx={{ 
+							width: '100%',
+							mx: 1,
+							'.MuiFormControlLabel-label': {
+								width: '100%'
+							}
+						}}
+					/>
 				</ListItem>
 			</List>
 		</Box>
