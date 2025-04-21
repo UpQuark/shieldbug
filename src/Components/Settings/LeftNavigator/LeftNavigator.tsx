@@ -48,7 +48,10 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 	const handleBlockingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = event.target.checked;
 		setBlockingEnabled(newValue);
-		chrome.storage.sync.set({ blockingEnabled: newValue });
+		chrome.storage.sync.set({ blockingEnabled: newValue }, () => {
+			// Force a refresh of the extension state
+			console.log("Blocking toggle changed to:", newValue);
+		});
 	};
 
 	return (

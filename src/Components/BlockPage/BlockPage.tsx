@@ -29,6 +29,11 @@ const BlockPage: React.FC = () => {
 			}
 		});
 
+		// Check if blocking is enabled
+		chrome.storage.sync.get(['blockingEnabled'], (data) => {
+			console.log('BlockPage: blocking is', data.blockingEnabled === false ? 'DISABLED' : 'ENABLED');
+		});
+
 		// Fetch the total block count when component mounts
 		const fetchTotalCount = async () => {
 			try {
