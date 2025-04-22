@@ -178,7 +178,7 @@ const PopupApp = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth={false} sx={{width: 400, padding: 0}}>
+      <Container maxWidth={false} sx={{width: 400, padding: 0, height: '600px', overflow: 'hidden'}}>
         <Toolbar sx={{ 
           backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
           paddingRight: 0,
@@ -240,7 +240,7 @@ const PopupApp = () => {
           </IconButton>
         </Toolbar>
 
-        <Box sx={{position: 'relative', bgcolor: 'background.default'}}>
+        <Box sx={{position: 'relative', bgcolor: 'background.default', height: '100%'}}>
           {/* Apply password protection to the content */}
           <PasswordOverlay isPopup={true}>
             <Grid container spacing={1} sx={{padding: 1.5}}>

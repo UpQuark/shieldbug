@@ -107,7 +107,8 @@ const SettingsApp: React.FC = () => {
 								marginLeft: '261px', 
 								padding: 3,
 								boxSizing: 'border-box',
-								position: 'relative'
+								position: 'relative',
+								minHeight: 'calc(100vh - 64px)' // Ensure enough height for the overlay
 							}}>
 								<PasswordOverlay>
 									<Routes>

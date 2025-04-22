@@ -112,37 +112,50 @@ const PasswordOverlay: React.FC<PasswordOverlayProps> = ({ children, isPopup = f
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '100%',
+                    height: '100vh',
                     width: '100%',
-                    position: 'absolute',
+                    position: 'fixed',
                     top: 0,
                     left: 0,
+                    right: 0,
+                    bottom: 0,
                     backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     zIndex: 9999,
-                    p: 2
+                    p: 2,
+                    ...(isPopup && {
+                        height: '100%',
+                        position: 'absolute',
+                        boxSizing: 'border-box'
+                    })
                 }}
             >
                 <Paper
                     elevation={5}
                     sx={{
-                        p: 4,
+                        p: isPopup ? 2 : 4,
                         width: '100%',
-                        maxWidth: 400,
+                        maxWidth: isPopup ? 350 : 400,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center'
                     }}
                 >
-                    <Lock sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h5" component="h2" gutterBottom align="center">
+                    <Lock sx={{ fontSize: isPopup ? 36 : 48, color: 'primary.main', mb: isPopup ? 1 : 2 }} />
+                    <Typography variant={isPopup ? "h6" : "h5"} component="h2" gutterBottom align="center">
                         Enter Password
                     </Typography>
-                    <Typography variant="body1" color="textSecondary" paragraph align="center">
+                    <Typography 
+                        variant="body2" 
+                        color="textSecondary" 
+                        paragraph 
+                        align="center"
+                        sx={{ mb: isPopup ? 1 : 2 }}
+                    >
                         Settings are protected. Please enter your password to continue.
                     </Typography>
                     
                     {error && (
-                        <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+                        <Alert severity="error" sx={{ width: '100%', mb: isPopup ? 1 : 2 }}>
                             {error}
                         </Alert>
                     )}
@@ -156,12 +169,14 @@ const PasswordOverlay: React.FC<PasswordOverlayProps> = ({ children, isPopup = f
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             margin="normal"
+                            size={isPopup ? "small" : "medium"}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
                                             onClick={() => setShowPassword(!showPassword)}
                                             edge="end"
+                                            size={isPopup ? "small" : "medium"}
                                         >
                                             {showPassword ? <VisibilityOff /> : <Visibility />}
                                         </IconButton>
@@ -175,11 +190,11 @@ const PasswordOverlay: React.FC<PasswordOverlayProps> = ({ children, isPopup = f
                             variant="contained"
                             color="primary"
                             fullWidth
-                            size="large"
+                            size={isPopup ? "medium" : "large"}
                             disabled={isVerifying}
-                            sx={{ mt: 2 }}
+                            sx={{ mt: isPopup ? 1 : 2 }}
                         >
-                            {isVerifying ? <CircularProgress size={24} /> : 'Unlock'}
+                            {isVerifying ? <CircularProgress size={isPopup ? 20 : 24} /> : 'Unlock'}
                         </Button>
                     </Box>
                 </Paper>
