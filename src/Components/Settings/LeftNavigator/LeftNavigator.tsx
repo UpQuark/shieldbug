@@ -43,6 +43,18 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 			setBlockingEnabled(data.blockingEnabled !== false);
 		});
 	}, []);
+	
+	// Listen for changes to blockingEnabled from other components
+	React.useEffect(() => {
+		const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }, areaName: string) => {
+			if (areaName === 'sync' && changes.blockingEnabled !== undefined) {
+				setBlockingEnabled(changes.blockingEnabled.newValue !== false);
+			}
+		};
+		
+		chrome.storage.onChanged.addListener(handleStorageChange);
+		return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+	}, []);
 
 	// Handle toggle of blocking enabled/disabled
 	const handleBlockingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +63,12 @@ const LeftNavigator: React.FC<LeftNavigatorProps> = ({initialRoute = '/blocked-s
 		chrome.storage.sync.set({ blockingEnabled: newValue }, () => {
 			// Force a refresh of the extension state
 			console.log("Blocking toggle changed to:", newValue);
+			
+			// Send a message to the background script to update rules immediately
+			chrome.runtime.sendMessage({ 
+				action: "blockingToggled", 
+				enabled: newValue 
+			});
 		});
 	};
 

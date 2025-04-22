@@ -70,13 +70,20 @@ const PopupApp = () => {
   // Listen for storage changes (e.g. when theme is changed in settings)
   useEffect(() => {
     const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }, areaName: string) => {
-      if (areaName === 'sync' && changes.themeMode) {
-        const newThemeMode = changes.themeMode.newValue;
-        if (newThemeMode === 'system') {
-          const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          setMode(prefersDarkMode ? 'dark' : 'light');
-        } else if (newThemeMode === 'light' || newThemeMode === 'dark') {
-          setMode(newThemeMode);
+      if (areaName === 'sync') {
+        if (changes.themeMode) {
+          const newThemeMode = changes.themeMode.newValue;
+          if (newThemeMode === 'system') {
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setMode(prefersDarkMode ? 'dark' : 'light');
+          } else if (newThemeMode === 'light' || newThemeMode === 'dark') {
+            setMode(newThemeMode);
+          }
+        }
+        
+        // Update blockingEnabled state if it was changed elsewhere
+        if (changes.blockingEnabled !== undefined) {
+          setBlockingEnabled(changes.blockingEnabled.newValue !== false);
         }
       }
     };
@@ -178,71 +185,76 @@ const PopupApp = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth={false} sx={{width: 400, padding: 0, height: '600px', overflow: 'hidden'}}>
-        <Toolbar sx={{ 
-          backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
-          paddingRight: 0,
-          zIndex: 10000, // Keep the toolbar above the password overlay
-          position: 'relative'
-        }}>
-          <img
-            src={chrome.runtime.getURL('assets/icon-128.png')}
-            alt="Shieldbug"
-            style={{
-              height: 35,
-              marginRight: 8,
-              filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))"
-            }}
-          />
-          <Typography 
-            variant="h5" 
-            sx={{
-              marginTop: 0,
-              flexGrow: 1,
-              fontWeight: 'bold',
-              color: mode === 'dark' ? 'primary.main' : 'white'
-            }}
-          >
-            ShieldBug
-          </Typography>
-          
-          {/* Blocking Toggle Switch */}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={blockingEnabled}
-                onChange={handleBlockingToggle}
-                size="small"
-                color="default"
-              />
-            }
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <PowerSettingsNew sx={{ fontSize: '1.2rem', color: 'white' }} />
-              </Box>
-            }
-            sx={{
-              mr: 1,
-              '.MuiFormControlLabel-label': { 
-                display: 'flex',
-                alignItems: 'center',
-                marginLeft: '4px'
+      <Container maxWidth={false} sx={{width: 400, padding: 0, height: '600px', overflow: 'hidden', position: 'relative'}}>
+        {/* Apply password protection to the ENTIRE popup including toolbar */}
+        <PasswordOverlay isPopup={true}>
+          <Toolbar sx={{ 
+            backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
+            paddingRight: 0,
+            position: 'relative'
+          }}>
+            <img
+              src={chrome.runtime.getURL('assets/icon-128.png')}
+              alt="Shieldbug"
+              style={{
+                height: 35,
+                marginRight: 8,
+                filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))"
+              }}
+            />
+            <Typography 
+              variant="h5" 
+              sx={{
+                marginTop: 0,
+                flexGrow: 1,
+                fontWeight: 'bold',
+                color: mode === 'dark' ? 'primary.main' : 'white'
+              }}
+            >
+              ShieldBug
+            </Typography>
+            
+            {/* Blocking Toggle Switch */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={blockingEnabled}
+                  onChange={handleBlockingToggle}
+                  size="small"
+                  color="primary"
+                />
               }
-            }}
-          />
-          
-          <IconButton
-            onClick={openSettingsPage}
-            color="inherit"
-            sx={{ color: 'white' }}
-          >
-            <Settings/>
-          </IconButton>
-        </Toolbar>
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <PowerSettingsNew sx={{ fontSize: '1.2rem', color: 'white' }} />
+                </Box>
+              }
+              sx={{
+                mr: 1,
+                '.MuiFormControlLabel-label': { 
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginLeft: '4px'
+                },
+                '.MuiSwitch-switchBase.Mui-checked': {
+                  color: '#fff'
+                },
+                '.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                  opacity: 0.7
+                }
+              }}
+            />
+            
+            <IconButton
+              onClick={openSettingsPage}
+              color="inherit"
+              sx={{ color: 'white' }}
+            >
+              <Settings/>
+            </IconButton>
+          </Toolbar>
 
-        <Box sx={{position: 'relative', bgcolor: 'background.default', height: '100%'}}>
-          {/* Apply password protection to the content */}
-          <PasswordOverlay isPopup={true}>
+          <Box sx={{position: 'relative', bgcolor: 'background.default', height: '100%'}}>
             <Grid container spacing={1} sx={{padding: 1.5}}>
               <Grid item xs={12}>
                 <Paper elevation={3} sx={{ p: 3 }}>
@@ -254,6 +266,7 @@ const PopupApp = () => {
                     onBlockListsChange={updateBlockLists}
                     collapsible={true}
                     defaultCollapsed={true}
+                    showBlockCurrentSite={true}
                   />
                 </Paper>
               </Grid>
@@ -294,8 +307,8 @@ const PopupApp = () => {
                 </Box>
               </Backdrop>
             </Grid>
-          </PasswordOverlay>
-        </Box>
+          </Box>
+        </PasswordOverlay>
       </Container>
     </ThemeProvider>
   );

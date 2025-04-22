@@ -11,7 +11,9 @@ import {
     InputAdornment,
     IconButton,
     Dialog,
-    Fade
+    Fade,
+    SxProps,
+    Theme
 } from '@mui/material';
 import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
@@ -112,20 +114,25 @@ const PasswordOverlay: React.FC<PasswordOverlayProps> = ({ children, isPopup = f
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '100vh',
-                    width: '100%',
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    zIndex: 9999,
                     p: 2,
-                    ...(isPopup && {
-                        height: '100%',
+                    ...(isPopup ? {
                         position: 'absolute',
-                        boxSizing: 'border-box'
+                        height: '100%',
+                        width: '100%',
+                        zIndex: 99999,
+                        inset: 0,
+                        boxSizing: 'border-box',
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    } : {
+                        position: 'fixed',
+                        height: '100vh',
+                        width: '100%',
+                        zIndex: 9999,
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     })
                 }}
             >
