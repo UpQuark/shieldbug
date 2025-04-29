@@ -116,11 +116,7 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 		
 		// If we're blocking the current site, navigate to the block page
 		if (!inputUrl && canBlockCurrentSite) {
-			// Navigate to the block page using the usual method
-			chrome.runtime.sendMessage({ action: "openBlockPage" });
-			
-			// Also increment the counter via Chrome's declarativeNetRequest API
-			// by redirecting to the block page with the count parameter
+			// Navigate to the block page and increment the counter via Chrome's declarativeNetRequest API
 			chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 				const tabId = tabs[0].id;
 				if (tabId !== undefined) {
