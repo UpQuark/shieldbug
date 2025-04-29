@@ -167,7 +167,7 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 				</Button>
 			)}
 			{blockLists.map((list, index) => (
-				<div key={list.id} style={{ marginBottom: '1rem' }}>
+				<Box key={list.id}>
 					<FormGroup row>
 						{DeveloperFeatureFlags.BLockSites_MultipleLists && (
 							<BlockListEditableName 
@@ -305,7 +305,7 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 							</Typography>
 						</Box>
 					)}
-				</div>
+				</Box>
 			))}
 			{DeveloperFeatureFlags.BLockSites_MultipleLists && (
 				<Button fullWidth variant="contained" color="primary" onClick={addNewBlockList}>

@@ -185,7 +185,13 @@ const PopupApp = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth={false} sx={{width: 400, padding: 0, height: '600px', overflow: 'hidden', position: 'relative'}}>
+      <Container maxWidth={false} sx={{
+        width: 400, 
+        padding: 0, 
+        position: 'relative',
+        maxHeight: '600px',
+        overflowY: 'auto'
+      }}>
         {/* Apply password protection to the ENTIRE popup including toolbar */}
         <PasswordOverlay isPopup={true}>
           <Toolbar sx={{ 

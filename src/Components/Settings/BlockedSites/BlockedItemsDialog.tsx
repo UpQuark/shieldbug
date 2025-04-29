@@ -160,7 +160,7 @@ const BlockedItemsDialog: React.FC = () => {
 				</Grid>
 				<Grid item xs={12}>
 					<Paper elevation={3} sx={{ p: 3 }}>
-						<Typography variant="h5" gutterBottom>
+						<Typography variant="h5">
 							Blocked Sites
 						</Typography>
 						<UrlBlocker 
