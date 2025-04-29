@@ -20,7 +20,7 @@ import {
 	Collapse,
 	Badge
 } from "@mui/material";
-import {Delete, ExpandMore, ExpandLess} from "@mui/icons-material";
+import {Delete, ExpandMore, ExpandLess, AddCircle} from "@mui/icons-material";
 import BlockListAdder from "./components/BlockListAdder";
 
 interface UrlBlockerProps {
@@ -28,13 +28,15 @@ interface UrlBlockerProps {
 	onBlockListsChange: (updatedBlockLists: BlockList[]) => void;
 	collapsible?: boolean;
 	defaultCollapsed?: boolean;
+	showBlockCurrentSite?: boolean;
 }
 
 const UrlBlocker: React.FC<UrlBlockerProps> = ({ 
 	blockLists, 
 	onBlockListsChange, 
 	collapsible = false, 
-	defaultCollapsed = true 
+	defaultCollapsed = true,
+	showBlockCurrentSite = false
 }) => {
 	const [canBlockCurrentSite, setCanBlockCurrentSite] = useState<boolean>(false);
 	const [currentSite, setCurrentSite] = useState<string>('');
@@ -89,7 +91,12 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 			url = 'https://' + url;
 		}
 
-		const domain = new URL(url).hostname;
+		// Get the domain and remove 'www.' if present
+		let domain = new URL(url).hostname;
+		if (domain.startsWith('www.')) {
+			domain = domain.substring(4); // Remove 'www.'
+		}
+		
 		const updatedBlockLists = blockLists.map((list) => {
 			if (list.id === listId && !list.urls.includes(domain)) {
 				return { ...list, urls: [...list.urls, domain] };
@@ -105,6 +112,17 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 				...prev,
 				[listId]: true
 			}));
+		}
+		
+		// If we're blocking the current site, navigate to the block page
+		if (!inputUrl && canBlockCurrentSite) {
+			// Navigate to the block page and increment the counter via Chrome's declarativeNetRequest API
+			chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+				const tabId = tabs[0].id;
+				if (tabId !== undefined) {
+					chrome.tabs.update(tabId, { url: chrome.runtime.getURL("block.html?count=true") });
+				}
+			});
 		}
 	};
 
@@ -135,13 +153,15 @@ const UrlBlocker: React.FC<UrlBlockerProps> = ({
 
 	return (
 		<>
-			{canBlockCurrentSite && (
+			{(canBlockCurrentSite || showBlockCurrentSite) && (
 				<Button
 					fullWidth
 					variant="contained"
 					color="primary"
 					sx={{marginBottom: 2}}
 					onClick={(event) => blockUrl(event, 'main')}
+					disabled={!canBlockCurrentSite}
+					startIcon={<AddCircle />}
 				>
 					Block current site
 				</Button>

@@ -7,6 +7,7 @@ const DeveloperFeatureFlags = {
 	Schedule: true,
 	Commitment: true,
 	ExtraSettings: true,
+	PasswordProtection: true,
 }
 
 export default DeveloperFeatureFlags;

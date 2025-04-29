@@ -8,6 +8,8 @@ import BlockedKeywords from "./BlockedKeywords";
 import Scheduler from "./Scheduler/Scheduler";
 import Commitment from "./Commitment/Commitment";
 import ExtraSettings from "./ExtraSettings";
+import PasswordProtection from "./PasswordProtection/PasswordProtection";
+import PasswordOverlay from "./PasswordProtection/PasswordOverlay";
 import WelcomePopover from "./WelcomePopover";
 import { getDesignTokens } from "../../../styles/MuiTheme";
 
@@ -104,15 +106,20 @@ const SettingsApp: React.FC = () => {
 								width: 'calc(100% - 261px)', 
 								marginLeft: '261px', 
 								padding: 3,
-								boxSizing: 'border-box'
+								boxSizing: 'border-box',
+								position: 'relative',
+								minHeight: 'calc(100vh - 64px)' // Ensure enough height for the overlay
 							}}>
-								<Routes>
-									<Route path="*" element={<BlockedSites/>}/>
-									<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
-									<Route path="/schedule" element={<Scheduler/>}/>
-									<Route path="/commitment" element={<Commitment/>}/>
-									<Route path="/extra-settings" element={<ExtraSettings/>}/>
-								</Routes>
+								<PasswordOverlay>
+									<Routes>
+										<Route path="*" element={<BlockedSites/>}/>
+										<Route path="/blocked-keywords" element={<BlockedKeywords/>}/>
+										<Route path="/schedule" element={<Scheduler/>}/>
+										<Route path="/commitment" element={<Commitment/>}/>
+										<Route path="/extra-settings" element={<ExtraSettings/>}/>
+										<Route path="/password-protection" element={<PasswordProtection/>}/>
+									</Routes>
+								</PasswordOverlay>
 							</Box>
 						</Box>
 					</Router>

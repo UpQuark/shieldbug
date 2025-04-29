@@ -5,10 +5,6 @@ import {TimeInterval} from "./Components/Settings/Scheduler/SchedulerTypes";
 import {isBlockScheduleActive} from "./Components/Settings/Scheduler/TimeHelper";
 import {isUrlBlocked} from "./Helpers/UrlBlockChecker";
 
-function openBlockPage() {
-  void chrome.runtime.sendMessage({action: "openBlockPage"});
-}
-
 self.addEventListener('install', () => {
   chrome.storage.sync.set({
     blockedUrls: []
@@ -17,23 +13,6 @@ self.addEventListener('install', () => {
 
 console.log("Loaded ShieldBug Background Script");
 
-/**
- * When a message with action "openBlockPage" is received, updates the currently
- * active tab's URL to block.html file provided by the extension. This displays
- * the block page in the current tab and prevents the user from going back to the previous page.
- */
-chrome.runtime.onMessage.addListener(
-  (request: { action: string }, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-    if (request.action === "openBlockPage") {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
-        const tabId = tabs[0].id;
-        if (tabId !== undefined) {
-          chrome.tabs.update(tabId, { url: chrome.runtime.getURL("block.html") });
-        }
-      });
-    }
-  }
-);
 
 // Open options page on install
 chrome.runtime.onInstalled.addListener(function(details) {
@@ -56,9 +35,21 @@ async function setupRedirectRules() {
     const ruleIdsToRemove = existingRules.map(rule => rule.id);
     console.log("Removing rule IDs:", ruleIdsToRemove);
     
-    // Get blocked URLs from storage
-    const data = await chrome.storage.sync.get(['blockLists', 'blockedUrls', 'blockedCategories']);
-    console.log("Retrieved block data:", data);
+    // First clear all existing rules
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: ruleIdsToRemove,
+      addRules: []
+    });
+    
+    // Get blocked URLs from storage and blocking status
+    const data = await chrome.storage.sync.get(['blockLists', 'blockedUrls', 'blockedCategories', 'blockingEnabled']);
+    console.log("Retrieved block data:", data, "Blocking enabled:", data.blockingEnabled);
+    
+    // If blocking is disabled, return without adding any rules
+    if (data.blockingEnabled === false) {
+      console.log("Blocking is disabled, no rules will be added");
+      return;
+    }
     
     const blockLists: BlockList[] = data.blockLists || [];
     const legacyBlockedUrls: string[] = data.blockedUrls || [];
@@ -105,9 +96,9 @@ async function setupRedirectRules() {
       }
     }));
     
-    // Clear existing rules and add our new ones
+    // Add our new rules
     await chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: ruleIdsToRemove,
+      removeRuleIds: [],
       addRules: newRules
     });
     
@@ -122,9 +113,10 @@ async function setupRedirectRules() {
 
 // Listen for changes to the blocked URLs and update rules
 chrome.storage.onChanged.addListener((changes, namespace) => {
+  console.log("Storage changed:", changes, namespace);
   if (namespace === 'sync' && 
-      (changes.blockLists || changes.blockedUrls || changes.blockedCategories)) {
-    console.log("Blocked sites changed, updating rules");
+      (changes.blockLists || changes.blockedUrls || changes.blockedCategories || changes.blockingEnabled)) {
+    console.log("Blocked sites or blocking status changed, updating rules", changes);
     setupRedirectRules();
   }
 });
@@ -138,5 +130,11 @@ chrome.runtime.onInstalled.addListener(() => {
 // Set up rules when the service worker starts
 chrome.runtime.onStartup.addListener(() => {
   console.log("Service worker starting up - setting up redirect rules");
+  setupRedirectRules();
+});
+
+// Add a new listener for browser restart/refresh to ensure rules are updated
+chrome.runtime.onStartup.addListener(() => {
+  console.log("Browser started - checking blocking status");
   setupRedirectRules();
 });

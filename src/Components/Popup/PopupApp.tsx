@@ -10,12 +10,15 @@ import {
   Typography,
   Paper,
   CssBaseline,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
-import {Settings} from '@mui/icons-material';
+import {Settings, PowerSettingsNew} from '@mui/icons-material';
 import { createTheme, Theme } from '@mui/material/styles';
 import {useEffect, useState} from "react";
 import {BlockList} from '../Settings/BlockedSites/BlockedSitesTypes';
 import { getDesignTokens } from "../../../styles/MuiTheme";
+import PasswordOverlay from '../Settings/PasswordProtection/PasswordOverlay';
 
 const PopupApp = () => {
   const [deepBreathsEnabled, setDeepBreathsEnabled] = useState(false);
@@ -25,6 +28,7 @@ const PopupApp = () => {
   const [backdropOpen, setBackdropOpen] = useState(false);
   const [countdown, setCountdown] = useState(deepBreathLength);
   const [blockLists, setBlockLists] = React.useState<BlockList[]>([{ id: 'main', name: 'Main', urls: [], active: true }]);
+  const [blockingEnabled, setBlockingEnabled] = React.useState(true);
   
   // Track theme mode
   const [mode, setMode] = useState<'light' | 'dark'>('light');
@@ -36,7 +40,7 @@ const PopupApp = () => {
 
   // Load theme preference on mount
   useEffect(() => {
-    chrome.storage.sync.get(['themeMode'], (data) => {
+    chrome.storage.sync.get(['themeMode', 'blockingEnabled'], (data) => {
       if (data.themeMode === 'light' || data.themeMode === 'dark') {
         setMode(data.themeMode);
       } else if (data.themeMode === 'system' || !data.themeMode) {
@@ -44,6 +48,9 @@ const PopupApp = () => {
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         setMode(prefersDarkMode ? 'dark' : 'light');
       }
+      
+      // Load blocking enabled state
+      setBlockingEnabled(data.blockingEnabled !== false);
     });
     
     // Listen for system preference changes
@@ -63,13 +70,20 @@ const PopupApp = () => {
   // Listen for storage changes (e.g. when theme is changed in settings)
   useEffect(() => {
     const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }, areaName: string) => {
-      if (areaName === 'sync' && changes.themeMode) {
-        const newThemeMode = changes.themeMode.newValue;
-        if (newThemeMode === 'system') {
-          const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          setMode(prefersDarkMode ? 'dark' : 'light');
-        } else if (newThemeMode === 'light' || newThemeMode === 'dark') {
-          setMode(newThemeMode);
+      if (areaName === 'sync') {
+        if (changes.themeMode) {
+          const newThemeMode = changes.themeMode.newValue;
+          if (newThemeMode === 'system') {
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setMode(prefersDarkMode ? 'dark' : 'light');
+          } else if (newThemeMode === 'light' || newThemeMode === 'dark') {
+            setMode(newThemeMode);
+          }
+        }
+        
+        // Update blockingEnabled state if it was changed elsewhere
+        if (changes.blockingEnabled !== undefined) {
+          setBlockingEnabled(changes.blockingEnabled.newValue !== false);
         }
       }
     };
@@ -153,96 +167,148 @@ const PopupApp = () => {
     });
   };
 
+  // Handle blocking toggle
+  const handleBlockingToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
+    setBlockingEnabled(newValue);
+    chrome.storage.sync.set({ blockingEnabled: newValue }, () => {
+      console.log("Popup: blocking toggled to", newValue);
+      
+      // Send a message to the background script to update rules immediately
+      chrome.runtime.sendMessage({ 
+        action: "blockingToggled", 
+        enabled: newValue 
+      });
+    });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth={false} sx={{width: 400, padding: 0}}>
-        <Toolbar sx={{ 
-          backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
-          paddingRight: 0 
-        }}>
-          <img
-            src={chrome.runtime.getURL('assets/icon-128.png')}
-            alt="Shieldbug"
-            style={{
-              height: 35,
-              marginRight: 8,
-              filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))"
-            }}
-          />
-          <Typography 
-            variant="h5" 
-            sx={{
-              marginTop: 0,
-              flexGrow: 1,
-              fontWeight: 'bold',
-              color: mode === 'dark' ? 'primary.main' : 'white'
-            }}
-          >
-            ShieldBug
-          </Typography>
-          <IconButton
-            onClick={openSettingsPage}
-            color="inherit"
-            sx={{ color: 'white' }}
-          >
-            <Settings/>
-          </IconButton>
-        </Toolbar>
-
-        <Box sx={{position: 'relative', bgcolor: 'background.default'}}>
-          <Grid container spacing={1} sx={{padding: 1.5}}>
-            <Grid item xs={12}>
-              <Paper elevation={3} sx={{ p: 3 }}>
-                <Typography variant="h5" gutterBottom>
-                  Blocked Sites
-                </Typography>
-                <UrlBlocker 
-                  blockLists={blockLists}
-                  onBlockListsChange={updateBlockLists}
-                  collapsible={true}
-                  defaultCollapsed={true}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <CategoryBlocker 
-                blockedCategories={blockedCategories}
-                onCategoryToggle={handleCategoryToggle}
-                title="Blocked Categories"
-              />
-            </Grid>
-
-            <Backdrop
-              sx={{
-                color: '#fff',
-                position: 'absolute',
-                marginTop: '8px',
-                height: '100%',
-                zIndex: (theme) => theme.zIndex.drawer + 1
+      <Container maxWidth={false} sx={{width: 400, padding: 0, height: '600px', overflow: 'hidden', position: 'relative'}}>
+        {/* Apply password protection to the ENTIRE popup including toolbar */}
+        <PasswordOverlay isPopup={true}>
+          <Toolbar sx={{ 
+            backgroundColor: mode === 'dark' ? 'custom.sidebar' : 'primary.main',
+            paddingRight: 0,
+            position: 'relative'
+          }}>
+            <img
+              src={chrome.runtime.getURL('assets/icon-128.png')}
+              alt="Shieldbug"
+              style={{
+                height: 35,
+                marginRight: 8,
+                filter: "drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.6))"
               }}
-              open={backdropOpen}
+            />
+            <Typography 
+              variant="h5" 
+              sx={{
+                marginTop: 0,
+                flexGrow: 1,
+                fontWeight: 'bold',
+                color: mode === 'dark' ? 'primary.main' : 'white'
+              }}
             >
-              <Box
-                sx={{
+              ShieldBug
+            </Typography>
+            
+            {/* Blocking Toggle Switch */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={blockingEnabled}
+                  onChange={handleBlockingToggle}
+                  size="small"
+                  color="primary"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <PowerSettingsNew sx={{ fontSize: '1.2rem', color: 'white' }} />
+                </Box>
+              }
+              sx={{
+                mr: 1,
+                '.MuiFormControlLabel-label': { 
                   display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
                   alignItems: 'center',
+                  marginLeft: '4px'
+                },
+                '.MuiSwitch-switchBase.Mui-checked': {
+                  color: '#fff'
+                },
+                '.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                  opacity: 0.7
+                }
+              }}
+            />
+            
+            <IconButton
+              onClick={openSettingsPage}
+              color="inherit"
+              sx={{ color: 'white' }}
+            >
+              <Settings/>
+            </IconButton>
+          </Toolbar>
+
+          <Box sx={{position: 'relative', bgcolor: 'background.default', height: '100%'}}>
+            <Grid container spacing={1} sx={{padding: 1.5}}>
+              <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 3 }}>
+                  <Typography variant="h5" gutterBottom>
+                    Blocked Sites
+                  </Typography>
+                  <UrlBlocker 
+                    blockLists={blockLists}
+                    onBlockListsChange={updateBlockLists}
+                    collapsible={true}
+                    defaultCollapsed={true}
+                    showBlockCurrentSite={true}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <CategoryBlocker 
+                  blockedCategories={blockedCategories}
+                  onCategoryToggle={handleCategoryToggle}
+                  title="Blocked Categories"
+                />
+              </Grid>
+
+              <Backdrop
+                sx={{
+                  color: '#fff',
+                  position: 'absolute',
+                  marginTop: '8px',
                   height: '100%',
+                  zIndex: (theme) => theme.zIndex.drawer + 1
                 }}
+                open={backdropOpen}
               >
-                <CircularProgress color="primary"/>
-                <Typography variant="h4">
-                  Take a deep breath.
-                </Typography>
-                <Typography variant="h6">
-                  {countdown} {countdown === 1 ? 'second' : 'seconds'}
-                </Typography>
-              </Box>
-            </Backdrop>
-          </Grid>
-        </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                  }}
+                >
+                  <CircularProgress color="primary"/>
+                  <Typography variant="h4">
+                    Take a deep breath.
+                  </Typography>
+                  <Typography variant="h6">
+                    {countdown} {countdown === 1 ? 'second' : 'seconds'}
+                  </Typography>
+                </Box>
+              </Backdrop>
+            </Grid>
+          </Box>
+        </PasswordOverlay>
       </Container>
     </ThemeProvider>
   );

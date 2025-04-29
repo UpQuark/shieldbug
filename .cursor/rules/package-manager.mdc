@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Use Yarn instead of NPM for node commands
+- If you get "The engine "node" is incompatible" or similar, try running NVM use "version" and then "NVM install (version)" followed by "use" if not present.
